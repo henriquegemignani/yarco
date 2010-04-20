@@ -3,7 +3,7 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "../headers/common.h"
+#include "common.h"
 #include <math.h>
 
 double VECTORlength(vector v) {

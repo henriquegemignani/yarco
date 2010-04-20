@@ -1,9 +1,12 @@
+/*******************************************************************/
+/** MAC0211 - Laboratorio de Programacao I                        **/
+/** Projeto de Jogo                                               **/
+/*******************************************************************/
+
 #ifndef _PHYSICS_H_
 #define _PHYSICS_H_
 
-#include <stdlib.h>
-#include <math.h>
-#include "commom.h"
+#include "common.h"
 
 vector newDirection( vector v );
 acceleration newAcceleration( acceleration a );
