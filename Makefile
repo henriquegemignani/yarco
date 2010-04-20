@@ -9,12 +9,10 @@ yarco : $(objects)
 
 
 main.o : common.h
-	$(CC) $(CFLAGS) -c main.c -o $@
 common.o : common.h common.c
-	$(CC) $(CFLAGS) $(VPATH)common.c -c -lm -o $@
+#	$(CC) $(CFLAGS) $(VPATH)common.c -c -lm -o $@
 physics.o : physics.h common.h physics.c
-	$(CC) $(CFLAGS) $(VPATH)physics.c -c -lm -o $@
-
+#	$(CC) $(CFLAGS) $(VPATH)physics.c -c -lm -o $@
 graphics.o : common.h graphics.h graphics.c
 
 
@@ -29,15 +27,3 @@ clean :
 .PHONY : moreclean
 moreclean : clean
 	rm -f \#*\# *~
-
-
-#interfaces = common.h
-#sources = common.c
-
-#$(interfaces) : %.h :
-#$(sources) : %.c :   
-
-#$(objects): %.o: %.c common.h
-
-#common.o : 
-#	$(CC) -c $(CFLAGS) $< -o $@
