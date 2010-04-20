@@ -3,7 +3,7 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "physics.c"
+#include "physics.h"
 
 vector newDirection( vector v ) {
   /* TODO: finish this! */
