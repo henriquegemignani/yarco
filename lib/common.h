@@ -16,4 +16,4 @@ typedef struct Vector acceleration;
 
 double VECTORlength(vector);
 
-#endif
+#endif /* _COMMON_H_ */
