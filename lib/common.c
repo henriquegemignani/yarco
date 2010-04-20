@@ -21,3 +21,7 @@ double VECTORlength(vector v) {
 int VECTORprint(vector v) {
   return printf("(%6.3lf,%6.3lf)", v.x, v.y );
 }
+
+int randNumber(int min, int max) {
+  return (4657 - min) % max; /* numero aleatoriamente escolhido */
+}

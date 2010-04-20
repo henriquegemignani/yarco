@@ -15,8 +15,15 @@ typedef struct Vector point;
 typedef struct Vector velocity;
 typedef struct Vector acceleration;
 
-vector VECTORcreate(double x, double y);
-double VECTORlength(vector);
-   int VECTORprint(vector);
+vector vectorCreate(double x, double y);
+
+vector vectorSum(vector a, vector b);
+vector vectorSub(vector a, vector b);
+vector vectorMul(vector a, vector b);
+
+double vectorLength(vector);
+   int vectorPrint(vector);
+
+int randNumber(int min, int max);
 
 #endif /* _COMMON_H_ */
