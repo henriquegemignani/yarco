@@ -1,20 +1,22 @@
-objects = main.o common.o physics.o graphics.o
-libs = ./lib/
-headers = ./lib/
+VPATH = ./lib/
+objects = main.o physics.o graphics.o common.o 
 CC = gcc
 CFLAGS = -Wall -pedantic -ansi -std=c99
 
 
 yarco : $(objects)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(objects)-lm -o $@
 
 
-main.o : $(headers)common.h
-common.o : $(headers)common.h
-	$(CC) $(CFLAGS) $(libs)common.c -c -lm -o $@
-physics.o : $(headers)physics.h $(headers)common.h
-	$(CC) $(CFLAGS) $(libs)physics.c -c -lm -o $@
-graphics.o : $(headers)common.h $(headers)graphics.h
+main.o : common.h
+	$(CC) $(CFLAGS) -c main.c -o $@
+common.o : common.h common.c
+	$(CC) $(CFLAGS) $(VPATH)common.c -c -lm -o $@
+physics.o : physics.h common.h physics.c
+	$(CC) $(CFLAGS) $(VPATH)physics.c -c -lm -o $@
+
+graphics.o : common.h graphics.h graphics.c
+
 
 .PHONY : believe
 believe : 
