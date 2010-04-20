@@ -1,7 +1,11 @@
-objects = 
+objects = main.o
 CC = gcc
 CFLAGS = -Wall -pedantic
 
 
-yarco : ${objects}
-	{CC} $(objects} -o $@
+yarco : $(objects)
+	$(CC) $(CFLAGS) $< -o $@
+
+.PHONY: clean
+clean: 
+	rm -f $(objects) yarco
