@@ -13,6 +13,6 @@
 
 int main(int argc, char ** argv){
   /*Var*/
-  printf("lol\n");
+  printf("lolol\n");
   return 0;
 }
