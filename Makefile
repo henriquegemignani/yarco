@@ -1,8 +1,8 @@
-objects = main.o common.o physics.o
+objects = main.o common.o physics.o graphics.o
 libs = ./lib/
 headers = ./lib/
 CC = gcc
-CFLAGS = -Wall -pedantic -ansi
+CFLAGS = -Wall -pedantic -ansi -std=c99
 
 
 yarco : $(objects)
@@ -10,10 +10,11 @@ yarco : $(objects)
 
 
 main.o : $(headers)common.h
-common.o : $(libs)common.c $(headers)common.h
+common.o : $(headers)common.h
 	$(CC) $(CFLAGS) $(libs)common.c -c -lm -o $@
 physics.o : $(headers)physics.h $(headers)common.h
 	$(CC) $(CFLAGS) $(libs)physics.c -c -lm -o $@
+graphics.o : $(headers)common.h $(headers)graphics.h
 
 .PHONY : believe
 believe : 

@@ -9,10 +9,14 @@
 /*******************************************************************/
 
 #include <stdio.h>
-
+#include "lib/common.h"
 
 int main(int argc, char ** argv){
   /*Var*/
+  vector v;
   printf("lolol\n");
+  v.x = 1337;
+  v.y = 42;
+  printf("%lf %lf\n", v.x, v.y);
   return 0;
 }
