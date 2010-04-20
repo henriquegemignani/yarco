@@ -14,6 +14,8 @@ typedef struct Vector vector;
 typedef struct Vector velocity;
 typedef struct Vector acceleration;
 
+vector VECTORcreate(double x, double y);
 double VECTORlength(vector);
+   int VECTORprint(vector);
 
 #endif /* _COMMON_H_ */

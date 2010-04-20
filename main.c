@@ -15,8 +15,8 @@ int main(int argc, char ** argv){
   /*Var*/
   vector v;
   printf("lolol\n");
-  v.x = 1337;
-  v.y = 42;
-  printf("%lf %lf\n", v.x, v.y);
+  v = VECTORcreate( 1337, 42 );
+  VECTORprint(v);
+  printf("\n");
   return 0;
 }
