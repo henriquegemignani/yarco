@@ -23,6 +23,10 @@ believe :
 clean : 
 	rm -f $(objects) yarco
 
+.PHONY : moreclean
+moreclean : clean
+	rm -f \#*\# *~
+
 
 #interfaces = common.h
 #sources = common.c
