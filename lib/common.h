@@ -11,6 +11,7 @@ struct Vector {
 };
 
 typedef struct Vector vector;
+typedef struct Vector point;
 typedef struct Vector velocity;
 typedef struct Vector acceleration;
 
