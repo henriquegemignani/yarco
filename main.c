@@ -9,14 +9,14 @@
 /*******************************************************************/
 
 #include <stdio.h>
-#include "./lib/common.h"
+#include "lib/common.h"
 
 int main(int argc, char ** argv){
   /*Var*/
   vector v;
   printf("lolol\n");
-  v = VECTORcreate( 1337, 42 );
-  VECTORprint(v);
+  v = vectorCreate( 1337, 42 );
+  vectorPrint(v);
   printf("\n");
   return 0;
 }
