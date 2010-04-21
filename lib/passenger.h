@@ -7,6 +7,7 @@
 #include "physics.h"
 
 typedef struct Passenger *passenger;
+typedef Passenger **crew;
 
 struct Passenger{
 	vector direction;
@@ -17,6 +18,8 @@ struct Passenger{
 
 int passengerUpdate ( passenger p ); /* usa os proprios atributos do passageiro para atualizar sua posicao */
 int passengerChangeDirection( passenger p ); /* implementa ou usa uma maquina de markov ja implementada */
+
+crew initializeCrew( int size );
 
 #endif /* _PASSENGER_H_ */
 
