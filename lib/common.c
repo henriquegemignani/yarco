@@ -7,18 +7,18 @@
 #include <stdio.h>
 #include <math.h>
 
-vector VECTORcreate(double x, double y) {
+vector vectorCreate(double x, double y) {
   vector v;
   v.x = x;
   v.y = y;
   return v;
 }
 
-double VECTORlength(vector v) {
+double vectorLength(vector v) {
   return sqrt( v.x * v.x + v.y * v.y );
 }
 
-int VECTORprint(vector v) {
+int vectorPrint(vector v) {
   return printf("(%6.3lf,%6.3lf)", v.x, v.y );
 }
 
