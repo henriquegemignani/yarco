@@ -46,6 +46,16 @@ int vectorMulEsc( vector a, vector b ){
 	return (( a.x * b.x ) + ( a.y * b.y ));
 }
 
+double distanceBetweenPoints(point a, point b) {
+    double x = a.x - b.x, y = a.y - b.y;
+    return sqrt( x*x + y*y );
+}
+
+
+void MALLOC_DIE() {
+    exit(EXIT_MALLOCERROR);
+}
+
 int randNumber(int min, int max) {
   return (4657 - min) % max; /* numero aleatoriamente escolhido */
 }

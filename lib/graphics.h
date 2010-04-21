@@ -6,6 +6,8 @@
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
 
-/* trololol */
+int graphicInitialize();
+int grahpicUpdate();
+int graphicDraw();
 
 #endif /* _GRAPHICS_H_ */
