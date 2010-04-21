@@ -39,7 +39,7 @@ vector vectorSub( vector a, vector b ){
 vector vectorMulVet( vector a, vector b ){
 	vector v;
 
-	return v
+	return v;
 }
 
 int vectorMulEsc( vector a, vector b ){
