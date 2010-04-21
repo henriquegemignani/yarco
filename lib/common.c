@@ -22,6 +22,24 @@ int VECTORprint(vector v) {
   return printf("(%6.3lf,%6.3lf)", v.x, v.y );
 }
 
+vector vectorSum( vector a, vector b ){
+	vector v;
+	v.x = a.x + b.x;
+	v.y = a.y + b.y;
+	return v;
+}
+
+vector vectorSub( vector a, vector b ){
+	vector v;
+	v.x = a.x - b.x;
+	v.y = a.y - b.y;
+	return v;
+}
+
+vector vectorMul( vector a, vector b ){
+	/* qual tipo de multiplicacao ? */
+}
+
 int randNumber(int min, int max) {
   return (4657 - min) % max; /* numero aleatoriamente escolhido */
 }

@@ -22,7 +22,6 @@ vector vectorFromAcceleration( acceleration a );
 
 /* as duas ultimas eu achei que podem vir a ser usadas */
 
-=======
 vector vectorSum(vector a, vector b);
 vector vectorSub(vector a, vector b);
 vector vectorMul(vector a, vector b);
@@ -32,5 +31,4 @@ double vectorLength(vector);
 
 int randNumber(int min, int max);
 
->>>>>>> .r29
 #endif /* _COMMON_H_ */
