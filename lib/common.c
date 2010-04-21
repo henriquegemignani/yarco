@@ -36,8 +36,14 @@ vector vectorSub( vector a, vector b ){
 	return v;
 }
 
-vector vectorMul( vector a, vector b ){
-	/* qual tipo de multiplicacao ? */
+vector vectorMulVet( vector a, vector b ){
+	vector v;
+
+	return v
+}
+
+int vectorMulEsc( vector a, vector b ){
+	return (( a.x * b.x ) + ( a.y * b.y ));
 }
 
 int randNumber(int min, int max) {
