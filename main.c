@@ -10,13 +10,14 @@
 
 #include <stdio.h>
 #include "lib/common.h"
+#include "lib/graphics.h"
+#include "lib/persontable.h"
 
 int main(int argc, char ** argv){
   /*Var*/
-  vector v;
-  printf("lolol\n");
-  v = vectorCreate( 1337, 42 );
-  vectorPrint(v);
-  printf("\n");
+  personTableInit();
+  graphicInitialize();
+  grahpicUpdate();
+  graphicDraw();
   return 0;
 }
