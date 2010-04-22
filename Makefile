@@ -24,7 +24,7 @@ believe :
 
 .PHONY : clean
 clean : 
-	rm -f $(objects) yarco
+	rm -f $(objects) yarco yarco.exe
 
 .PHONY : moreclean
 moreclean : clean
