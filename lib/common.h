@@ -6,6 +6,7 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#include <stdlib.h>
 struct Vector {
   double x, y;
 };

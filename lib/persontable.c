@@ -3,8 +3,10 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
+#include "object.h"
 #include "person.h"
 #include "persontable.h"
+#include <stdio.h>
 
 /* BST de person. Se quiser da pra mudar, ainda. */
 struct PersonTable {
@@ -17,6 +19,7 @@ static persontable root;
 
 int personTableInit() {
     root = NULL;
+    return 0;
 }
 int personTableAdd(person p) { /* devolve o id da pessoa */    
     return 0;
@@ -27,7 +30,7 @@ person personTableSearch(int id) {
 int personTableRemoveByID(int id) {
     return 0;
 }
-int personTableRemoveByPerson(person) {
+int personTableRemoveByPerson(person p) {
     return 0;
 }
 
@@ -35,7 +38,5 @@ int personTableRemoveByPerson(person) {
 int personTableUpdate() {
     return 0;
 }
-void personTableExecute( void (*func)(person) ) {
+void personTableExecute( void (*func)(person p) ) {
 }
-
-#endif /* _PERSONTABLE_H_ */

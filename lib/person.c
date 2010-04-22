@@ -23,7 +23,7 @@ int personRemove( person p ) {
 }
 
 int personUpdate( person p ) {
-    updateObject(p->obj);
+    updateObject(*p);
     return 0;
 }
 

@@ -7,6 +7,7 @@
 #include "graphics.h"
 #include "person.h"
 #include "persontable.h"
+#include <stdio.h>
 
 typedef enum {
   NOTHING,

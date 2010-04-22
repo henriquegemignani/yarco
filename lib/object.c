@@ -6,6 +6,6 @@
 #include "object.h"
 
 void updateObject( object o ){
-	o.pos = (point) vectorSum( (vector)o.pos, (vector)o.vel );
-	o.vel = (velocity) vectorSum( (vector)o.vel, (vector)o.acc );
+	o.pos = vectorSum( o.pos, o.vel );
+	o.vel = vectorSum( o.vel, o.acc );
 }

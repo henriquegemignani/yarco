@@ -17,6 +17,6 @@ typedef struct PersonTable *persontable;
    int personTableRemoveByPerson(person p);
    
    int personTableUpdate();
-   void personTableExecute( void (*func)(person* p) );
+   void personTableExecute( void (*func)(person p) );
 
 #endif /* _PERSONTABLE_H_ */

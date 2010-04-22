@@ -6,11 +6,12 @@
 #ifndef _PERSON_H_
 #define _PERSON_H_
 
+#include "common.h"
 typedef struct Object *person;
 
 person personCreate( point pos );
-   int personRemove( person );
-   int personUpdate( person );
- point personGetPos( person );
+   int personRemove( person p );
+   int personUpdate( person p );
+ point personGetPos( person p );
 
 #endif /* _PERSON_H_ */
