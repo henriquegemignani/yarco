@@ -25,7 +25,7 @@ vector vectorFromAcceleration( acceleration a );
 vector vectorSum(vector a, vector b);
 vector vectorSub(vector a, vector b);
 vector vectorMulVet(vector a, vector b);
-vector vectorMulEsc(vector a, vector b);
+int vectorMulEsc(vector a, vector b);
 
 double vectorLength(vector);
    int vectorPrint(vector);

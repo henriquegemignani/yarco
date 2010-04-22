@@ -6,15 +6,17 @@
 #ifndef _PERSONTABLE_H_
 #define _PERSONTABLE_H_
 
+#include "person.h"
+
 typedef struct PersonTable *persontable;
 
    int personTableInit();
-   int personTableAdd(person); /* devolve o id da pessoa */
-person personTableSearch(int id);
+   int personTableAdd(person p); /* devolve o id da pessoa */
+   person personTableSearch(int id);
    int personTableRemoveByID(int id);
-   int personTableRemoveByPerson(person);
+   int personTableRemoveByPerson(person p);
    
- int personTableUpdate();
-void personTableExecute( void (*func)(person*) );
+   int personTableUpdate();
+   void personTableExecute( void (*func)(person* p) );
 
 #endif /* _PERSONTABLE_H_ */
