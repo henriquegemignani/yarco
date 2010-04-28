@@ -7,7 +7,6 @@ CFLAGS = -Wall -pedantic -ansi -std=c99
 yarco : $(objects)
 	$(CC) $(CFLAGS) $(objects) -lm -o $@
 
-
 main.o :        common.h
 common.o :      common.h common.c
 physics.o :     common.h physics.h physics.c
@@ -17,10 +16,13 @@ person.o :      common.h object.h person.h
 persontable.o : common.h persontable.h person.h persontable.c
 graphics_terminal.o : graphics.h common.h persontable.h person.h graphics_terminal.c
 
-
 .PHONY : believe
 believe : 
 	echo I won\'t play with you.
+
+.PHONY : sandwich
+sandwich :
+	echo Do it yourself.
 
 .PHONY : clean
 clean : 
