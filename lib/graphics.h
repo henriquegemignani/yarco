@@ -7,7 +7,7 @@
 #define _GRAPHICS_H_
 
 int graphicInitialize();
-int grahpicUpdate();
+int graphicUpdate();
 int graphicDraw();
 
 #endif /* _GRAPHICS_H_ */

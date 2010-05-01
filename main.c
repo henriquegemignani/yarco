@@ -17,7 +17,7 @@ int main(int argc, char ** argv){
   /*Var*/
   personTableInit();
   graphicInitialize();
-  grahpicUpdate();
+  graphicUpdate();
   graphicDraw();
   return 0;
 }

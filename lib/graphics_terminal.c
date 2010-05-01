@@ -42,19 +42,19 @@ int graphicInitialize() {
     return 0;
 }
 
-void grahpicUpdatePerson(person per) {
+void graphicUpdatePerson(person per) {
     point p = personGetPos(per);
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
     if( x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT )
         outputScreen[y][x] = PASSENGER;
 }
 
-int grahpicUpdate() {
+int graphicUpdate() {
     int i, j;
     for( i = 0; i < OUTPUT_HEIGHT; i++ )
         for( j = 0; j < OUTPUT_WIDTH; j++ )
             outputScreen[i][j] = NOTHING;
-    personTableExecute(grahpicUpdatePerson);
+    personTableExecute(graphicUpdatePerson);
     return 0;
 }
 
