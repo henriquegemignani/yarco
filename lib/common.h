@@ -27,7 +27,11 @@ vector vectorSum(vector a, vector b);
 vector vectorSub(vector a, vector b);
 vector vectorMulVet(vector a, vector b);
 int vectorMulEsc(vector a, vector b);
-
+vector vectorRotate(vector v, double ang);
+/*Funcao acima roatciona um vetor de acordo com o angulo dado, em radianos, no sentido horario*/
+double vectorAngle( vector v );
+vector vectorAngleSet( vector v, double ang );
+vector vectorLengthSet(vector v, double length );
 double vectorLength(vector);
    int vectorPrint(vector);
    

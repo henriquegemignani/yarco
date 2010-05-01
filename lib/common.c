@@ -46,6 +46,32 @@ int vectorMulEsc( vector a, vector b ){
 	return (( a.x * b.x ) + ( a.y * b.y ));
 }
 
+vector vectorRotate ( vector v, double ang ){
+  double vAng;
+  vAng = vectorAngle( v );
+  return vectorAngleSet( v, ang+vAng);
+}
+
+double vectorAngle ( vector v ){
+  return atan2( v.x, v.y );
+}
+
+vector vectorAngleSet ( vector v, double ang ){
+  double vLength;
+  vLength = vectorLength ( v );
+  v.x = cos( ang ) * vLength;
+  v.y = sin( ang ) * vLength;
+  return v;
+}
+
+vector vectorLengthSet ( vector v, double length ){
+  double vAng;
+  vAng = vectorAngle ( v );
+  v.x = length * cos( vAng );
+  v.y = length * sin( vAng );
+  return v;
+}
+
 double distanceBetweenPoints(point a, point b) {
     double x = a.x - b.x, y = a.y - b.y;
     return sqrt( x*x + y*y );
@@ -57,5 +83,5 @@ void MALLOC_DIE() {
 }
 
 int randNumber(int min, int max) {
-  return (4657 - min) % max; /* numero aleatoriamente escolhido */
+  return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
