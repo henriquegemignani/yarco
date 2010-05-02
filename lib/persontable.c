@@ -3,40 +3,61 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
+#include "common.h"
 #include "object.h"
 #include "person.h"
 #include "persontable.h"
 #include <stdio.h>
 
 /* BST de person. Se quiser da pra mudar, ainda. */
-struct PersonTable {
-    int id;
-    person val;
-    persontable link[2];
-};
+static struct PersonTable {
+    person list[PERSON_LIMIT];
+    unsigned int curMax, lastID;
+} table;
 
-static persontable root;
-
-int personTableInit() {
-    root = NULL;
-    return 0;
+void personTableInit() {
+    table.curMax = table.lastID = 0;
 }
-int personTableAdd(person p) { /* devolve o id da pessoa */    
-    return 0;
+unsigned int personTableAdd(person p) {
+    if( table.curMax == PERSON_LIMIT )
+        return ERROR_PERSON_LIMIT_EXCEEDED;
+    table.list[table.curMax++] = p;
+    return ++table.lastID;
 }
-person personTableSearch(int id) {
+person personTableSearch(unsigned int id) {
+    int i;
+    for( i = 0; i < table.curMax; i++ )
+        if( table.list[i]->id == id )
+            return table.list[i];
     return NULL;
 }
-int personTableRemoveByID(int id) {
-    return 0;
+int personTableRemoveByID(unsigned int id) {
+    int i;
+    person pAux;
+    for( i = 0; i < table.curMax; i++ )
+        if( table.list[i]->id == id ) {
+            pAux = table.list[i];
+            table.list[i] = NULL;
+            return personRemove(pAux);
+        }
+    return WARNING_PERSON_NOT_FOUND;
 }
 int personTableRemoveByPerson(person p) {
-    return 0;
+    return personTableRemoveByID(p->id);
 }
 
 /* Management functions */
-int personTableUpdate() {
-    return 0;
+void personTableUpdate() {
+    int i;
+    for( i = 0; i < table.curMax; i++ )
+        if( table.list[i] != NULL )
+            personUpdate(table.list[i]);
+    /* TODO: ordenar vetor table.list aqui, colocando todos 
+      os NULL no fim e corrigindo table.curMax. */
 }
 void personTableExecute( void (*func)(person p) ) {
+    int i;
+    for( i = 0; i < table.curMax; i++ )
+        if( table.list[i] != NULL )
+            func(table.list[i]);
 }

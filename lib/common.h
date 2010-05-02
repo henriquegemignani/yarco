@@ -6,10 +6,16 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+/* Constantes do programa */
+#define PERSON_LIMIT 100
+#define PERSON_INIT  30
+
+
 #include <stdlib.h>
 struct Vector {
   double x, y;
 };
+/* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
 
 typedef struct Vector vector;
 typedef struct Vector point;
@@ -18,15 +24,14 @@ typedef struct Vector acceleration;
 
 vector vectorCreate(double x, double y);
 
-vector vectorFromVelocity( velocity v );
-vector vectorFromAcceleration( acceleration a );
-
-/* as duas ultimas eu achei que podem vir a ser usadas */
-
 vector vectorSum(vector a, vector b);
 vector vectorSub(vector a, vector b);
 vector vectorMulVet(vector a, vector b);
-int vectorMulEsc(vector a, vector b);
+double vectorMulEsc(vector a, vector b);
+
+vector vectorPolarToCartesian(vector v);
+vector vectorCartesianToPolar(vector v);
+
 vector vectorRotate(vector v, double ang);
 /*Funcao acima roatciona um vetor de acordo com o angulo dado, em radianos, no sentido horario*/
 double vectorAngle( vector v );
@@ -41,8 +46,10 @@ double distanceBetweenPoints(point a, point b);
 int randNumber(int min, int max);
 
 
-/* EXIT CODES */
-#define EXIT_MALLOCERROR 1
+/* WARNING AND ERROR CODES */
+#define ERROR_MALLOC_FAILURE            101
+#define ERROR_PERSON_LIMIT_EXCEEDED     -201
+#define WARNING_PERSON_NOT_FOUND        202
 
 /* Defines para ajudar o desenvolvimento! */
 #define AUTOMALLOC(p) p=malloc(sizeof(*(p)));if(!p)MALLOC_DIE()

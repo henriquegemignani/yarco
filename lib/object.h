@@ -15,10 +15,9 @@ typedef enum {
 
 typedef struct Object object;
 
-struct Object
-{
-    /* pos eh em coordenadas cartesianas, enquanto 
-    vel e acc sao em coordenadas polares. */
+struct Object {
+    /* pos e vel sao em coordenadas cartesianas, enquanto 
+    acc eh em coordenadas polares. */
 	acceleration acc;
 	velocity vel; 
 	point pos;
@@ -27,6 +26,6 @@ struct Object
 };
 
 void updateObject( object o );
-double objectGetDistFrom( point p );
+double objectGetDistFrom( object o, point p );
 
 #endif /* _OBJECT_H_ */

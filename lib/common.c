@@ -14,14 +14,6 @@ vector vectorCreate(double x, double y) {
   return v;
 }
 
-double vectorLength(vector v) {
-  return sqrt( v.x * v.x + v.y * v.y );
-}
-
-int vectorPrint(vector v) {
-  return printf("(%6.3lf,%6.3lf)", v.x, v.y );
-}
-
 vector vectorSum( vector a, vector b ){
 	vector v;
 	v.x = a.x + b.x;
@@ -42,8 +34,23 @@ vector vectorMulVet( vector a, vector b ){
 	return v;
 }
 
-int vectorMulEsc( vector a, vector b ){
+double vectorMulEsc( vector a, vector b ){
 	return (( a.x * b.x ) + ( a.y * b.y ));
+}
+
+vector vectorPolarToCartesian(vector v) {
+    double  vAng = v.y, 
+            vLength = v.x;
+    v.x = vLength * cos( vAng );
+    v.y = vLength * sin( vAng );
+    return v;
+}
+vector vectorCartesianToPolar(vector v) {
+    double  vAng = vectorAngle(v), 
+            vLength = vectorLength(v);
+    v.x = vLength;
+    v.y = vAng;
+    return v;
 }
 
 vector vectorRotate ( vector v, double ang ){
@@ -77,11 +84,19 @@ double distanceBetweenPoints(point a, point b) {
     return sqrt( x*x + y*y );
 }
 
+double vectorLength(vector v) {
+  return sqrt( v.x * v.x + v.y * v.y );
+}
 
-void MALLOC_DIE() {
-    exit(EXIT_MALLOCERROR);
+int vectorPrint(vector v) {
+  return printf("(%6.3lf,%6.3lf)", v.x, v.y );
 }
 
 int randNumber(int min, int max) {
   return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
+}
+
+
+void MALLOC_DIE() {
+    exit(ERROR_MALLOC_FAILURE);
 }

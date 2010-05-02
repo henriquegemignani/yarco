@@ -5,7 +5,12 @@
 
 #include "object.h"
 
-void updateObject( object o ){
+void updateObject( object o ) {
+    vector aux = vectorPolarToCartesian( o.acc );
 	o.pos = vectorSum( o.pos, o.vel );
-	o.vel = vectorSum( o.vel, o.acc );
+	o.vel = vectorSum( o.vel, aux );
+}
+
+double objectGetDistFrom( object o, point p ) {
+    return distanceBetweenPoints( o.pos, p );
 }
