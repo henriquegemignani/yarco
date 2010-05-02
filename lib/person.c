@@ -4,6 +4,7 @@
 /*******************************************************************/
 
 #include "object.h"
+#include "physics.h"
 #include "person.h"
 
 person personCreate( point pos ) {
