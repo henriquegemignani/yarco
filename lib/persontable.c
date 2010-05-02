@@ -11,7 +11,7 @@
 
 /* BST de person. Se quiser da pra mudar, ainda. */
 static struct PersonTable {
-    person list[PERSON_LIMIT];
+    person list[PERSON_NUM_LIMIT];
     unsigned int curMax, lastID;
 } table;
 
@@ -19,7 +19,7 @@ void personTableInit() {
     table.curMax = table.lastID = 0;
 }
 unsigned int personTableAdd(person p) {
-    if( table.curMax == PERSON_LIMIT )
+    if( table.curMax == PERSON_NUM_LIMIT )
         return ERROR_PERSON_LIMIT_EXCEEDED;
     table.list[table.curMax++] = p;
     return ++table.lastID;

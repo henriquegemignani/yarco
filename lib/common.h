@@ -7,8 +7,12 @@
 #define _COMMON_H_
 
 /* Constantes do programa */
-#define PERSON_LIMIT 100
-#define PERSON_INIT  30
+#define PI 3.141592654
+
+#define PERSON_NUM_LIMIT        100
+#define PERSON_NUM_INIT         30
+#define PERSON_SPEED_MIN        7
+#define PERSON_SPEED_MAX        11
 
 
 #include <stdlib.h>
@@ -43,7 +47,8 @@ double vectorLength(vector);
 double distanceBetweenPoints(point a, point b);
    
    
-int randNumber(int min, int max);
+int randInt(int min, int max);
+double randDouble(double min, double max);
 
 
 /* WARNING AND ERROR CODES */

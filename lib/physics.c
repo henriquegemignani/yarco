@@ -5,14 +5,13 @@
 
 #include "physics.h"
 #include "object.h"
-#define PI 3.141592654
 
 vector newDirection( vector v ) {
   /* TODO: finish this! */
   double length;
   int randNum;
   length = vectorLength ( v );
-  if ( randNumber ( 1, 100 ) > 65)
+  if ( randInt ( 1, 100 ) > 65)
     v = vectorRotate ( v, ( PI/4 * ( ( randNum - 61 )/5 ) ) );
   return v;
 }

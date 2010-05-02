@@ -92,7 +92,10 @@ int vectorPrint(vector v) {
   return printf("(%6.3lf,%6.3lf)", v.x, v.y );
 }
 
-int randNumber(int min, int max) {
+int randInt(int min, int max) {
+  return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
+}
+double randDouble(double min, double max) {
   return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 

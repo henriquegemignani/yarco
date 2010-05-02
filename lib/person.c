@@ -8,13 +8,16 @@
 
 person personCreate( point pos ) {
     person p;
+    double personSpeed;
+    int personDirection;
     AUTOMALLOC(p);
-    p->id = 0; /* id invalido */
+    p->id = 0;
     p->type = PERSON;
     p->pos = pos;
-    /* TODO: velocidade inicial precisa ser aleatoria. */
-    p->vel = vectorCreate(0,0);
-    p->pos = vectorCreate(0,0);
+    personSpeed = randDouble( PERSON_SPEED_MIN, PERSON_SPEED_MAX );
+    personDirection = randInt( 0, 7 );
+    p->vel = vectorPolarToCartesian( vectorCreate(personSpeed, personDirection * PI) );
+    p->acc = vectorCreate(0,0);
     return p;
 }
 int personRemove( person p ) {
@@ -23,6 +26,7 @@ int personRemove( person p ) {
 }
 
 int personUpdate( person p ) {
+    p->vel = newDirection( p->vel );
     updateObject(*p);
     return 0;
 }
