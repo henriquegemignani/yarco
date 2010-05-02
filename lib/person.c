@@ -30,3 +30,7 @@ int personUpdate( person p ) {
 point personGetPos( person p ) {
     return p->pos;
 }
+
+unsigned int personGetID( person p ) {
+    return p->id;
+}

@@ -13,5 +13,6 @@ person personCreate( point pos );
    int personRemove( person p );
    int personUpdate( person p );
  point personGetPos( person p );
+unsigned int personGetID( person p );
 
 #endif /* _PERSON_H_ */

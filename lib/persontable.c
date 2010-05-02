@@ -27,7 +27,7 @@ unsigned int personTableAdd(person p) {
 person personTableSearch(unsigned int id) {
     int i;
     for( i = 0; i < table.curMax; i++ )
-        if( table.list[i]->id == id )
+        if( personGetID( table.list[i] ) == id )
             return table.list[i];
     return NULL;
 }
@@ -35,7 +35,7 @@ int personTableRemoveByID(unsigned int id) {
     int i;
     person pAux;
     for( i = 0; i < table.curMax; i++ )
-        if( table.list[i]->id == id ) {
+        if( personGetID( table.list[i] ) == id ) {
             pAux = table.list[i];
             table.list[i] = NULL;
             return personRemove(pAux);
@@ -43,7 +43,7 @@ int personTableRemoveByID(unsigned int id) {
     return WARNING_PERSON_NOT_FOUND;
 }
 int personTableRemoveByPerson(person p) {
-    return personTableRemoveByID(p->id);
+    return personTableRemoveByID( personGetID(p) );
 }
 
 /* Management functions */
