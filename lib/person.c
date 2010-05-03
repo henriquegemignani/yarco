@@ -42,13 +42,13 @@ void personSetID( person p, unsigned int id ) {
     p->id = id;
 }
 
-int personCompare( person r, person s ) {
-/* retorna < -1 se r<s, 0 se iguais, 1 se r>s */
-	if( r.y < s.y ) return -1;
-	else if ( r.y > s.y ) return 1;
+	int personCompare( person r, person s ) {
+	/* retorna < -1 se r<s, 0 se iguais, 1 se r>s */
+	if( r->pos.y < s->pos.y ) return -1;
+	else if ( r->pos.y > s->pos.y ) return 1;
 	else
-		if( r.x < s.x ) return -1;
-		else if( r.x > s.x ) return 1;
+		if( r->pos.x < s->pos.x ) return -1;
+		else if( r->pos.x > s->pos.x ) return 1;
 		else return 0;
 	
 }
