@@ -7,17 +7,15 @@
 #include "physics.h"
 #include "person.h"
 
-person personCreate( point pos ) {
+person personCreate( point pos, double speed ) {
     person p;
-    double personSpeed;
     int personDirection;
     AUTOMALLOC(p);
     p->id = 0;
-    p->type = PERSON;
+    p->type = TYPE_PERSON;
     p->pos = pos;
-    personSpeed = randDouble( PERSON_SPEED_MIN, PERSON_SPEED_MAX );
     personDirection = randInt( 0, 7 );
-    p->vel = vectorPolarToCartesian( vectorCreate(personSpeed, personDirection * PI) );
+    p->vel = vectorPolarToCartesian( vectorCreate(speed, personDirection * PI) );
     p->acc = vectorCreate(0,0);
     return p;
 }
@@ -38,4 +36,8 @@ point personGetPos( person p ) {
 
 unsigned int personGetID( person p ) {
     return p->id;
+}
+
+void personSetID( person p, unsigned int id ) {
+    p->id = id;
 }

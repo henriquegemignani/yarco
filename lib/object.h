@@ -9,7 +9,7 @@
 #include "common.h"
 
 typedef enum {
-  BOAT, PERSON
+  TYPE_BOAT, TYPE_PERSON
 } objectType;
 
 

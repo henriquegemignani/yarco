@@ -9,10 +9,10 @@
 /* Constantes do programa */
 #define PI 3.141592654
 
-#define PERSON_NUM_LIMIT        100
-#define PERSON_NUM_INIT         30
-#define PERSON_SPEED_MIN        7
-#define PERSON_SPEED_MAX        11
+#define PERSON_NUM_LIMIT            100
+#define PERSON_NUM_INIT             30
+#define PERSON_CREATE_RATE_DEFAULT  5
+#define PERSON_SPEED_DEFAULT        10
 
 
 #include <stdlib.h>
@@ -53,13 +53,14 @@ double randDouble(double min, double max);
 
 /* WARNING AND ERROR CODES */
 #define ERROR_MALLOC_FAILURE            101
-#define ERROR_PERSON_LIMIT_EXCEEDED     -201
+#define ERROR_PERSON_LIMIT_EXCEEDED     0
 #define WARNING_PERSON_NOT_FOUND        202
 
 /* Defines para ajudar o desenvolvimento! */
 #define AUTOMALLOC(p) p=malloc(sizeof(*(p)));if(!p)MALLOC_DIE()
 #define AUTOMALLOCV(p,n) p=malloc((n)*sizeof(*(p)));if(!p)MALLOC_DIE()
 #define AUTOMALLOCADV(p,s) p=malloc(s);if(!p)MALLOC_DIE()
+#define SWAP(a,b) a^=b,b^=a,a^=b
 
 /* Imprime um erro padrao para erro com malloc e encerra a execucao
  do programa, devolvendo o erro 1. */

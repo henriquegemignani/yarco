@@ -15,12 +15,18 @@ static struct PersonTable {
     unsigned int curMax, lastID;
 } table;
 
+void personTableSort() {
+}
+
 void personTableInit() {
     table.curMax = table.lastID = 0;
 }
 unsigned int personTableAdd(person p) {
-    if( table.curMax == PERSON_NUM_LIMIT )
-        return ERROR_PERSON_LIMIT_EXCEEDED;
+    if( table.curMax == PERSON_NUM_LIMIT ) {
+        personTableSort();
+        if( table.curMax == PERSON_NUM_LIMIT )
+            return ERROR_PERSON_LIMIT_EXCEEDED;
+    }
     table.list[table.curMax++] = p;
     return ++table.lastID;
 }

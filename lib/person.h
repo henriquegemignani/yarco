@@ -9,10 +9,11 @@
 #include "common.h"
 typedef struct Object *person;
 
-person personCreate( point pos );
+person personCreate( point pos, double speed );
    int personRemove( person p );
    int personUpdate( person p );
  point personGetPos( person p );
 unsigned int personGetID( person p );
+  void personSetID( person p, unsigned int id );
 
 #endif /* _PERSON_H_ */

@@ -29,8 +29,8 @@ char tokenToChar( TOKEN t ) {
 #define OUTPUT_WIDTH 120
 #define OUTPUT_HEIGHT 30
 
-#define PIXEL_SIZE_X 20
-#define PIXEL_SIZE_Y 15
+#define PIXEL_SIZE_X (SCREEN_SIZE_X / OUTPUT_WIDTH)
+#define PIXEL_SIZE_Y (SCREEN_SIZE_Y / OUTPUT_HEIGHT)
 
 static TOKEN outputScreen[OUTPUT_HEIGHT][OUTPUT_WIDTH];
 
