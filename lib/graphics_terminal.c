@@ -45,7 +45,7 @@ int graphicInitialize() {
 void graphicUpdatePerson(person per) {
     point p = personGetPos(per);
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
-    if( x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT )
+    if( x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT )
         outputScreen[y][x] = PASSENGER;
 }
 

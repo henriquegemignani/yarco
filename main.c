@@ -62,6 +62,7 @@ int main(int argc, char ** argv){
   }
   graphicInitialize();
   i = 1;
+  printf("HELL, IT'S LOOPING TIME\n");
   while(i) {
     personTableUpdate();
     graphicUpdate();
