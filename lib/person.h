@@ -15,5 +15,6 @@ person personCreate( point pos, double speed );
  point personGetPos( person p );
 unsigned int personGetID( person p );
   void personSetID( person p, unsigned int id );
+int personCompare( person r, person s ); /* usa como crit√rio a ordem de impressao na tela */
 
 #endif /* _PERSON_H_ */

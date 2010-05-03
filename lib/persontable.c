@@ -16,6 +16,7 @@ static struct PersonTable {
 } table;
 
 void personTableSort() {
+	/*c√digo sem preten√√o alguma de funcionar  */
 }
 
 void personTableInit() {

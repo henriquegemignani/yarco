@@ -41,3 +41,14 @@ unsigned int personGetID( person p ) {
 void personSetID( person p, unsigned int id ) {
     p->id = id;
 }
+
+int personCompare( person r, person s ) {
+/* retorna < -1 se r<s, 0 se iguais, 1 se r>s */
+	if( r.y < s.y ) return -1;
+	else if ( r.y > s.y ) return 1;
+	else
+		if( r.x < s.x ) return -1;
+		else if( r.x > s.x ) return 1;
+		else return 0;
+	
+}
