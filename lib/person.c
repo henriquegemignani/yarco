@@ -9,12 +9,12 @@
 
 person personCreate( point pos, double speed ) {
     person p;
-    int personDirection;
+    double personDirection;
     AUTOMALLOC(p);
     p->id = 0;
     p->type = TYPE_PERSON;
     p->pos = pos;
-    personDirection = randInt( 0, 7 );
+    personDirection = (double)randInt( 0, 7 ) / 4;
     p->vel = vectorPolarToCartesian( vectorCreate(speed, personDirection * PI) );
     p->acc = vectorCreate(0,0);
     return p;
