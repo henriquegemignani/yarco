@@ -61,6 +61,7 @@ void personTableUpdate() {
             personUpdate(table.list[i]);
     /* TODO: ordenar vetor table.list aqui, colocando todos 
       os NULL no fim e corrigindo table.curMax. */
+    /* TODO: Verificar se deve ou nao colocar mais passageiros */
 }
 void personTableExecute( void (*func)(person p) ) {
     int i;

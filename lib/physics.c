@@ -19,10 +19,11 @@ vector newDirection( vector v ) {
   */
 
 	int randNum;
-	if ( (randNum=randInt(1,20)) > 13  )
+	if ( ( randNum=randInt( 1 , 20 ) ) > 13  )
 		v = vectorRotate ( v, PI/4 * (randNum-13) );		
 
 	return v;
+	/*Gracias por simplificar o codigo*/
 }
 acceleration newAcceleration( acceleration a ) {
   /* TODO: finish this! */
@@ -36,4 +37,5 @@ void collision( object *a, object *b )
 	velocity tmp = a->vel;
 	a->vel = b->vel;
 	b->vel = tmp;
+	/*Perai, assumindo massas iguais, nao e isso que acontece?*/
 }

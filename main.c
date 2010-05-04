@@ -16,35 +16,20 @@
 #include <time.h>
 #include <string.h>
 
+void argRead(int argc, char **argv, double *defaultSpeed, double *createRate);
+
 int main(int argc, char ** argv){
   int i, aux;
   unsigned int id;
   double defaultSpeed = 10.0, createRate = PERSON_CREATE_RATE_DEFAULT;
   person per;
   point pt;
-  for( i = 1; i < argc; i++ ) {
-    if( strcmp( argv[i], "-h" ) == 0 || strcmp( argv[i], "--help" ) == 0 ) {
-      printf("Usage: %s [--speed S] [--rate R]\n\n"
-        "-speed determina a velocidade media dos passageiros (padrao: %3.2f)\n"
-        "-rate determina o periodo entre 2 novos passageiros (padrao: %3.2f)\n",
-            argv[0], defaultSpeed, createRate );
-      exit(0);
-    }
-    if( strncmp( argv[i], "--speed", 7 ) == 0 ) { /* supoe que usuario colocou um numero */
-      if( strlen(argv[i]) > 7 ) /* parametro da forma '--speedX' */
-        defaultSpeed = atof(argv[i] + 7);
-      else   /* parametro da forma '--speed X' */
-        defaultSpeed = atof(argv[++i]);
-      continue;
-    }
-    if( strncmp( argv[i], "--rate", 6 ) == 0 ) {
-      if( strlen(argv[i]) > 6 )
-        createRate = atof(argv[i] + 6);
-      else
-        createRate = atof(argv[++i]);
-      continue;
-    }
-  }
+
+  argRead(argc, argv, &defaultSpeed, &createRate); 
+  /* Separado por questoes de clareza do codigo. */
+  /* Possivelmente: criar uma funcao que verifica se um argumento especifico existe, para mais elegancia, embora seja menos eficiente */
+  /* Alias, o numero maximo de pasageiros tambem deveria ser customizavel ou non? */
+
   personTableInit();
   srand(time(NULL));
   for( i = 0; i < PERSON_NUM_INIT; i++ ) {
@@ -70,4 +55,31 @@ int main(int argc, char ** argv){
     scanf(" %d", &i);
   }
   return 0;
+}
+
+void argRead(int argc, char **argv, double *defaultSpeed, double *createRate){
+  int i;
+  for( i = 1; i < argc; i++ ) {
+    if( strcmp( argv[i], "-h" ) == 0 || strcmp( argv[i], "--help" ) == 0 ) {
+      printf("Usage: %s [--speed S] [--rate R]\n\n"
+	     "-speed determina a velocidade media dos passageiros (padrao: %3.2f)\n"
+	     "-rate determina o periodo entre 2 novos passageiros (padrao: %3.2f)\n",
+	     argv[0], *defaultSpeed, *createRate );
+      exit(0);
+    }
+    if( strncmp( argv[i], "--speed", 7 ) == 0 ) { /* supoe que usuario colocou um numero */
+      if( strlen(argv[i]) > 7 ) /* parametro da forma '--speedX' */
+        *defaultSpeed = atof(argv[i] + 7);
+      else   /* parametro da forma '--speed X' */
+        *defaultSpeed = atof(argv[++i]);
+      continue;
+    }
+    if( strncmp( argv[i], "--rate", 6 ) == 0 ) {
+      if( strlen(argv[i]) > 6 )
+        *createRate = atof(argv[i] + 6);
+      else
+        *createRate = atof(argv[++i]);
+      continue;
+    }
+  }
 }
