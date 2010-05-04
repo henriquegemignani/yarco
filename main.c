@@ -21,7 +21,7 @@ void argRead(int argc, char **argv, double *defaultSpeed, double *createRate);
 int main(int argc, char ** argv){
   int i, aux;
   unsigned int id;
-  double defaultSpeed = 10.0, createRate = PERSON_CREATE_RATE_DEFAULT;
+  double defaultSpeed = PERSON_SPEED_DEFAULT, createRate = PERSON_CREATE_RATE_DEFAULT;
   person per;
   point pt;
 
