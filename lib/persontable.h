@@ -15,7 +15,7 @@ unsigned int personTableAdd(person p);
 
 		void personTableSort();
 		void quicksort( person *vet, int ini, int fim );
-		void particao( person *vet, int ini, int fim );		
+		int particao( person *vet, int ini, int fim );		
 
         void personTableUpdate();
         void personTableExecute( void (*func)(person p) );

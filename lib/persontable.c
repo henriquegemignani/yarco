@@ -23,7 +23,7 @@ int particao( person *vet, int ini, int fim )
 	i = ini;
 	for ( j=ini+1; j<=fim; ++j )
 	{
-		if( comparePerson( vet[j], vet[ini] ) == -1 )  /*<*/
+		if( personCompare( vet[j], vet[ini] ) == -1 )  /*<*/
 		{
 			i++;
 			tmp = vet[i];
@@ -44,13 +44,13 @@ void quicksort( person *vet, int ini, int fim )
 	if(fim > ini)
 	{
 		r=particao( vet, ini, fim );
-		quicksort( vet, ini, r-1;);
+		quicksort( vet, ini, r-1);
 		quicksort( vet, r+1, fim );
 	}
 }
 
 void personTableSort() {
-	quicksort( list, 0, PERSON_NUM_LIMIT - 1 );
+	quicksort( table.list, 0, PERSON_NUM_LIMIT - 1 );
 }
 
 void personTableInit() {
