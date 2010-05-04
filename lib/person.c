@@ -66,7 +66,9 @@ int personCompare( person r, person s ) {
 		return (r == NULL) - (s == NULL);
 		/* Retorna: 1, se somente r == NULL
 					0, se ambos sao NULL
-					-1, se apenas s == NULL */
+					-1, se apenas s == NULL
+			curti isso :)	   
+			   	   */
 	
 	if( r->pos.y < s->pos.y ) return -1;
 	else if ( r->pos.y > s->pos.y ) return 1;

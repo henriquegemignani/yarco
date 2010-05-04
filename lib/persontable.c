@@ -15,8 +15,42 @@ static struct PersonTable {
     unsigned int curMax, lastID;
 } table;
 
+int particao( person *vet, int ini, int fim )
+{
+	int i, j;
+	person tmp;
+
+	i = ini;
+	for ( j=ini+1; j<=fim; ++j )
+	{
+		if( comparePerson( vet[j], vet[ini] ) == -1 )  /*<*/
+		{
+			i++;
+			tmp = vet[i];
+			vet[i] = vet[j];
+			vet[j] = tmp;
+		}
+	}
+	tmp=vet[ini];
+	vet[ini]=vet[i];
+	vet[i]=tmp;
+
+	return i;
+}
+
+void quicksort( person *vet, int ini, int fim )
+{
+	int r;
+	if(fim > ini)
+	{
+		r=particao( vet, ini, fim );
+		quicksort( vet, ini, r-1;);
+		quicksort( vet, r+1, fim );
+	}
+}
+
 void personTableSort() {
-	/*c√digo sem preten√√o alguma de funcionar  */
+	quicksort( list, 0, PERSON_NUM_LIMIT - 1 );
 }
 
 void personTableInit() {

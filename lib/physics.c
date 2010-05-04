@@ -31,7 +31,7 @@ acceleration newAcceleration( acceleration a ) {
 }
 
 
-void collision( object *a, object *b )
+void collision( object a, object b )
 {
 	/* TODO: adicionar alguma fisica de verdade aqui */
 	velocity tmp = a->vel;
