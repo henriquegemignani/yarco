@@ -43,7 +43,15 @@ void personSetID( person p, unsigned int id ) {
 }
 
 int personCompare( person r, person s ) {
-	/* retorna < -1 se r<s, 0 se iguais, 1 se r>s */
+	/* Considera NULL maior que qualquer outro elemento,
+	 exceto ele mesmo. */
+	/* retorna <0 se r < s, 0 se iguais, >0 se r > s */
+	if( r == NULL || s == NULL )
+		return (r == NULL) - (s == NULL);
+		/* Retorna: 1, se somente r == NULL
+					0, se ambos sao NULL
+					-1, se apenas s == NULL */
+	
 	if( r->pos.y < s->pos.y ) return -1;
 	else if ( r->pos.y > s->pos.y ) return 1;
 	else
