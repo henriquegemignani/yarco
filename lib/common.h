@@ -13,7 +13,8 @@
 #define PERSON_NUM_INIT             30
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
-
+#define MAX_X                       800
+#define MAX_Y                       600
 
 #include <stdlib.h>
 struct Vector {
@@ -47,8 +48,10 @@ double vectorLength(vector);
 double distanceBetweenPoints(point a, point b);
    
    
-int randInt(int min, int max);
+   int randInt(int min, int max);
 double randDouble(double min, double max);
+
+  void genError(char *msg);
 
 
 /* WARNING AND ERROR CODES */

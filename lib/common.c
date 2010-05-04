@@ -100,6 +100,10 @@ double randDouble(double min, double max) {
   return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 
+void genError(char *msg){
+  fprintf( stderr, "%s", msg );
+  exit(EXIT_FAILURE);
+}
 
 void MALLOC_DIE() {
     exit(ERROR_MALLOC_FAILURE);

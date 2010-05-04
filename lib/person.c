@@ -3,9 +3,11 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
+#include "common.h" /*Nem que seja so para deixar indicado que precisa do common.h*/
 #include "object.h"
 #include "physics.h"
 #include "person.h"
+/*#include <stdio.h> *//*Dar um jeito de jogar isso pra outro lugar*/
 
 person personCreate( point pos, double speed ) {
     person p;
@@ -19,6 +21,20 @@ person personCreate( point pos, double speed ) {
     p->acc = vectorCreate(0,0);
     return p;
 }
+
+person personNew( double speed ){
+  point pos;
+  switch ( randInt(1, 4) ){
+  case 1: pos.x = 0; pos.y = randDouble( 0, MAX_Y ); break;
+  case 2: pos.x = MAX_X; pos.y = randDouble( 0, MAX_Y); break;
+  case 3: pos.x = randDouble( 0, MAX_X ); pos.y = 0; break;
+  case 4: pos.x = randDouble( 0, MAX_X ); pos.y = MAX_Y; break;
+  default: genError("Erro em personNew: numero aleatorio nao esta emtre 1 e 4\n");
+  }
+  return personCreate( pos, speed );
+}
+  
+
 int personRemove( person p ) {
     free(p);
     return 0;

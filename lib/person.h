@@ -9,12 +9,13 @@
 #include "common.h"
 typedef struct Object *person;
 
-person personCreate( point pos, double speed );
-   int personRemove( person p );
-   int personUpdate( person p );
- point personGetPos( person p );
+      person personNew( double speed );
+    /*person personCreate( point pos, double speed );*//*Talvez non seja necessario com a existencia de personNew*/
+         int personRemove( person p );
+         int personUpdate( person p );
+       point personGetPos( person p );
 unsigned int personGetID( person p );
-  void personSetID( person p, unsigned int id );
-int personCompare( person r, person s ); /* usa como crit√rio a ordem de impressao na tela */
+        void personSetID( person p, unsigned int id );
+         int personCompare( person r, person s ); /* usa como crit√rio a ordem de impressao na tela */
 
 #endif /* _PERSON_H_ */
