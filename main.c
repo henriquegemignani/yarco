@@ -29,7 +29,7 @@ int main(int argc, char ** argv){
   /* Possivelmente: criar uma funcao que verifica se um argumento especifico existe, para mais elegancia, embora seja menos eficiente */
   /* Alias, o numero maximo de pasageiros tambem deveria ser customizavel ou non? */
 
-  personTableInit();
+  personTableInit(defaultSpeed, createRate);
   srand(time(NULL));
   for( i = 0; i < PERSON_NUM_INIT; i++ ) {
     /*aux = randInt(0, 4);

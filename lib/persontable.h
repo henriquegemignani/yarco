@@ -7,7 +7,8 @@
 #define _PERSONTABLE_H_
 
 #include "person.h"
-        void personTableInit();
+
+        void personTableInit( double defaultSpeed, double createRate );
 unsigned int personTableAdd(person p);
       person personTableSearch(unsigned int id);
          int personTableRemoveByID(unsigned int id);

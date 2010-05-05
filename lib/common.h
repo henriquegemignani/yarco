@@ -15,6 +15,7 @@
 #define PERSON_SPEED_DEFAULT        10
 #define MAX_X                       800
 #define MAX_Y                       600
+#define STD_DIST                    0.1
 
 #include <stdio.h> /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
@@ -51,6 +52,7 @@ double distanceBetweenPoints(point a, point b);
    
    int randInt(int min, int max);
 double randDouble(double min, double max);
+double randomizeAround( double value, double distance );
 
   void genError(char *msg);
 

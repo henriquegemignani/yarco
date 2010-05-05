@@ -9,10 +9,15 @@
 #include "persontable.h"
 /* #include <stdio.h> -- ta no common.h agora */
 
+
+
 static struct PersonTable {
     person list[PERSON_NUM_LIMIT];
     unsigned int curMax, lastID;
+    double defaultSpeed, createRate, createCounter;
 } table;
+
+
 
 int particao( person *vet, int ini, int fim )
 {
@@ -48,13 +53,23 @@ void quicksort( person *vet, int ini, int fim )
 	}
 }
 
+
+
 void personTableSort() {
 	quicksort( table.list, 0, PERSON_NUM_LIMIT - 1 );
 }
 
-void personTableInit() {
+
+
+void personTableInit( double defaultSpeed, double createRate ) {
     table.curMax = table.lastID = 0;
+    table.defaultSpeed = defaultSpeed;
+    table.createRate = createRate;
+    table.createCounter = randomizeAround( createRate, STD_DIST );
 }
+
+
+
 unsigned int personTableAdd(person p) {
     if( table.curMax == PERSON_NUM_LIMIT ) {
         personTableSort();
@@ -64,6 +79,9 @@ unsigned int personTableAdd(person p) {
     table.list[table.curMax++] = p;
     return ++table.lastID;
 }
+
+
+
 person personTableSearch(unsigned int id) {
     int i;
     for( i = 0; i < table.curMax; i++ )
@@ -71,6 +89,9 @@ person personTableSearch(unsigned int id) {
             return table.list[i];
     return NULL;
 }
+
+
+
 int personTableRemoveByID(unsigned int id) {
     int i;
     person pAux;
@@ -81,30 +102,55 @@ int personTableRemoveByID(unsigned int id) {
             return personRemove(pAux);
         }
     return WARNING_PERSON_NOT_FOUND;
+
+
+
 }
 int personTableRemoveByPerson(person p) {
     return personTableRemoveByID( personGetID(p) );
 }
 
+
+
+
 /* Management functions */
-void personTableUpdate() {
+void personTableUpdate( ) {
     int i;
+    point pos;
     for( i = 0; i < table.curMax; i++ )
-        if( table.list[i] != NULL )
-            personUpdate(table.list[i]);
-			
+        if( table.list[i] != NULL ){
+              personUpdate(table.list[i]);
+	      pos = personGetPos( table.list[i] );
+	      if( pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0 ){
+	          personRemove( table.list[i] );
+	          table.list[i] = personNew( table.defaultSpeed );
+	    }
+      }
+      if(table.curMax < PERSON_NUM_LIMIT){
+	  table.createCounter -= 1;
+	  if(table.createCounter < 0){
+	     personTableAdd( personNew( table.defaultSpeed ) ); 
+	     table.createCounter += randomizeAround( table.createRate, STD_DIST );
+	  }
+      }
 	personTableSort();
 	for( i = table.curMax - 1; i >= 0 && table.list[i] == NULL; i-- )
 		table.curMax--;
 		
     /* TODO: Verificar se deve ou nao colocar mais passageiros */
 }
+
+
+
 void personTableExecute( void (*func)(person p) ) {
     int i;
     for( i = 0; i < table.curMax; i++ )
         if( table.list[i] != NULL )
             func(table.list[i]);
 }
+
+
+
 
 void personTableDump() {
 	int i;

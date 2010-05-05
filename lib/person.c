@@ -31,7 +31,7 @@ person personNew( double speed ){
   case 4: pos.x = randDouble( 0, MAX_X ); pos.y = MAX_Y; break;
   default: genError("Erro em personNew: numero aleatorio nao esta emtre 1 e 4\n");
   }
-  return personCreate( pos, speed );
+  return personCreate( pos, randomizeAround( speed, STD_DIST ) );
 }
   
 
