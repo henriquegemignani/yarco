@@ -11,7 +11,8 @@
 
 typedef enum {
   NOTHING,
-  PASSENGER,  
+  PASSENGER,
+  COLLISION,
   BOAT,   
   OBSTACLE
 } TOKEN;
@@ -20,6 +21,7 @@ char tokenToChar( TOKEN t ) {
     switch( t ) {
         case NOTHING:   return '.';
         case PASSENGER: return '#';
+        case COLLISION: return '!';
         case BOAT:      return 'O';
         case OBSTACLE:  return '&';
         default:        return '?';
@@ -46,7 +48,8 @@ void graphicUpdatePerson(person per) {
     point p = personGetPos(per);
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
     if( x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT )
-        outputScreen[y][x] = PASSENGER;
+        outputScreen[y][x] = PASSENGER; /* TODO: detectar colisao 
+                                          e marcar corretamente */
 }
 
 int graphicUpdate() {
