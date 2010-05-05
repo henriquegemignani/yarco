@@ -42,7 +42,7 @@ int personRemove( person p ) {
 
 int personUpdate( person p ) {
     p->vel = newDirection( p->vel );
-    updateObject(*p);
+    updateObject(p);
     return 0;
 }
 

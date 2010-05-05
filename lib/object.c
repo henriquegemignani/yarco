@@ -5,10 +5,10 @@
 
 #include "object.h"
 
-void updateObject( object o ) {
-    vector aux = vectorPolarToCartesian( o.acc );
-	o.pos = vectorSum( o.pos, o.vel );
-	o.vel = vectorSum( o.vel, aux );
+void updateObject( object *o ) {
+    vector aux = vectorPolarToCartesian( o->acc );
+	o->pos = vectorSum( o->pos, o->vel );
+	o->vel = vectorSum( o->vel, aux );
 }
 
 double objectGetDistFrom( object o, point p ) {
