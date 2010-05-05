@@ -69,6 +69,17 @@ void personTableInit( double defaultSpeed, double createRate ) {
 }
 
 
+int personTableAddNew() {
+    person p = personNew( table.defaultSpeed );
+	unsigned int id = personTableAdd( p );
+	if( id == ERROR_PERSON_LIMIT_EXCEEDED ) {
+		personRemove(p);
+		return ERROR_PERSON_LIMIT_EXCEEDED;
+	}
+    personSetID( p, id );
+    return 1;
+}
+
 
 unsigned int personTableAdd(person p) {
     if( table.curMax == PERSON_NUM_LIMIT ) {
@@ -118,26 +129,26 @@ void personTableUpdate( ) {
     int i;
     point pos;
     for( i = 0; i < table.curMax; i++ )
-        if( table.list[i] != NULL ){
-              personUpdate(table.list[i]);
-	      pos = personGetPos( table.list[i] );
-	      if( pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0 ){
-	          personRemove( table.list[i] );
-	          table.list[i] = personNew( table.defaultSpeed );
-	    }
-      }
-      if(table.curMax < PERSON_NUM_LIMIT){
-	  table.createCounter -= 1;
-	  if(table.createCounter < 0){
-	     personTableAdd( personNew( table.defaultSpeed ) ); 
-	     table.createCounter += randomizeAround( table.createRate, STD_DIST );
-	  }
-      }
+        if( table.list[i] != NULL ) {
+            personUpdate(table.list[i]);
+            pos = personGetPos( table.list[i] );
+            if( pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0 ){
+                personRemove( table.list[i] );
+                table.list[i] = personNew( table.defaultSpeed );
+                personSetID( table.list[i], ++table.lastID );
+            }
+        }
+    if(table.curMax < PERSON_NUM_LIMIT){
+        table.createCounter -= 1;
+        if(table.createCounter < 0){
+            personTableAddNew();
+            table.createCounter += randomizeAround( table.createRate, STD_DIST );
+        }
+    }
+    
 	personTableSort();
 	for( i = table.curMax - 1; i >= 0 && table.list[i] == NULL; i-- )
 		table.curMax--;
-		
-    /* TODO: Verificar se deve ou nao colocar mais passageiros */
 }
 
 

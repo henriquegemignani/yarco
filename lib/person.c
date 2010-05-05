@@ -79,7 +79,7 @@ int personCompare( person r, person s ) {
 	
 }
 void personDump( person p ) {
-	printf("(ID%3d) P", p->id);
+	printf("(ID%4d) P", p->id);
 	vectorPrint(p->pos);
 	printf(" V");
 	vectorPrint(p->vel);

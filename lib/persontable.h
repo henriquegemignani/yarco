@@ -9,6 +9,7 @@
 #include "person.h"
 
         void personTableInit( double defaultSpeed, double createRate );
+		 int personTableAddNew();
 unsigned int personTableAdd(person p);
       person personTableSearch(unsigned int id);
          int personTableRemoveByID(unsigned int id);

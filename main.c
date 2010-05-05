@@ -20,9 +20,7 @@ void argRead(int argc, char **argv, double *defaultSpeed, double *createRate, in
 
 int main(int argc, char ** argv){
   int i, debugMode = 0;
-  unsigned int id;
   double defaultSpeed = PERSON_SPEED_DEFAULT, createRate = PERSON_CREATE_RATE_DEFAULT;
-  person per;
 
   argRead(argc, argv, &defaultSpeed, &createRate, &debugMode); 
   /* Separado por questoes de clareza do codigo. */
@@ -31,20 +29,11 @@ int main(int argc, char ** argv){
 
   personTableInit(defaultSpeed, createRate);
   srand(time(NULL));
-  for( i = 0; i < PERSON_NUM_INIT; i++ ) {
-    /*aux = randInt(0, 4);
-    pt = vectorCreate( 
-        aux < 2 ? randDouble( 0, SCREEN_SIZE_X ) : (aux - 2) * SCREEN_SIZE_X,
-        aux > 1 ? randDouble( 0, SCREEN_SIZE_Y ) : (aux - 1) * SCREEN_SIZE_Y );
-    per = personCreate( pt, defaultSpeed );*/
-	per = personNew( defaultSpeed );
-    id = personTableAdd(per);
-    if( id == ERROR_PERSON_LIMIT_EXCEEDED ) {
+  for( i = 0; i < PERSON_NUM_INIT; i++ )
+    if( personTableAddNew() == ERROR_PERSON_LIMIT_EXCEEDED ) {
       printf("Erro: limite de naufragos atingido!\n");
       exit(1);
     }
-    personSetID( per, id );
-  }
   graphicInitialize();
   i = 1;
   printf("HELL, IT'S LOOPING TIME\n");

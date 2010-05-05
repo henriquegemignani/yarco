@@ -89,7 +89,7 @@ double vectorLength(vector v) {
 }
 
 int vectorPrint(vector v) {
-  return printf("(%6.3lf,%6.3lf)", v.x, v.y );
+  return printf("(%8.3f,%8.3f)", v.x, v.y );
 }
 
 int randInt(int min, int max) {
