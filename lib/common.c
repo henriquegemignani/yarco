@@ -100,7 +100,7 @@ double randDouble(double min, double max) {
   return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 
-double ranomizeAround(double value, double distance){
+double randomizeAround(double value, double distance){
   return ( value + randDouble( -(value * distance), (value * distance) ) );
 } 
 

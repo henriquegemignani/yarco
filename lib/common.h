@@ -52,7 +52,7 @@ double distanceBetweenPoints(point a, point b);
    
    int randInt(int min, int max);
 double randDouble(double min, double max);
-double randomizeAround( double value, double distance );
+double randomizeAround(double value, double distance);
 
   void genError(char *msg);
 
