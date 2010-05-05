@@ -25,7 +25,7 @@ struct Object {
     objectType type;
 };
 
-void updateObject( object o );
+void updateObject( object *o );
 double objectGetDistFrom( object o, point p );
 
 #endif /* _OBJECT_H_ */
