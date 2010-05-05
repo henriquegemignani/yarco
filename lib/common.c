@@ -93,11 +93,11 @@ int vectorPrint(vector v) {
 }
 
 int randInt(int min, int max) {
-  return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
+  return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 
 double randDouble(double min, double max) {
-  return ( ( (max - min) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
+  return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 
 void genError(char *msg){
