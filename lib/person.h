@@ -17,5 +17,6 @@ typedef struct Object *person;
 unsigned int personGetID( person p );
         void personSetID( person p, unsigned int id );
          int personCompare( person r, person s ); /* usa como crit√rio a ordem de impressao na tela */
+		void personDump( person p );
 
 #endif /* _PERSON_H_ */

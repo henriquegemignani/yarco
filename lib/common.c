@@ -4,7 +4,7 @@
 /*******************************************************************/
 
 #include "common.h"
-#include <stdio.h>
+/* #include <stdio.h> -- ta no common.h agora */
 #include <math.h>
 
 vector vectorCreate(double x, double y) {

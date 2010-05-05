@@ -7,9 +7,8 @@
 #include "object.h"
 #include "person.h"
 #include "persontable.h"
-#include <stdio.h>
+/* #include <stdio.h> -- ta no common.h agora */
 
-/* BST de person. Se quiser da pra mudar, ainda. */
 static struct PersonTable {
     person list[PERSON_NUM_LIMIT];
     unsigned int curMax, lastID;
@@ -23,7 +22,7 @@ int particao( person *vet, int ini, int fim )
 	i = ini;
 	for ( j=ini+1; j<=fim; ++j )
 	{
-		if( personCompare( vet[j], vet[ini] ) == -1 )  /*<*/
+		if( personCompare( vet[j], vet[ini] ) < 0 )  /*<*/
 		{
 			i++;
 			tmp = vet[i];
@@ -93,8 +92,11 @@ void personTableUpdate() {
     for( i = 0; i < table.curMax; i++ )
         if( table.list[i] != NULL )
             personUpdate(table.list[i]);
-    /* TODO: ordenar vetor table.list aqui, colocando todos 
-      os NULL no fim e corrigindo table.curMax. */
+			
+	personTableSort();
+	for( i = table.curMax - 1; i >= 0 && table.list[i] == NULL; i-- )
+		table.curMax--;
+		
     /* TODO: Verificar se deve ou nao colocar mais passageiros */
 }
 void personTableExecute( void (*func)(person p) ) {
@@ -102,4 +104,17 @@ void personTableExecute( void (*func)(person p) ) {
     for( i = 0; i < table.curMax; i++ )
         if( table.list[i] != NULL )
             func(table.list[i]);
+}
+
+void personTableDump() {
+	int i;
+	for( i = 0; i < table.curMax; i++ ) {
+		printf("Person[%2d]: ");
+		if( table.list[i] != NULL )
+			personDump( table.list[i] );
+		else
+			printf("NULL");
+		printf("\n");
+	}
+	printf("\n");
 }

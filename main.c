@@ -8,7 +8,7 @@
 /** Renan Teruo Carneiro                nUSP: 6514157             **/
 /*******************************************************************/
 
-#include <stdio.h>
+/* #include <stdio.h> -- ta no common.h agora */
 #include "lib/common.h"
 #include "lib/graphics.h"
 #include "lib/person.h"
@@ -16,16 +16,15 @@
 #include <time.h>
 #include <string.h>
 
-void argRead(int argc, char **argv, double *defaultSpeed, double *createRate);
+void argRead(int argc, char **argv, double *defaultSpeed, double *createRate, int *debugMode);
 
 int main(int argc, char ** argv){
-  int i, aux;
+  int i, debugMode = 0;
   unsigned int id;
   double defaultSpeed = PERSON_SPEED_DEFAULT, createRate = PERSON_CREATE_RATE_DEFAULT;
   person per;
-  point pt;
 
-  argRead(argc, argv, &defaultSpeed, &createRate); 
+  argRead(argc, argv, &defaultSpeed, &createRate, &debugMode); 
   /* Separado por questoes de clareza do codigo. */
   /* Possivelmente: criar uma funcao que verifica se um argumento especifico existe, para mais elegancia, embora seja menos eficiente */
   /* Alias, o numero maximo de pasageiros tambem deveria ser customizavel ou non? */
@@ -33,11 +32,12 @@ int main(int argc, char ** argv){
   personTableInit();
   srand(time(NULL));
   for( i = 0; i < PERSON_NUM_INIT; i++ ) {
-    aux = randInt(0, 4);
+    /*aux = randInt(0, 4);
     pt = vectorCreate( 
         aux < 2 ? randDouble( 0, SCREEN_SIZE_X ) : (aux - 2) * SCREEN_SIZE_X,
         aux > 1 ? randDouble( 0, SCREEN_SIZE_Y ) : (aux - 1) * SCREEN_SIZE_Y );
-    per = personCreate( pt, defaultSpeed );
+    per = personCreate( pt, defaultSpeed );*/
+	per = personNew( defaultSpeed );
     id = personTableAdd(per);
     if( id == ERROR_PERSON_LIMIT_EXCEEDED ) {
       printf("Erro: limite de naufragos atingido!\n");
@@ -51,13 +51,16 @@ int main(int argc, char ** argv){
   while(i) {
     personTableUpdate();
     graphicUpdate();
-    graphicDraw();
+	if( debugMode )
+		personTableDump();
+	else
+		graphicDraw();
     scanf(" %d", &i);
   }
   return 0;
 }
 
-void argRead(int argc, char **argv, double *defaultSpeed, double *createRate){
+void argRead(int argc, char **argv, double *defaultSpeed, double *createRate, int *debugMode){
   int i;
   for( i = 1; i < argc; i++ ) {
     if( strcmp( argv[i], "-h" ) == 0 || strcmp( argv[i], "--help" ) == 0 ) {
@@ -79,6 +82,10 @@ void argRead(int argc, char **argv, double *defaultSpeed, double *createRate){
         *createRate = atof(argv[i] + 6);
       else
         *createRate = atof(argv[++i]);
+      continue;
+    }
+    if( strncmp( argv[i], "--debug", 7 ) == 0 ) {
+      *debugMode = 1;
       continue;
     }
   }

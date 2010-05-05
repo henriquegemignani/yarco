@@ -19,5 +19,7 @@ unsigned int personTableAdd(person p);
 
         void personTableUpdate();
         void personTableExecute( void (*func)(person p) );
+		
+		void personTableDump();
 
 #endif /* _PERSONTABLE_H_ */

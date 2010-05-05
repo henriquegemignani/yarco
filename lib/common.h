@@ -16,6 +16,7 @@
 #define MAX_X                       800
 #define MAX_Y                       600
 
+#include <stdio.h> /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
 struct Vector {
   double x, y;
