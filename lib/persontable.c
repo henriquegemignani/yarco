@@ -109,7 +109,7 @@ void personTableExecute( void (*func)(person p) ) {
 void personTableDump() {
 	int i;
 	for( i = 0; i < table.curMax; i++ ) {
-		printf("Person[%2d]: ");
+		printf("Person[%2d]: ", i);
 		if( table.list[i] != NULL )
 			personDump( table.list[i] );
 		else
