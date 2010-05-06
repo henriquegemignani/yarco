@@ -31,7 +31,7 @@ sandwich :
 
 .PHONY : clean
 clean : 
-	rm -f $(objects) yarco yarco.exe
+	rm -f $(objects) yarco* #yarco.exe
 
 .PHONY : moreclean
 moreclean : clean
