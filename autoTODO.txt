@@ -1,0 +1,6 @@
+main2.c:/*TODO: Inserir cabecalho*/
+main2.c:/*TODO: Includes*/
+lib/graphics_terminal.c:        outputScreen[y][x] = PASSENGER; /* TODO: detectar colisao 
+lib/physics.c:  /* TODO: finish this! */
+lib/physics.c:  /* TODO: finish this! */
+lib/physics.c:	/* TODO: adicionar alguma fisica de verdade aqui */

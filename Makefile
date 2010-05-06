@@ -37,3 +37,6 @@ clean :
 moreclean : clean
 	rm -f \#*\# *~
 
+.PHONY : TODO
+TODO : 
+	grep TODO *.[ch] lib/*.[ch] > autoTODO.txt
