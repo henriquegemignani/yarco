@@ -7,6 +7,7 @@
 #define _PHYSICS_H_
 
 #include "common.h"
+#include "object.h"
 
 /*Retorna a nova direcao do passageiro*/
 vector newDirection( vector v );

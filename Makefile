@@ -16,11 +16,11 @@ yarco.test : $(objects) $(objecttest)
 main.o :        common.h
 tests.o :       common.h
 common.o :      common.h common.c
-physics.o :     common.h physics.h physics.c
+physics.o :     common.h physics.h object.h physics.c
 graphics.o :    common.h graphics.h graphics.c
 object.o :      common.h object.h object.c
 person.o :      common.h object.h person.h
-persontable.o : common.h persontable.h person.h persontable.c
+persontable.o : common.h persontable.h object.h person.h physics.h persontable.c
 graphics_terminal.o : graphics.h common.h persontable.h person.h graphics_terminal.c
 
 .PHONY : believe

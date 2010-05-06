@@ -7,6 +7,7 @@
 #include "object.h"
 #include "person.h"
 #include "persontable.h"
+#include "physics.h"
 /* #include <stdio.h> -- ta no common.h agora */
 
 
@@ -125,7 +126,7 @@ void personTableUpdate( ) {
     point pos;
     for( i = 0; i < table.curMax; i++ )
         for( j = i + 1; j < table.curMax; j++ )
-            if( objectIsColiding( *table.list[i], *table.list[j] )
+            if( objectIsColiding( *table.list[i], *(table.list[j]) ) )
                 executeCollision( table.list[i], table.list[j] );
     
     for( i = 0; i < table.curMax; i++ )
