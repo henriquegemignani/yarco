@@ -1,2 +1,3 @@
 Colisoes (Massas? Criterio de colisao? Coeficiente de elasticidade?)
 Main robusto
+--- O que seria um main "robusto"? o que falta para ele se tornar um?
