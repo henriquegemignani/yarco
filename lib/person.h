@@ -11,7 +11,7 @@ typedef struct Object *person;
 
 /*Cria uma pessoa em uma das bordas*/
 person personNew(double speed);
-                                                                                                                                                               /*person personCreate( point pos, double speed ); *//*Talvez non seja necessario com a existencia de personNew */
+                                                                                                                                                                                                                                                                       /*person personCreate( point pos, double speed ); *//*Talvez non seja necessario com a existencia de personNew */
 /*Nuka uma pessoa*/
 int personRemove(person p);     /*void? */
 /*Atualiza status da pessoa*/

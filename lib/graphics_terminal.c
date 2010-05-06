@@ -56,14 +56,14 @@ void graphicUpdatePerson(person per)
 {
     point p = personGetPos(per);
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
-    if (x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT){
-      if(outputScreen[y][x] == NOTHING)
-        outputScreen[y][x] = PASSENGER; /* TODO: detectar colisao 
-                                           e marcar corretamente */
-      else
-	outputScreen[y][x] = COLLISION;
+    if (x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT) {
+        if (outputScreen[y][x] == NOTHING)
+            outputScreen[y][x] = PASSENGER;     /* TODO: detectar colisao 
+                                                   e marcar corretamente */
+        else
+            outputScreen[y][x] = COLLISION;
     }
-    
+
 }
 
 int graphicUpdate()
