@@ -10,15 +10,25 @@
 #include "physics.h"
 /* #include <stdio.h> -- ta no common.h agora */
 
-
-
-static struct PersonTable {
+struct PersonTable {
     person list[PERSON_NUM_LIMIT];
     unsigned int curMax, lastID;
     double defaultSpeed, createRate, createCounter;
-} table;
+};
+static struct PersonTable table;
 
 
+/* Funcoes privadas. */
+unsigned int personTableAdd(person p)
+{
+    if (table.curMax == PERSON_NUM_LIMIT) {
+        personTableSort();
+        if (table.curMax == PERSON_NUM_LIMIT)
+            return ERROR_PERSON_LIMIT_EXCEEDED;
+    }
+    table.list[table.curMax++] = p;
+    return ++table.lastID;
+}
 
 int particao(person * vet, int ini, int fim)
 {
@@ -53,11 +63,7 @@ void quicksort(person * vet, int ini, int fim)
 }
 
 
-void personTableSort()
-{
-    quicksort(table.list, 0, PERSON_NUM_LIMIT - 1);
-}
-
+/* Funcoes publicas. */
 
 void personTableInit(double defaultSpeed, double createRate)
 {
@@ -65,6 +71,7 @@ void personTableInit(double defaultSpeed, double createRate)
     table.defaultSpeed = defaultSpeed;
     table.createRate = createRate;
     table.createCounter = randomizeAround(createRate, STD_DIST);
+    
 }
 
 
@@ -77,19 +84,7 @@ int personTableAddNew()
         return ERROR_PERSON_LIMIT_EXCEEDED;
     }
     personSetID(p, id);
-    return 1;                   /*why not void? sempre retorna a mesma coisa */
-}
-
-
-unsigned int personTableAdd(person p)
-{
-    if (table.curMax == PERSON_NUM_LIMIT) {
-        personTableSort();
-        if (table.curMax == PERSON_NUM_LIMIT)
-            return ERROR_PERSON_LIMIT_EXCEEDED;
-    }
-    table.list[table.curMax++] = p;
-    return ++table.lastID;
+    return 1;
 }
 
 
@@ -123,6 +118,12 @@ int personTableRemoveByID(unsigned int id)
 int personTableRemoveByPerson(person p)
 {
     return personTableRemoveByID(personGetID(p));
+}
+
+
+void personTableSort()
+{
+    quicksort(table.list, 0, PERSON_NUM_LIMIT - 1);
 }
 
 
