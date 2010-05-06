@@ -1,5 +1,6 @@
 VPATH = ./lib/
 objects = main.o physics.o graphics.o common.o graphics_terminal.o object.o person.o persontable.o
+objects2 = main2.o physics.o graphics.o common.o graphics_terminal.o object.o person.o persontable.o
 CC = gcc
 CFLAGS = -Wall -pedantic -ansi -std=c99
 
@@ -7,7 +8,11 @@ CFLAGS = -Wall -pedantic -ansi -std=c99
 yarco : $(objects)
 	$(CC) $(CFLAGS) $(objects) -lm -o $@
 
+robustyarco :  $(objects2)
+	  $(CC) $(CFLAGS) $(objects) -lm -o $@
+
 main.o :        common.h
+main2.o :        common.h
 common.o :      common.h common.c
 physics.o :     common.h physics.h physics.c
 graphics.o :    common.h graphics.h graphics.c
