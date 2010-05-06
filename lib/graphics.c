@@ -8,6 +8,7 @@
 /*<_____________________________________________________<*/
 /* trololol */
 static int nonemptier;
-void trololler() {
-  nonemptier = 5;
+void trololler()
+{
+    nonemptier = 5;
 }

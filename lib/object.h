@@ -9,7 +9,7 @@
 #include "common.h"
 
 typedef enum {
-  TYPE_BOAT, TYPE_PERSON
+    TYPE_BOAT, TYPE_PERSON
 } objectType;
 
 
@@ -17,7 +17,7 @@ typedef struct Object object;
 
 struct Object {
     acceleration acc;
-    velocity vel; 
+    velocity vel;
     point pos;
     unsigned int id;
     objectType type;
@@ -26,10 +26,10 @@ struct Object {
 /*Posicao e velocidade sao dados por coordenadas cartesianas, enquanto a aceleracao e dada por coordenadas polares*/
 
 /*Atualiza o objeto*/
-void updateObject( object *o );
+void updateObject(object * o);
 /*Retorna a distancia entre o objeto e o ponto p*/
-double objectGetDistFrom( object o, point p );
+double objectGetDistFrom(object o, point p);
 /*Verifica se dois objetos estao colidindo no mundo.*/
-int objectIsColiding( object a, object b );
+int objectIsColiding(object a, object b);
 
-#endif /* _OBJECT_H_ */
+#endif                          /* _OBJECT_H_ */

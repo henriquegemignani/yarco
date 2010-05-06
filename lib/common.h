@@ -18,10 +18,10 @@
 #define MAX_Y                       600
 #define STD_DIST                    0.1
 
-#include <stdio.h> /* Agora nenhum arquivo precisa incluir essa biblioteca */
+#include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
 struct Vector {
-  double x, y;
+    double x, y;
 };
 /* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
 
@@ -38,7 +38,7 @@ vector vectorCreate(double x, double y);
 vector vectorSum(vector a, vector b);
 /*Subtrai vetores, primeiro vetor menos o segundo*/
 vector vectorSub(vector a, vector b);
-/*wtf por que isso ta aqui, multiplicacao vetorial implica R3*/ 
+/*wtf por que isso ta aqui, multiplicacao vetorial implica R3*/
 vector vectorMulVet(vector a, vector b);
 /*Multiplicacao escalar entre dois vetores*/
 double vectorMulEsc(vector a, vector b);
@@ -49,30 +49,30 @@ vector vectorPolarToCartesian(vector v);
 vector vectorCartesianToPolar(vector v);
 
 /*Retorna o angulo do vetor*/
-double vectorAngle( vector v );
+double vectorAngle(vector v);
 /*Retorna o comprimento do vetor*/
 double vectorLength(vector);
 /*Seta o angulo do vetor*/
-vector vectorAngleSet( vector v, double ang );
+vector vectorAngleSet(vector v, double ang);
 /*Seta o comprimento do vetor*/
-vector vectorLengthSet(vector v, double length );
+vector vectorLengthSet(vector v, double length);
 /*Rotaciona o vetor de acordo com o angulo dado, no sentido horario*/
 vector vectorRotate(vector v, double ang);
 /*Imprime o vetor, retorna quantos caracteres foram impressos*/
-   int vectorPrint(vector);
-   
+int vectorPrint(vector);
+
 /*Retorna a distancia entre dois pontos*/
 double distanceBetweenPoints(point a, point b);
-   
+
 /*Gera um inteiro aleatorio de min a max*/
-   int randInt(int min, int max);
+int randInt(int min, int max);
 /*Gera um double aleatorio de min a max*/
 double randDouble(double min, double max);
 /*Aleatoriza o valor dado em no maximo value * +-distance*/
 double randomizeAround(double value, double distance);
 
 /*Imprime mensagem de erro, sai do programa*/
-  void genError(char *msg);
+void genError(char *msg);
 
 
 /* WARNING AND ERROR CODES */
@@ -91,4 +91,4 @@ double randomizeAround(double value, double distance);
 /*Poderia ser encaixado no genError...*/
 void MALLOC_DIE();
 
-#endif /* _COMMON_H_ */
+#endif                          /* _COMMON_H_ */

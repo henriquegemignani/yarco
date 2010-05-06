@@ -8,8 +8,8 @@
 
 #include "common.h"
 
-#define SCREEN_SIZE_X MAX_X //800
-#define SCREEN_SIZE_Y MAX_Y //600
+#define SCREEN_SIZE_X MAX_X     //800
+#define SCREEN_SIZE_Y MAX_Y     //600
 
 /*Inicializa parte grafica*/
 int graphicInitialize();
@@ -18,4 +18,4 @@ int graphicUpdate();
 /*Mostra o que tem que ser mostrado*/
 int graphicDraw();
 
-#endif /* _GRAPHICS_H_ */
+#endif                          /* _GRAPHICS_H_ */
