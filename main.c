@@ -23,7 +23,7 @@ int main(int argc, char ** argv){
   int i, debugMode = 0, repetitions = 100;
   double defaultSpeed = PERSON_SPEED_DEFAULT, createRate = PERSON_CREATE_RATE_DEFAULT;
 
-  argRead(argc, argv, &defaultSpeed, &createRate, &debugMode); 
+  argRead(argc, argv, &defaultSpeed, &createRate, &debugMode, &repetitions); 
   /* Separado por questoes de clareza do codigo. */
   /* Possivelmente: criar uma funcao que verifica se um argumento especifico existe, para mais elegancia, embora seja menos eficiente */
   /* Alias, o numero maximo de pasageiros tambem deveria ser customizavel ou non? */
@@ -40,16 +40,18 @@ int main(int argc, char ** argv){
     }
   /*Inicializa parte grafica*/
   graphicInitialize();
-  i = 1;
-  printf("HELL, IT'S LOOPING TIME\n");
-  while(i) {
+  // i = 1;
+  //printf("HELL, IT'S LOOPING TIME\n");
+  //while(i) {
+  for( i = 0; i < repetitions; i++){
+    printf("\n\nIteracao: %d\n\n", i+1);
     personTableUpdate();
     graphicUpdate();
 	if( debugMode )
 		personTableDump();
 	else
 		graphicDraw();
-    scanf(" %d", &i);
+	//scanf(" %d", &i);
   }
   return 0;
 }
@@ -59,7 +61,7 @@ void argRead(int argc, char **argv, double *defaultSpeed, double *createRate, in
   for( i = 1; i < argc; i++ ) {
     if( strcmp( argv[i], "-h" ) == 0 || strcmp( argv[i], "--help" ) == 0 ) {
       printf("Usage: %s [OPTIONS]\n\n"
-	     "Opcoes: --speed, --rate, --help, -h, --debug, --repetitions"
+	     "Opcoes: --speed, --rate, --help, -h, --debug, --repetitions\n"
 	     "--help, -h: Imprime isso e sai\n"
 	     "--speed: Determina a velocidade media dos passageiros. Padrao: %3.2f\n"
 	     "--rate: Determina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
@@ -88,9 +90,10 @@ void argRead(int argc, char **argv, double *defaultSpeed, double *createRate, in
     }
     if( strncmp( argv[i], "--repetitions", 13 ) == 0 ) {
       if( strlen(argv[i]) > 13 )
-        *createRate = atoi(argv[i] + 13);
+        *repetitions = atoi(argv[i] + 13);
       else
-        *createRate = atoi(argv[++i]);
+        *repetitions = atoi(argv[++i]);
       continue;
+    }
   }
 }
