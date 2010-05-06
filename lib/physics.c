@@ -27,6 +27,7 @@ vector newDirection( vector v ) {
 }
 acceleration newAcceleration( acceleration a ) {
   /* TODO: finish this! */
+  /*Isso nem vai ser usado nessa etapa...*/
   return a;
 }
 

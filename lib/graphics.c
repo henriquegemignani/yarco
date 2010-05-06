@@ -5,6 +5,7 @@
 
 #include "graphics.h"
 
+/*<_____________________________________________________<*/
 /* trololol */
 static int nonemptier;
 void trololler() {

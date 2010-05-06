@@ -7,7 +7,7 @@
 /* #include <stdio.h> -- ta no common.h agora */
 #include <math.h>
 
-vector vectorCreate(double x, double y) {
+vector vectorCreate(double x, double y) { /*wha? non seria melhor chamar de vectorSetValues?*/
   vector v;
   v.x = x;
   v.y = y;
@@ -28,7 +28,7 @@ vector vectorSub( vector a, vector b ){
 	return v;
 }
 
-vector vectorMulVet( vector a, vector b ){
+vector vectorMulVet( vector a, vector b ){/*wtfwtfwtf - vide comentario no .h*/
 	vector v;
 
 	return v;
@@ -93,7 +93,8 @@ int vectorPrint(vector v) {
 }
 
 int randInt(int min, int max) {
-  return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
+  return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min ); 
+  /*Trecho de codigo oferecido pelo monitor de MAC122 08*/
 }
 
 double randDouble(double min, double max) {

@@ -28,32 +28,49 @@ typedef struct Vector vector;
 typedef struct Vector point;
 typedef struct Vector velocity;
 typedef struct Vector acceleration;
+/*Afinal, em fisica, posicao, aceleracao, e velocidade podem ser representados por vetores!*/
 
+/*Cria um vetor*/
 vector vectorCreate(double x, double y);
 
+/*Soma dois vetores*/
 vector vectorSum(vector a, vector b);
+/*Subtrai vetores, primeiro vetor menos o segundo*/
 vector vectorSub(vector a, vector b);
+/*wtf por que isso ta aqui, multiplicacao vetorial implica R3*/ 
 vector vectorMulVet(vector a, vector b);
+/*Multiplicacao escalar entre dois vetores*/
 double vectorMulEsc(vector a, vector b);
 
+/*Converte de coordenadas polares para coordenadas cartesianas*/
 vector vectorPolarToCartesian(vector v);
+/*Converte de coordenadas cartesianas para coordenadas polares*/
 vector vectorCartesianToPolar(vector v);
 
-vector vectorRotate(vector v, double ang);
-/*Funcao acima roatciona um vetor de acordo com o angulo dado, em radianos, no sentido horario*/
+/*Retorna o angulo do vetor*/
 double vectorAngle( vector v );
-vector vectorAngleSet( vector v, double ang );
-vector vectorLengthSet(vector v, double length );
+/*Retorna o comprimento do vetor*/
 double vectorLength(vector);
+/*Seta o angulo do vetor*/
+vector vectorAngleSet( vector v, double ang );
+/*Seta o comprimento do vetor*/
+vector vectorLengthSet(vector v, double length );
+/*Rotaciona o vetor de acordo com o angulo dado, no sentido horario*/
+vector vectorRotate(vector v, double ang);
+/*Imprime o vetor, retorna quantos caracteres foram impressos*/
    int vectorPrint(vector);
    
+/*Retorna a distancia entre dois pontos*/
 double distanceBetweenPoints(point a, point b);
    
-   
+/*Gera um inteiro aleatorio de min a max*/
    int randInt(int min, int max);
+/*Gera um double aleatorio de min a max*/
 double randDouble(double min, double max);
+/*Aleatoriza o valor dado em no maximo value * +-distance*/
 double randomizeAround(double value, double distance);
 
+/*Imprime mensagem de erro, sai do programa*/
   void genError(char *msg);
 
 
@@ -70,6 +87,7 @@ double randomizeAround(double value, double distance);
 
 /* Imprime um erro padrao para erro com malloc e encerra a execucao
  do programa, devolvendo o erro 1. */
+/*Poderia ser encaixado no genError...*/
 void MALLOC_DIE();
 
 #endif /* _COMMON_H_ */

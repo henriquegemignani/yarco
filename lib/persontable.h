@@ -8,20 +8,31 @@
 
 #include "person.h"
 
+/*Inicializa tabela de pessoas*/
         void personTableInit( double defaultSpeed, double createRate );
-		 int personTableAddNew();
+/*Uh... alguem que saiba o que isso faz exatamente, coloque aqui*/
+	 int personTableAddNew();
+/*Coloca uma pessoa na tabela*/
 unsigned int personTableAdd(person p);
+/*Procura a pessoa com ID id na tabela*/
       person personTableSearch(unsigned int id);
+/*Remove a pessoa de ID id da tabela*/
          int personTableRemoveByID(unsigned int id);
+/*Remove a pessa especificada da tabela*/
          int personTableRemoveByPerson(person p);
 
-		void personTableSort();
-		void quicksort( person *vet, int ini, int fim );
-		int particao( person *vet, int ini, int fim );		
+/*Ordena a tabela por posicao*/
+        void personTableSort();
+/*void quicksort( person *vet, int ini, int fim ); 
+  int particao( person *vet, int ini, int fim );	*/
+/*wtf, essas duas non son funcoes internas do .c?*/	
 
-        void personTableUpdate();
-        void personTableExecute( void (*func)(person p) );
+/*Atualiza a tabela*/
+       void personTableUpdate();
+/*Alguem que saiba, arrume esse comentario. >_>*/
+       void personTableExecute( void (*func)(person p) );
 		
-		void personTableDump();
+/*Dumpa a tabela*/
+       void personTableDump();
 
 #endif /* _PERSONTABLE_H_ */

@@ -77,7 +77,7 @@ int personTableAddNew() {
 		return ERROR_PERSON_LIMIT_EXCEEDED;
 	}
     personSetID( p, id );
-    return 1;
+    return 1; /*why not void? sempre retorna a mesma coisa*/
 }
 
 

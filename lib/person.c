@@ -37,13 +37,13 @@ person personNew( double speed ){
 
 int personRemove( person p ) {
     free(p);
-    return 0;
+    return 0; /*wtf? por que nao void se sempre retorna 0?*/
 }
 
 int personUpdate( person p ) {
     p->vel = newDirection( p->vel );
     updateObject(p);
-    return 0;
+    return 0; /*wtf? por que nao void entao?*/
 }
 
 point personGetPos( person p ) {
@@ -70,13 +70,17 @@ int personCompare( person r, person s ) {
 			curti isso :)	   
 			   	   */
 	
-	if( r->pos.y < s->pos.y ) return -1;
+	/*	if( r->pos.y < s->pos.y ) return -1;
 	else if ( r->pos.y > s->pos.y ) return 1;
 	else
 		if( r->pos.x < s->pos.x ) return -1;
 		else if( r->pos.x > s->pos.x ) return 1;
 		else return 0;
-	
+	*/
+	if( r->pos.y == s-> pos.y ) 
+	      return r->pos.x - s-> pos.x;
+	return r->pos.y - s-> pos.y;
+/*Mais elegante assim, non? De quebra, se precisar saber exatamente a diferenca no eixo relevante, la esta*/
 }
 void personDump( person p ) {
 	printf("(ID%4d) P", p->id);
