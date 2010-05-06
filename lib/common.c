@@ -97,7 +97,8 @@ int randInt(int min, int max) {
 }
 
 double randDouble(double min, double max) {
-  return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
+  return ( ( (double)rand() / RAND_MAX ) * ( max - min ) + min );
+//return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 
 double randomizeAround(double value, double distance){
