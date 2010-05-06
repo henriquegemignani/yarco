@@ -14,3 +14,7 @@ void updateObject( object *o ) {
 double objectGetDistFrom( object o, point p ) {
     return distanceBetweenPoints( o.pos, p );
 }
+
+int objectIsColiding( object a, object b ) {
+    return (distanceBetweenPoints( a.pos, b.pos ) < (a.radius + b.radius));
+}

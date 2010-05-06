@@ -19,8 +19,7 @@ static struct PersonTable {
 
 
 
-int particao( person *vet, int ini, int fim )
-{
+int particao( person *vet, int ini, int fim ) {
 	int i, j;
 	person tmp;
 
@@ -42,8 +41,8 @@ int particao( person *vet, int ini, int fim )
 	return i;
 }
 
-void quicksort( person *vet, int ini, int fim )
-{
+
+void quicksort( person *vet, int ini, int fim ) {
 	int r;
 	if(fim > ini)
 	{
@@ -54,11 +53,9 @@ void quicksort( person *vet, int ini, int fim )
 }
 
 
-
 void personTableSort() {
 	quicksort( table.list, 0, PERSON_NUM_LIMIT - 1 );
 }
-
 
 
 void personTableInit( double defaultSpeed, double createRate ) {
@@ -92,7 +89,6 @@ unsigned int personTableAdd(person p) {
 }
 
 
-
 person personTableSearch(unsigned int id) {
     int i;
     for( i = 0; i < table.curMax; i++ )
@@ -100,7 +96,6 @@ person personTableSearch(unsigned int id) {
             return table.list[i];
     return NULL;
 }
-
 
 
 int personTableRemoveByID(unsigned int id) {
@@ -117,17 +112,22 @@ int personTableRemoveByID(unsigned int id) {
 
 
 }
+
+
 int personTableRemoveByPerson(person p) {
     return personTableRemoveByID( personGetID(p) );
 }
 
 
-
-
 /* Management functions */
 void personTableUpdate( ) {
-    int i;
+    int i, j;
     point pos;
+    for( i = 0; i < table.curMax; i++ )
+        for( j = i + 1; j < table.curMax; j++ )
+            if( objectIsColiding( *table.list[i], *table.list[j] )
+                executeCollision( table.list[i], table.list[j] );
+    
     for( i = 0; i < table.curMax; i++ )
         if( table.list[i] != NULL ) {
             personUpdate(table.list[i]);

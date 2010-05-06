@@ -15,6 +15,7 @@ person personCreate( point pos, double speed ) {
     AUTOMALLOC(p);
     p->id = 0;
     p->type = TYPE_PERSON;
+    p->radius = PERSON_RADIUS;
     p->pos = pos;
     personDirection = (double)randInt( 0, 7 ) / 4;
     p->vel = vectorPolarToCartesian( vectorCreate(speed, personDirection * PI) );
@@ -82,6 +83,7 @@ int personCompare( person r, person s ) {
 	return r->pos.y - s-> pos.y;
 /*Mais elegante assim, non? De quebra, se precisar saber exatamente a diferenca no eixo relevante, la esta*/
 }
+
 void personDump( person p ) {
 	printf("(ID%4d) P", p->id);
 	vectorPrint(p->pos);

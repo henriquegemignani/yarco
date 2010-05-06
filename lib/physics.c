@@ -32,11 +32,10 @@ acceleration newAcceleration( acceleration a ) {
 }
 
 
-void collision( object a, object b )
-{
+void executeCollision( object *a, object *b ) {
 	/* TODO: adicionar alguma fisica de verdade aqui */
-	velocity tmp = a.vel;
-	a.vel = b.vel;
-	b.vel = tmp;
+	velocity tmp = a->vel;
+	a->vel = b->vel;
+	b->vel = tmp;
 	/*Perai, assumindo massas iguais, nao e isso que acontece?*/
 }

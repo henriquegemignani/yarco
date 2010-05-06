@@ -15,7 +15,7 @@ typedef struct Object *person;
 /*Nuka uma pessoa*/
          int personRemove( person p ); /*void?*/
 /*Atualiza status da pessoa*/
-          int personUpdate( person p ); /*void?*/
+         int personUpdate( person p ); /*void?*/
 /*Retorna a posicao da pessoa*/
        point personGetPos( person p );
 /*Retorna o ID da pessoa*/
@@ -25,6 +25,6 @@ unsigned int personGetID( person p );
 /*Compara duas pessoas de acordo com sua posicao*/
          int personCompare( person r, person s );
 /*Imprime posicao, velocidade e aceleracao de todos os passageiros*/
-	void personDump( person p );
+        void personDump( person p );
 
 #endif /* _PERSON_H_ */
