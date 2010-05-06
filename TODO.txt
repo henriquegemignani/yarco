@@ -1,3 +1,16 @@
 Colisoes (Massas? Criterio de colisao? Coeficiente de elasticidade?)
 Main robusto
 --- O que seria um main "robusto"? o que falta para ele se tornar um?
+
+-----------------------------
+Sobre Testes Automatizados:
+Ao rodar, ele imprime na tela uma lista de possiveis testes a serem executados. Cada teste é 
+numerado e o usuário digita o numero do teste desejado.
+Feito isso, o executavel prepara tudo e deixa na situação de teste, e o programa roda como deveria.
+
+- Geracao de Relatorios?
+-----------------------------
+
+Deixar todos esses structs que temos (Configuration, PersonTable) e alguns novos (um para o 
+graphics_terminal.c) como tipos de primeira classe. Isso daria mais poder ao executavel de teste 
+(e talvez o codigo fique mais elegante).
