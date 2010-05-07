@@ -66,13 +66,13 @@ void graphicUpdatePerson(person per)
 
 }
 
-int graphicUpdate()
+int graphicUpdate(personTable table)
 {
     int i, j;
     for (i = 0; i < OUTPUT_HEIGHT; i++)
         for (j = 0; j < OUTPUT_WIDTH; j++)
             outputScreen[i][j] = NOTHING;
-    personTableExecute(graphicUpdatePerson);
+    personTableExecute(table, graphicUpdatePerson);
     return 0;
 }
 

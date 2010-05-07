@@ -53,17 +53,15 @@ person personNew(double speed)
 }
 
 
-int personRemove(person p)
+void personRemove(person p)
 {
     free(p);
-    return 0;                   /*wtf? por que nao void se sempre retorna 0? */
 }
 
-int personUpdate(person p)
+void personUpdate(person p)
 {
     p->vel = newDirection(p->vel);
     updateObject(p);
-    return 0;                   /*wtf? por que nao void entao? */
 }
 
 point personGetPos(person p)

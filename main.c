@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 {
     struct Configuration defaults;
     int i;
+    personTable table;
 
     defaults.defaultSpeed = PERSON_SPEED_DEFAULT;
     defaults.createRate = PERSON_CREATE_RATE_DEFAULT;
@@ -47,22 +48,22 @@ int main(int argc, char **argv)
        Alias, o numero maximo de pasageiros tambem deveria ser customizavel ou non? */
 
     /* Inicializa tabela de passageiros */
-    personTableInit(defaults.defaultSpeed, defaults.createRate);
+    table = personTableInit(defaults.defaultSpeed, defaults.createRate);
     srand(time(NULL));
     for (i = 0; i < PERSON_NUM_INIT; i++)
-        if (personTableAddNew() == ERROR_PERSON_LIMIT_EXCEEDED)
+        if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
             genError("Erro: limite de naufragos atingido!\n");
     /* AVISO: genError sai do programa */
 
     /* Inicializa parte grafica */
     graphicInitialize();
-
+    
     for (i = 0; i < defaults.repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate();
-        graphicUpdate();
+        personTableUpdate(table);
+        graphicUpdate(table);
         if (defaults.debugMode)
-            personTableDump();
+            personTableDump(table);
         else
             graphicDraw();
         if (defaults.pause) {

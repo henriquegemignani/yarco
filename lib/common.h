@@ -77,7 +77,7 @@ void genError(char *msg);
 
 /* WARNING AND ERROR CODES */
 #define ERROR_MALLOC_FAILURE            101
-#define ERROR_PERSON_LIMIT_EXCEEDED     0
+#define ERROR_PERSON_LIMIT_EXCEEDED     NULL
 #define WARNING_PERSON_NOT_FOUND        202
 
 /* Defines para ajudar o desenvolvimento! */

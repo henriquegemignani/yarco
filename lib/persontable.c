@@ -15,19 +15,19 @@ struct PersonTable {
     unsigned int curMax, lastID;
     double defaultSpeed, createRate, createCounter;
 };
-static struct PersonTable table;
 
 
 /* Funcoes privadas. */
-unsigned int personTableAdd(person p)
+person personTableAdd(personTable table, person p)
 {
-    if (table.curMax == PERSON_NUM_LIMIT) {
-        personTableSort();
-        if (table.curMax == PERSON_NUM_LIMIT)
+    if (table->curMax == PERSON_NUM_LIMIT) {
+        personTableSort(table);
+        if (table->curMax == PERSON_NUM_LIMIT)
             return ERROR_PERSON_LIMIT_EXCEEDED;
     }
-    table.list[table.curMax++] = p;
-    return ++table.lastID;
+    table->list[table->curMax++] = p;
+    personSetID(p, ++table->lastID);
+    return p;
 }
 
 int particao(person * vet, int ini, int fim)
@@ -65,47 +65,48 @@ void quicksort(person * vet, int ini, int fim)
 
 /* Funcoes publicas. */
 
-void personTableInit(double defaultSpeed, double createRate)
+personTable personTableInit(double defaultSpeed, double createRate)
 {
-    table.curMax = table.lastID = 0;
-    table.defaultSpeed = defaultSpeed;
-    table.createRate = createRate;
-    table.createCounter = randomizeAround(createRate, STD_DIST);
+    personTable table;
+    AUTOMALLOC(table);
     
+    table->curMax = table->lastID = 0;
+    table->defaultSpeed = defaultSpeed;
+    table->createRate = createRate;
+    table->createCounter = randomizeAround(createRate, STD_DIST);
+    
+    return table;
 }
 
 
-int personTableAddNew()
+person personTableAddNew(personTable table)
 {
-    person p = personNew(table.defaultSpeed);
-    unsigned int id = personTableAdd(p);
-    if (id == ERROR_PERSON_LIMIT_EXCEEDED) {
-        personRemove(p);
-        return ERROR_PERSON_LIMIT_EXCEEDED;
-    }
-    personSetID(p, id);
-    return 1;
+    person  aux = personNew(table->defaultSpeed),
+            p   = personTableAdd(table, aux);
+    if (p == ERROR_PERSON_LIMIT_EXCEEDED)
+        personRemove(aux);
+    return p;
 }
 
 
-person personTableSearch(unsigned int id)
+person personTableSearch(personTable table, unsigned int id)
 {
     int i;
-    for (i = 0; i < table.curMax; i++)
-        if (personGetID(table.list[i]) == id)
-            return table.list[i];
+    for (i = 0; i < table->curMax; i++)
+        if (personGetID(table->list[i]) == id)
+            return table->list[i];
     return NULL;
 }
 
 
-int personTableRemoveByID(unsigned int id)
+int personTableRemoveByID(personTable table, unsigned int id)
 {
     int i;
     person pAux;
-    for (i = 0; i < table.curMax; i++)
-        if (personGetID(table.list[i]) == id) {
-            pAux = table.list[i];
-            table.list[i] = NULL;
+    for (i = 0; i < table->curMax; i++)
+        if (personGetID(table->list[i]) == id) {
+            pAux = table->list[i];
+            table->list[i] = NULL;
             return personRemove(pAux);
         }
     return WARNING_PERSON_NOT_FOUND;
@@ -115,75 +116,93 @@ int personTableRemoveByID(unsigned int id)
 }
 
 
-int personTableRemoveByPerson(person p)
+int personTableRemoveByPerson(personTable table, person p)
 {
-    return personTableRemoveByID(personGetID(p));
+    return personTableRemoveByID(table, personGetID(p));
 }
 
 
-void personTableSort()
+void personTableSort(personTable table)
 {
-    quicksort(table.list, 0, PERSON_NUM_LIMIT - 1);
+    quicksort(table->list, 0, table->curMax - 1);
 }
 
 
 /* Management functions */
-void personTableUpdate()
+void personTableUpdate(personTable table)
 {
     int i, j;
     point pos;
-    for (i = 0; i < table.curMax; i++)
-        for (j = i + 1; j < table.curMax; j++)
-            if (objectIsColiding(*table.list[i], *(table.list[j])))
-                executeCollision(table.list[i], table.list[j]);
-
-    for (i = 0; i < table.curMax; i++)
-        if (table.list[i] != NULL) {
-            personUpdate(table.list[i]);
-            pos = personGetPos(table.list[i]);
+    /* Verificando colisoes. */
+    for (i = 0; i < table->curMax; i++)
+        for (j = i + 1; j < table->curMax; j++)
+            if (objectIsColiding(*table->list[i], *(table->list[j])))
+                executeCollision(table->list[i], table->list[j]);
+    
+    /* Para cada pessoa... */
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL) {
+            /* Atualiza e... */
+            personUpdate(table->list[i]);
+            
+            /* Verifica se saiu do mapa. */
+            pos = personGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
-                personRemove(table.list[i]);
-                table.list[i] = personNew(table.defaultSpeed);
-                personSetID(table.list[i], ++table.lastID);
+                /* Entao cria uma nova em alguma borda */
+                personRemove(table->list[i]);
+                table->list[i] = personNew(table->defaultSpeed);
+                personSetID(table->list[i], ++table->lastID);
             }
         }
-    if (table.curMax < PERSON_NUM_LIMIT) {
-        table.createCounter -= 1;
-        if (table.createCounter < 0) {
-            personTableAddNew();
-            table.createCounter +=
-                randomizeAround(table.createRate, STD_DIST);
+    
+    if (table->curMax < PERSON_NUM_LIMIT) {
+        /* Verifica se ja esta na hora de criar mais uma pessoa. */
+        table->createCounter -= 1;
+        if (table->createCounter < 0) {
+            personTableAddNew(table);
+            table->createCounter +=
+                randomizeAround(table->createRate, STD_DIST);
         }
     }
-
-    personTableSort();
-    for (i = table.curMax - 1; i >= 0 && table.list[i] == NULL; i--)
-        table.curMax--;
+    personTableSort(table);
+    for (i = table->curMax - 1; i >= 0 && table->list[i] == NULL; i--)
+        table->curMax--;
 }
 
 
 
-void personTableExecute(void (*func) (person p))
+void personTableExecute(personTable table, void (*func) (person p))
 {
     int i;
-    for (i = 0; i < table.curMax; i++)
-        if (table.list[i] != NULL)
-            func(table.list[i]);
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            func(table->list[i]);
 }
 
 
 
 
-void personTableDump()
+void personTableDump(personTable table)
 {
     int i;
-    for (i = 0; i < table.curMax; i++) {
+    for (i = 0; i < table->curMax; i++) {
         printf("Person[%2d]: ", i);
-        if (table.list[i] != NULL)
-            personDump(table.list[i]);
+        if (table->list[i] != NULL)
+            personDump(table->list[i]);
         else
             printf("NULL");
         printf("\n");
     }
     printf("\n");
+}
+
+
+
+void personTableRemove(personTable table)
+{
+    int i;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            personRemove(table->list[i]);
+    free(table);
 }
