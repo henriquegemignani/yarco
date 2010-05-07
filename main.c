@@ -29,6 +29,7 @@ void argRead(int argc, char **argv, struct Configuration *defaults);
 /* Le argumentos e seta variaveis de acordo com os mesmos */
 int argFind(int argc, char **argv, char *argLong, char *argShort);
 char *argVal(int argc, char **argv, char *argLong, char *argShort);
+char *argShortFlags(int argc, char **argv, char *args);
 
 int main(int argc, char **argv)
 {
@@ -93,12 +94,14 @@ void argRead(int argc, char **argv, struct Configuration *defaults)
                defaults->repetitions);
         exit(0);                /*Ohnoes exit no meio do programa! <_< */
     }
-    if (argFind(argc, argv, "--debug", "-d"))
+    argValue = argShortFlags(argc, argv, "dpg");
+    if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
-    if (argFind(argc, argv, "--pause", "-p"))
+    if (argFind(argc, argv, "--pause", "-p") || argValue[1])
         defaults->pause = 1;
-    if (argFind(argc, argv, "--nographic", "-g"))
+    if (argFind(argc, argv, "--nographic", "-g") || argValue[2])
         defaults->graphic = 0;
+    free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
     if ((argValue = argVal(argc, argv, "--speed", "-s")))
@@ -135,4 +138,20 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort)
         }
     }
     return NULL;
+}
+
+char *argShortFlags(int argc, char **argv, char *args)
+{
+    int i, j, k, argsLen;
+    char *res;
+    res = malloc(argsLen = strlen(args) * sizeof(*res));
+    for (i = 0; i < argsLen; i++)
+        res[i] = 0;
+    for (i = 1; i < argc; i++)
+        if (argv[i][0] == '-' && argv[i][1] != '-')
+            for (j = 1; j < strlen(argv[i]); j++)
+                for (k = 0; k < argsLen; k++)
+                    if (argv[i][j] == args[k])
+                        res[k] = 1;
+    return res;
 }
