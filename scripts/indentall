@@ -1,2 +1,3 @@
+#!/bin/bash
 cat indentall
 indent -i4 -kr -nut ../*.c ../lib/*.[ch]
