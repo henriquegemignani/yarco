@@ -38,7 +38,7 @@ clean :
 
 .PHONY : moreclean
 moreclean : clean
-	rm -f autoTODO.txt \#*\# *~
+	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ 
 
 .PHONY : TODO
 TODO : 
