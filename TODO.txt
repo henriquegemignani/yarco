@@ -14,3 +14,7 @@ Feito isso, o executavel prepara tudo e deixa na situação de teste, e o programa
 Deixar todos esses structs que temos (Configuration, PersonTable) e alguns novos (um para o 
 graphics_terminal.c) como tipos de primeira classe. Isso daria mais poder ao executavel de teste 
 (e talvez o codigo fique mais elegante).
+
+
+
+-> Alguns caras não estão sendo corretamente impressos. Why?
