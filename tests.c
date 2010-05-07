@@ -22,6 +22,7 @@ struct Configuration {
     int debugMode;
     int repetitions;
     int pause;
+    int graphic;
 };
 
 void argRead(int argc, char **argv, struct Configuration *defaults);
@@ -32,75 +33,80 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort);
 int main(int argc, char **argv)
 {
 
-	printf( "Executavel de Testes - digite sua opcao\n1) rodar normalmente\n2) poucas pessoas\n3) muitas pessoas\n4) baixa velocidade\n5) muita velocidade\n6) teste de colisoes\n...\n0) sair\n");
-	char opt = getchar();
+    printf
+        ("Executavel de Testes - digite sua opcao\n1) rodar normalmente\n2) poucas pessoas\n3) muitas pessoas\n4) baixa velocidade\n5) muita velocidade\n6) teste de colisoes\n...\n0) sair\n");
+    char opt = getchar();
 
     struct Configuration defaults;
+    personTable table;
     int i, numPeople = PERSON_NUM_INIT;
 
-	defaults.defaultSpeed = PERSON_SPEED_DEFAULT;
-	defaults.createRate = PERSON_CREATE_RATE_DEFAULT;
-	defaults.debugMode = 0;
-	defaults.repetitions = 50;
-	defaults.pause = 0;
-
-	switch( opt )
-	{
-		case '0':
-			exit(0);
-			break;
-		case '1':
-			personTableInit( defaults.defaultSpeed, defaults.createRate );
-			/* nothing to do, it's up to you */
-			break;
-		case '2':
-			printf("era pra ter sÃ 3 pessoas aqui!!!\n");
-			personTableInit( defaults.defaultSpeed, 1 );
-			numPeople = 3;
-			break;
-		case '3':
-			personTableInit( defaults.defaultSpeed, 1 );
-			numPeople = 99;
-			break;
-		case '4':
-			personTableInit( 1, defaults.createRate );
-			break;
-		case '5':
-			personTableInit( 100, defaults.createRate );
-			break;
-		case '6':
-			/* mais um pedaco de codigo q sera uma icognita rodando
-			 * atualmente: Notworking
-			 * */
-			/* sorry guys, muito sono pra terminar isso
-			person p = personTableAddNew();
-			p->pos = vectorCreate( 10, 10 );
-			p->vel = ( 8, 0 );
-			p = personTableAddNew();
-			p->pos = vectorCreate( 20, 10 );
-			p->vel = ( 0, 0 );
-			p = personTableAdd();
-			p->pos = vectorCreate( 15, 15 );
-			p->vel = vectorCreate( 0, 0 );
-			p = personTableAdd();
-			p->pos = vectorCreate( 15, 25 );
-			p->vel = vectorCreate( 0, -5 );
-			*/
-			numPeople = 0;
-			break;
-
-	}
-
-	/*
     defaults.defaultSpeed = PERSON_SPEED_DEFAULT;
     defaults.createRate = PERSON_CREATE_RATE_DEFAULT;
     defaults.debugMode = 0;
     defaults.repetitions = 50;
     defaults.pause = 0;
+    defaukts.graphics = 1;
 
     argRead(argc, argv, &defaults);
 
-	*/
+    switch (opt) {
+    case '0':
+        exit(0);
+        break;
+    case '1':
+        table =
+            personTableInit(defaults.defaultSpeed, defaults.createRate);
+        /* nothing to do, it's up to you */
+        break;
+    case '2':
+        printf("era pra ter sÃ 3 pessoas aqui!!!\n");
+        table = personTableInit(defaults.defaultSpeed, 0);
+        numPeople = 3;
+        break;
+    case '3':
+        table = personTableInit(defaults.defaultSpeed, 0);
+        numPeople = 99;
+        break;
+    case '4':
+        table = personTableInit(1, defaults.createRate);
+        break;
+    case '5':
+        table = personTableInit(100, defaults.createRate);
+        break;
+    case '6':
+        /* mais um pedaco de codigo q sera uma icognita rodando
+         * atualmente: Notworking
+         * */
+        /* sorry guys, muito sono pra terminar isso
+           person p = personTableAddNew();
+           p->pos = vectorCreate( 10, 10 );
+           p->vel = ( 8, 0 );
+           p = personTableAddNew();
+           p->pos = vectorCreate( 20, 10 );
+           p->vel = ( 0, 0 );
+           p = personTableAdd();
+           p->pos = vectorCreate( 15, 15 );
+           p->vel = vectorCreate( 0, 0 );
+           p = personTableAdd();
+           p->pos = vectorCreate( 15, 25 );
+           p->vel = vectorCreate( 0, -5 );
+         */
+        numPeople = 0;
+        break;
+
+    }
+
+    /*
+       defaults.defaultSpeed = PERSON_SPEED_DEFAULT;
+       defaults.createRate = PERSON_CREATE_RATE_DEFAULT;
+       defaults.debugMode = 0;
+       defaults.repetitions = 50;
+       defaults.pause = 0;
+
+       argRead(argc, argv, &defaults);
+
+     */
 
     /* Separado por questoes de clareza do codigo. 
        Possivelmente: criar uma funcao que verifica se um argumento especifico existe, 
@@ -109,21 +115,21 @@ int main(int argc, char **argv)
 
     /* Inicializa tabela de passageiros */
 
-	/*
-    personTableInit(defaults.defaultSpeed, defaults.createRate);
-	*/
-	/*
-	 *	aqui se muda a persontable na unha
-	 * */
+    /*
+       personTableInit(defaults.defaultSpeed, defaults.createRate);
+     */
+    /*
+     *      aqui se muda a persontable na unha
+     * */
 
 
-	
+
     srand(time(NULL));
     for (i = 0; i < numPeople; i++)
-        if (personTableAddNew() == ERROR_PERSON_LIMIT_EXCEEDED)
+        if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
             genError("Erro: limite de naufragos atingido!\n");
 
-		
+
     /* AVISO: genError sai do programa */
 
     /* Inicializa parte grafica */
@@ -131,12 +137,12 @@ int main(int argc, char **argv)
 
     for (i = 0; i < defaults.repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate();
-        graphicUpdate();
-        if (defaults.debugMode)
-            personTableDump();
-        else
+        personTableUpdate(table);
+        graphicUpdate(table);
+        if (defaults.graphics)
             graphicDraw();
+        if (defaults.debugMode)
+            personTableDump(table);
         if (defaults.pause) {
             printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
@@ -154,7 +160,8 @@ void argRead(int argc, char **argv, struct Configuration *defaults)
                "--help, -h: Imprime isso e sai\n"
                "--speed, -h: Determina a velocidade media dos passageiros. Padrao: %3.2f\n"
                "--rate, -r: Determina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
-               "--debug, -d: Mostra posicao, velocidade e aceleracao de cada passageiro, ignorando parte grafica\n"
+               "--debug, -d: Mostra posicao, velocidade e aceleracao de cada passageiro\n"
+               "--nographic, -g: Ignora parte grafica.\n"
                "--repetitions, -R: Define quantas iteracoes o programa mostrara. Padrao: %d\n"
                "--pause, -p: Determina que o programa pausara a cada iteracao.\n",
                argv[0], defaults->defaultSpeed, defaults->createRate,
@@ -165,6 +172,8 @@ void argRead(int argc, char **argv, struct Configuration *defaults)
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-p"))
         defaults->pause = 1;
+    if (argFind(argc, argv, "--nographic", "-g"))
+        defaults->graphic = 0;
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
     if ((argValue = argVal(argc, argv, "--speed", "-s")))

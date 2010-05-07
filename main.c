@@ -22,6 +22,7 @@ struct Configuration {
     int debugMode;
     int repetitions;
     int pause;
+    int graphic;
 };
 
 void argRead(int argc, char **argv, struct Configuration *defaults);
@@ -40,6 +41,7 @@ int main(int argc, char **argv)
     defaults.debugMode = 0;
     defaults.repetitions = 50;
     defaults.pause = 0;
+    defaults.graphic = 1;
 
     argRead(argc, argv, &defaults);
     /* Separado por questoes de clareza do codigo. 
@@ -57,15 +59,15 @@ int main(int argc, char **argv)
 
     /* Inicializa parte grafica */
     graphicInitialize();
-    
+
     for (i = 0; i < defaults.repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
         personTableUpdate(table);
         graphicUpdate(table);
+        if (defaults.graphic)
+            graphicDraw();
         if (defaults.debugMode)
             personTableDump(table);
-        else
-            graphicDraw();
         if (defaults.pause) {
             printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
@@ -83,7 +85,8 @@ void argRead(int argc, char **argv, struct Configuration *defaults)
                "--help, -h: Imprime isso e sai\n"
                "--speed, -h: Determina a velocidade media dos passageiros. Padrao: %3.2f\n"
                "--rate, -r: Determina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
-               "--debug, -d: Mostra posicao, velocidade e aceleracao de cada passageiro, ignorando parte grafica\n"
+               "--debug, -d: Mostra posicao, velocidade e aceleracao de cada passageiro\n"
+               "--nographic, -g: Ignora parte grafica\n"
                "--repetitions, -R: Define quantas iteracoes o programa mostrara. Padrao: %d\n"
                "--pause, -p: Determina que o programa pausara a cada iteracao.\n",
                argv[0], defaults->defaultSpeed, defaults->createRate,
@@ -94,6 +97,8 @@ void argRead(int argc, char **argv, struct Configuration *defaults)
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-p"))
         defaults->pause = 1;
+    if (argFind(argc, argv, "--nographic", "-g"))
+        defaults->graphic = 0;
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
     if ((argValue = argVal(argc, argv, "--speed", "-s")))

@@ -69,20 +69,20 @@ personTable personTableInit(double defaultSpeed, double createRate)
 {
     personTable table;
     AUTOMALLOC(table);
-    
+
     table->curMax = table->lastID = 0;
     table->defaultSpeed = defaultSpeed;
     table->createRate = createRate;
     table->createCounter = randomizeAround(createRate, STD_DIST);
-    
+
     return table;
 }
 
 
 person personTableAddNew(personTable table)
 {
-    person  aux = personNew(table->defaultSpeed),
-            p   = personTableAdd(table, aux);
+    person aux = personNew(table->defaultSpeed),
+        p = personTableAdd(table, aux);
     if (p == ERROR_PERSON_LIMIT_EXCEEDED)
         personRemove(aux);
     return p;
@@ -136,13 +136,13 @@ void personTableUpdate(personTable table)
         for (j = i + 1; j < table->curMax; j++)
             if (objectIsColiding(*table->list[i], *(table->list[j])))
                 executeCollision(table->list[i], table->list[j]);
-    
+
     /* Para cada pessoa... */
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
             personUpdate(table->list[i]);
-            
+
             /* Verifica se saiu do mapa. */
             pos = personGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
@@ -152,7 +152,7 @@ void personTableUpdate(personTable table)
                 personSetID(table->list[i], ++table->lastID);
             }
         }
-    
+
     if (table->createRate > 0 && table->curMax < PERSON_NUM_LIMIT) {
         /* Verifica se ja esta na hora de criar mais uma pessoa. */
         table->createCounter -= 1;

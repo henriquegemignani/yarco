@@ -7,7 +7,7 @@
 #include "object.h"
 #include "physics.h"
 #include "person.h"
-                                              /*#include <stdio.h> *//*Dar um jeito de jogar isso pra outro lugar */
+                                                                                                                   /*#include <stdio.h> *//*Dar um jeito de jogar isso pra outro lugar */
 
 person personCreate(point pos, double speed)
 {
