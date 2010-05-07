@@ -52,6 +52,7 @@ publish : moreclean yarco
     
 .PHONY: publish-source
 publish-source : moreclean
+	scripts/indentallfromroot
 	mkdir -p publish
 	rm -f publish/source.tar
 	tar -cvf publish/source.tar * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
