@@ -40,6 +40,10 @@ clean :
 moreclean : clean
 	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ 
 
+.PHONY : realclean
+realclean : moreclean
+	rm -rf publish/
+
 .PHONY : TODO
 TODO : 
 	grep TODO *.[ch] lib/*.[ch] > autoTODO.txt
