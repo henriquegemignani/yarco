@@ -27,9 +27,7 @@ int main(int argc, char **argv)
          "3) muitas pessoas\n"
          "4) baixa velocidade\n"
          "5) muita velocidade\n"
-         "6) teste de colisoes\n"
-         "...\n"
-         "0) sair\n");
+         "6) teste de colisoes\n" "...\n" "0) sair\n");
     char opt = getchar();
 
     configuration defaults = configurationInit();

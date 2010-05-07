@@ -18,7 +18,7 @@ struct Configuration {
 typedef struct Configuration *configuration;
 
 configuration configurationInit();
-         void configurationRemove(configuration config);
+void configurationRemove(configuration config);
 
 /* Le argumentos e seta variaveis de acordo com os mesmos */
 void argRead(int argc, char **argv, configuration defaults);
@@ -28,4 +28,3 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort);
 char *argShortFlags(int argc, char **argv, char *args);
 
 #endif                          /* _CONFIGURATION_H_ */
-

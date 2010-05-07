@@ -12,7 +12,7 @@ configuration configurationInit()
 {
     configuration config;
     AUTOMALLOC(config);
-    
+
     /* Valores padroes. */
     config->defaultSpeed = PERSON_SPEED_DEFAULT;
     config->createRate = PERSON_CREATE_RATE_DEFAULT;
@@ -21,11 +21,12 @@ configuration configurationInit()
     config->pause = 0;
     config->graphic = 1;
     config->randomSeed = time(NULL);
-    
+
     return config;
 }
 
-void configurationRemove(configuration config) {
+void configurationRemove(configuration config)
+{
     free(config);
 }
 
@@ -43,7 +44,8 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n",
-               argv[0], defaults->defaultSpeed, defaults->createRate, defaults->repetitions);
+               argv[0], defaults->defaultSpeed, defaults->createRate,
+               defaults->repetitions);
         exit(0);
     }
     argValue = argShortFlags(argc, argv, "dpg");
@@ -69,8 +71,9 @@ int argFind(int argc, char **argv, char *argLong, char *argShort)
 {
     int i;
     for (i = 1; i < argc; i++)
-        if(  !strncmp(argv[i], argLong, strlen(argLong)) || 
-            (argShort != NULL && !strncmp(argv[i], argShort, strlen(argShort))) )
+        if (!strncmp(argv[i], argLong, strlen(argLong)) ||
+            (argShort != NULL
+             && !strncmp(argv[i], argShort, strlen(argShort))))
             return i;
     return 0;
 }
@@ -85,7 +88,7 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort)
             else
                 return argv[i + 1];
         }
-        if( argShort != NULL ) {
+        if (argShort != NULL) {
             if (!strncmp(argv[i], argShort, len = strlen(argShort))) {
                 if (strlen(argv[i]) > len)
                     return argv[i] + len;
