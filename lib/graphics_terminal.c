@@ -7,7 +7,6 @@
 #include "graphics.h"
 #include "person.h"
 #include "persontable.h"
-/* #include <stdio.h> -- ta no common.h agora */
 
 typedef enum {
     NOTHING,
@@ -58,8 +57,7 @@ void graphicUpdatePerson(person per)
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
     if (x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT) {
         if (outputScreen[y][x] == NOTHING)
-            outputScreen[y][x] = PASSENGER;     /* TODO: detectar colisao 
-                                                   e marcar corretamente */
+            outputScreen[y][x] = PASSENGER;
         else
             outputScreen[y][x] = COLLISION;
     }

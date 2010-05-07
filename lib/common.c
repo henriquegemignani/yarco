@@ -4,11 +4,10 @@
 /*******************************************************************/
 
 #include "common.h"
-/* #include <stdio.h> -- ta no common.h agora */
 #include <math.h>
 
 vector vectorCreate(double x, double y)
-{                               /*wha? non seria melhor chamar de vectorSetValues? */
+{
     vector v;
     v.x = x;
     v.y = y;
@@ -28,13 +27,6 @@ vector vectorSub(vector a, vector b)
     vector v;
     v.x = a.x - b.x;
     v.y = a.y - b.y;
-    return v;
-}
-
-vector vectorMulVet(vector a, vector b)
-{                               /*wtfwtfwtf - vide comentario no .h */
-    vector v;
-
     return v;
 }
 
@@ -116,7 +108,6 @@ int randInt(int min, int max)
 double randDouble(double min, double max)
 {
     return (((double) rand() / RAND_MAX) * (max - min) + min);
-//return ( ( (max - min + 1) * ( (double) (1.0*rand()) / (double) (1.0*RAND_MAX + 1.0) ) ) + min );
 }
 
 double randomizeAround(double value, double distance)

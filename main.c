@@ -45,10 +45,6 @@ int main(int argc, char **argv)
     defaults.graphic = 1;
 
     argRead(argc, argv, &defaults);
-    /* Separado por questoes de clareza do codigo. 
-       Possivelmente: criar uma funcao que verifica se um argumento especifico existe, 
-       para mais elegancia, embora seja menos eficiente.
-       Alias, o numero maximo de pasageiros tambem deveria ser customizavel ou non? */
 
     /* Inicializa tabela de passageiros */
     table = personTableInit(defaults.defaultSpeed, defaults.createRate);
@@ -144,7 +140,8 @@ char *argShortFlags(int argc, char **argv, char *args)
 {
     int i, j, k, argsLen;
     char *res;
-    res = malloc(argsLen = strlen(args) * sizeof(*res));
+    argsLen = strlen(args);
+    AUTOMALLOCV(res, argsLen);
     for (i = 0; i < argsLen; i++)
         res[i] = 0;
     for (i = 1; i < argc; i++)

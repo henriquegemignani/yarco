@@ -38,7 +38,7 @@ void personTableExecute(personTable table, void (*func) (person p));
 /*Dumpa a tabela*/
 void personTableDump(personTable table);
 
-/*Removea tabela*/
+/*Remove a tabela*/
 void personTableRemove(personTable table);
 
 #endif                          /* _PERSONTABLE_H_ */

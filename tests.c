@@ -219,7 +219,8 @@ char *argShortFlags(int argc, char **argv, char *args)
 {
     int i, j, k, argsLen;
     char *res;
-    res = malloc(argsLen = strlen(args) * sizeof(*res));
+    argsLen = strlen(args);
+    AUTOMALLOCV(res, argsLen);
     for (i = 0; i < argsLen; i++)
         res[i] = 0;
     for (i = 1; i < argc; i++)

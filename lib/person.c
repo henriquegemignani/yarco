@@ -3,11 +3,10 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "common.h"             /*Nem que seja so para deixar indicado que precisa do common.h */
+#include "common.h"
 #include "object.h"
 #include "physics.h"
 #include "person.h"
-                                                                                                                                                                                        /*#include <stdio.h> *//*Dar um jeito de jogar isso pra outro lugar */
 
 person personCreate(point pos, double speed)
 {
@@ -90,14 +89,6 @@ int personCompare(person r, person s)
        0, se ambos sao NULL
        -1, se apenas s == NULL
        curti isso :)           
-     */
-
-    /*      if( r->pos.y < s->pos.y ) return -1;
-       else if ( r->pos.y > s->pos.y ) return 1;
-       else
-       if( r->pos.x < s->pos.x ) return -1;
-       else if( r->pos.x > s->pos.x ) return 1;
-       else return 0;
      */
     if (r->pos.y == s->pos.y)
         return r->pos.x - s->pos.x;

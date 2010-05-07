@@ -8,7 +8,6 @@
 #include "person.h"
 #include "persontable.h"
 #include "physics.h"
-/* #include <stdio.h> -- ta no common.h agora */
 
 struct PersonTable {
     person list[PERSON_NUM_LIMIT];

@@ -38,8 +38,6 @@ vector vectorCreate(double x, double y);
 vector vectorSum(vector a, vector b);
 /*Subtrai vetores, primeiro vetor menos o segundo*/
 vector vectorSub(vector a, vector b);
-/*wtf por que isso ta aqui, multiplicacao vetorial implica R3*/
-vector vectorMulVet(vector a, vector b);
 /*Multiplicacao escalar entre dois vetores*/
 double vectorMulEsc(vector a, vector b);
 

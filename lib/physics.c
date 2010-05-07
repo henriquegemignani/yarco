@@ -8,28 +8,15 @@
 
 vector newDirection(vector v)
 {
-    /* TODO: finish this! */
-
-    /* por ora eu prefiro deixar isso aqui
-       double length;
-       int randNum;
-       length = vectorLength ( v );
-       if ( randInt ( 1, 100 ) > 65)
-       v = vectorRotate ( v, ( PI/4 * ( ( randNum - 61 )/5 ) ) );
-       return v;
-     */
-
     int randNum;
     if ((randNum = randInt(1, 20)) > 13)
         v = vectorRotate(v, PI / 4 * (randNum - 13));
-
     return v;
-    /*Gracias por simplificar o codigo */
 }
 
 acceleration newAcceleration(acceleration a)
 {
-    /* TODO: finish this! */
+    /* TODO: finish this! (newAcceleration) */
     /*Isso nem vai ser usado nessa etapa... */
     return a;
 }
