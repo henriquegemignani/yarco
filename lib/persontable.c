@@ -107,12 +107,10 @@ int personTableRemoveByID(personTable table, unsigned int id)
         if (personGetID(table->list[i]) == id) {
             pAux = table->list[i];
             table->list[i] = NULL;
-            return personRemove(pAux);
+            personRemove(pAux);
+            return 0;
         }
     return WARNING_PERSON_NOT_FOUND;
-
-
-
 }
 
 
