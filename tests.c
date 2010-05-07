@@ -35,7 +35,15 @@ int main(int argc, char **argv)
 {
 
     printf
-        ("Executavel de Testes - digite sua opcao\n1) rodar normalmente\n2) poucas pessoas\n3) muitas pessoas\n4) baixa velocidade\n5) muita velocidade\n6) teste de colisoes\n...\n0) sair\n");
+        ("Executavel de Testes - digite sua opcao\n"
+         "1) rodar normalmente\n"
+         "2) poucas pessoas\n"
+         "3) muitas pessoas\n"
+         "4) baixa velocidade\n"
+         "5) muita velocidade\n"
+         "6) teste de colisoes\n"
+         "...\n"
+         "0) sair\n");
     char opt = getchar();
 
     struct Configuration defaults;
