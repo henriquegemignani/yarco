@@ -32,28 +32,63 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort);
 int main(int argc, char **argv)
 {
 
-	printf( "Executavel de Testes - digite sua opcao\n
-			1) rodar normalmente\n
-				...
-			0) sair\n
-			");
-	char opt = getc();
+	printf( "Executavel de Testes - digite sua opcao\n1) rodar normalmente\n2) poucas pessoas\n3) muitas pessoas\n4) baixa velocidade\n5) muita velocidade\n6) teste de colisoes\n...\n0) sair\n");
+	char opt = getchar();
 
     struct Configuration defaults;
-    int i;
+    int i, numPeople = PERSON_NUM_INIT;
+
+	defaults.defaultSpeed = PERSON_SPEED_DEFAULT;
+	defaults.createRate = PERSON_CREATE_RATE_DEFAULT;
+	defaults.debugMode = 0;
+	defaults.repetitions = 50;
+	defaults.pause = 0;
 
 	switch( opt )
 	{
-		case "0":
+		case '0':
 			exit(0);
 			break;
-		case "1":
-			defaults.defaultSpeed = PERSON_SPEED_DEFAULT;
-			defaults.createRate = PERSON_CREATE_RATE_DEFAULT;
-			defaults.debugMode = 0;
-			defaults.repetitions = 50;
-			defaults.pause = 0;
+		case '1':
+			personTableInit( defaults.defaultSpeed, defaults.createRate );
+			/* nothing to do, it's up to you */
 			break;
+		case '2':
+			printf("era pra ter sÃ 3 pessoas aqui!!!\n");
+			personTableInit( defaults.defaultSpeed, 1 );
+			numPeople = 3;
+			break;
+		case '3':
+			personTableInit( defaults.defaultSpeed, 1 );
+			numPeople = 99;
+			break;
+		case '4':
+			personTableInit( 1, defaults.createRate );
+			break;
+		case '5':
+			personTableInit( 100, defaults.createRate );
+			break;
+		case '6':
+			/* mais um pedaco de codigo q sera uma icognita rodando
+			 * atualmente: Notworking
+			 * */
+			/* sorry guys, muito sono pra terminar isso
+			person p = personTableAddNew();
+			p->pos = vectorCreate( 10, 10 );
+			p->vel = ( 8, 0 );
+			p = personTableAddNew();
+			p->pos = vectorCreate( 20, 10 );
+			p->vel = ( 0, 0 );
+			p = personTableAdd();
+			p->pos = vectorCreate( 15, 15 );
+			p->vel = vectorCreate( 0, 0 );
+			p = personTableAdd();
+			p->pos = vectorCreate( 15, 25 );
+			p->vel = vectorCreate( 0, -5 );
+			*/
+			numPeople = 0;
+			break;
+
 	}
 
 	/*
@@ -74,16 +109,21 @@ int main(int argc, char **argv)
 
     /* Inicializa tabela de passageiros */
 
+	/*
     personTableInit(defaults.defaultSpeed, defaults.createRate);
-
+	*/
 	/*
 	 *	aqui se muda a persontable na unha
 	 * */
 
+
+	
     srand(time(NULL));
-    for (i = 0; i < PERSON_NUM_INIT; i++)
+    for (i = 0; i < numPeople; i++)
         if (personTableAddNew() == ERROR_PERSON_LIMIT_EXCEEDED)
             genError("Erro: limite de naufragos atingido!\n");
+
+		
     /* AVISO: genError sai do programa */
 
     /* Inicializa parte grafica */
