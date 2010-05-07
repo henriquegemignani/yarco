@@ -42,7 +42,7 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao.\n"
-               "    \t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n",
+               "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n",
                argv[0], defaults->defaultSpeed, defaults->createRate, defaults->repetitions);
         exit(0);
     }
@@ -61,7 +61,7 @@ void argRead(int argc, char **argv, configuration defaults)
     if ((argValue = argVal(argc, argv, "--repetitions", "-R")))
         defaults->repetitions = atoi(argValue);
     printf("lol\n");
-    if ((argValue = argVal(argc, argv, "--randomseed", NULL)))
+    if ((argValue = argVal(argc, argv, "--randomseed", "-S")))
         defaults->randomSeed = atoi(argValue);
 }
 

@@ -14,14 +14,9 @@
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
 #define PERSON_RADIUS               10
-<<<<<<< .mine
 #define MAX_X                       799
 #define MAX_Y                       599
-=======
 #define REPETITONS_DEFAULT          50
-#define MAX_X                       800
-#define MAX_Y                       600
->>>>>>> .r103
 #define STD_DIST                    0.1
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
