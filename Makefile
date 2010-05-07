@@ -3,7 +3,7 @@ objects =   physics.o graphics.o common.o graphics_terminal.o object.o person.o 
 objectmain = main.o
 objecttest = tests.o
 CC = gcc
-CFLAGS = -Wall -pedantic -ansi -std=c99
+CFLAGS = -Wall -pedantic -ansi -std=c99 #-g
 
 
 yarco :      $(objects) $(objectmain)
