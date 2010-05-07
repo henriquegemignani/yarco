@@ -155,7 +155,7 @@ void personTableUpdate(personTable table)
             }
         }
     
-    if (table->curMax < PERSON_NUM_LIMIT) {
+    if (table->createRate > 0 && table->curMax < PERSON_NUM_LIMIT) {
         /* Verifica se ja esta na hora de criar mais uma pessoa. */
         table->createCounter -= 1;
         if (table->createCounter < 0) {
