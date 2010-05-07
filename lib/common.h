@@ -14,6 +14,7 @@
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
 #define PERSON_RADIUS               10
+#define REPETITONS_DEFAULT          50
 #define MAX_X                       800
 #define MAX_Y                       600
 #define STD_DIST                    0.1

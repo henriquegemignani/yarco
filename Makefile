@@ -1,5 +1,5 @@
 VPATH = ./lib/
-objects =   physics.o graphics.o common.o graphics_terminal.o object.o person.o persontable.o
+objects =   physics.o graphics.o common.o graphics_terminal.o object.o person.o persontable.o configuration.o
 objectmain = main.o
 objecttest = tests.o
 CC = gcc
@@ -22,6 +22,7 @@ object.o :      common.h object.h object.c
 person.o :      common.h object.h person.h
 persontable.o : common.h persontable.h object.h person.h physics.h persontable.c
 graphics_terminal.o : graphics.h common.h persontable.h person.h graphics_terminal.c
+configuration.o: common.h configuration.h configuration.c
 
 .PHONY : believe
 believe : 
