@@ -32,6 +32,8 @@ typedef struct Vector velocity;
 typedef struct Vector acceleration;
 /*Afinal, em fisica, posicao, aceleracao, e velocidade podem ser representados por vetores!*/
 
+typedef char texture; /* Afinal, em modo texto graficos eh uma letra! */
+
 /*Cria um vetor*/
 vector vectorCreate(double x, double y);
 

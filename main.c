@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     argRead(argc, argv, defaults);
 
     /* Inicializa tabela de passageiros */
-    table = personTableInit(defaults->defaultSpeed, defaults->createRate);
+    table = personTableInit(defaults->defaultSpeed, defaults->createRate, defaults->uniqueGraphic);
     srand(defaults->randomSeed);
     for (i = 0; i < PERSON_NUM_INIT; i++)
         if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
@@ -31,12 +31,12 @@ int main(int argc, char **argv)
     /* AVISO: genError sai do programa */
 
     /* Inicializa parte grafica */
-    graphicInitialize();
+    graphicInitialize(table);
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
         personTableUpdate(table, 0);
-        graphicUpdate(table);
+        graphicUpdate();
         if (defaults->graphic)
             graphicDraw();
         if (defaults->debugMode)

@@ -11,7 +11,7 @@
 typedef struct PersonTable *personTable;
 
 /*Inicializa tabela de pessoas*/
-personTable personTableInit(double defaultSpeed, double createRate);
+personTable personTableInit(double defaultSpeed, double createRate, int uniqueGraphics);
 
 /*Cria uma nova pessoa em alguma borda e a adiciona na tabela. 
 Devolve a pessoa criada e ERROR_PERSON_LIMIT_EXCEEDED em erro. */

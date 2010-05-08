@@ -9,11 +9,11 @@
 #include "common.h"
 typedef struct Object *person;
 
-/*Cria uma pessoa em uma das bordas*/
-person personNew(double speed);
+/*Cria uma pessoa em uma das bordas, com a textura dada*/
+person personNew(texture tex, double speed);
 
-/*Cria uma pessoa na posicao e com a velocidade especificadas*/
-person personCreate(point pos, velocity speed);
+/*Cria uma pessoa na posicao e com a velocidade especificadas, com a textura dada*/
+person personCreate(texture tex, point pos, velocity speed);
 
 /*Nuka uma pessoa*/
 void personRemove(person p);
@@ -21,13 +21,16 @@ void personRemove(person p);
 /*Atualiza status da pessoa*/
 void personUpdate(person p, int keepSpeed);
 
-/*Retorna a posicao da pessoa*/
+/*Devolve a textura da pessoa*/
+texture personGetTexture(person p);
+
+/*Devolve a posicao da pessoa*/
 point personGetPos(person p);
 
-/*Retorna a velocidade da pessoa*/
+/*Devolve a velocidade da pessoa*/
 double personGetSpeed(person p);
 
-/*Retorna o ID da pessoa*/
+/*Devolve o ID da pessoa*/
 unsigned int personGetID(person p);
 
 /*Seta o ID da pessoa*/

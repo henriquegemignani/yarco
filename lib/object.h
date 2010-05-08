@@ -7,7 +7,7 @@
 #define _OBJECT_H_
 
 #include "common.h"
-
+#include "graphics.h"
 typedef enum {
     TYPE_BOAT, TYPE_PERSON
 } objectType;
@@ -22,6 +22,7 @@ struct Object {
     unsigned int id;
     objectType type;
     double radius;
+    texture tex;
 };
 /*Posicao e velocidade sao dados por coordenadas cartesianas, enquanto a aceleracao e dada por coordenadas polares*/
 

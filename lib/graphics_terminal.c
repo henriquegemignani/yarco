@@ -8,31 +8,9 @@
 #include "person.h"
 #include "persontable.h"
 
-typedef enum {
-    NOTHING,
-    PASSENGER,
-    COLLISION,
-    BOAT,
-    OBSTACLE
-} TOKEN;
-
-char tokenToChar(TOKEN t)
-{
-    switch (t) {
-    case NOTHING:
-        return '.';
-    case PASSENGER:
-        return '#';
-    case COLLISION:
-        return '!';
-    case BOAT:
-        return 'O';
-    case OBSTACLE:
-        return '&';
-    default:
-        return '?';
-    }
-}
+#define TERMINAL_NOTHING    '.'
+#define TERMINAL_COLLISION  '!'
+#define TERMINAL_OBSTACLE   '&'
 
 #define OUTPUT_WIDTH 120
 #define OUTPUT_HEIGHT 30
@@ -40,15 +18,20 @@ char tokenToChar(TOKEN t)
 #define PIXEL_SIZE_X ((double)SCREEN_SIZE_X / OUTPUT_WIDTH)
 #define PIXEL_SIZE_Y ((double)SCREEN_SIZE_Y / OUTPUT_HEIGHT)
 
-static TOKEN outputScreen[OUTPUT_HEIGHT][OUTPUT_WIDTH];
+struct GraphicEngine {
+    char outputScreen[OUTPUT_HEIGHT][OUTPUT_WIDTH];
+    personTable table;
+};
+static graphicEngine engine;
 
-int graphicInitialize()
+void graphicInitialize(personTable table)
 {
+    AUTOMALLOC(engine);
+    engine->table = table;
     int i, j;
     for (i = 0; i < OUTPUT_HEIGHT; i++)
         for (j = 0; j < OUTPUT_WIDTH; j++)
-            outputScreen[i][j] = NOTHING;
-    return 0;
+            engine->outputScreen[i][j] = TERMINAL_NOTHING;
 }
 
 void graphicUpdatePerson(person per)
@@ -56,36 +39,34 @@ void graphicUpdatePerson(person per)
     point p = personGetPos(per);
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
     if (x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT) {
-        if (outputScreen[y][x] == NOTHING)
-            outputScreen[y][x] = PASSENGER;
+        if (engine->outputScreen[y][x] == TERMINAL_NOTHING)
+            engine->outputScreen[y][x] = personGetTexture(per);
         else
-            outputScreen[y][x] = COLLISION;
+            engine->outputScreen[y][x] = TERMINAL_COLLISION;
     }
-
 }
-
-int graphicUpdate(personTable table)
+void graphicUpdate()
 {
     int i, j;
     for (i = 0; i < OUTPUT_HEIGHT; i++)
         for (j = 0; j < OUTPUT_WIDTH; j++)
-            outputScreen[i][j] = NOTHING;
-    personTableExecute(table, graphicUpdatePerson);
-    return 0;
+            engine->outputScreen[i][j] = TERMINAL_NOTHING;
+    personTableExecute(engine->table, graphicUpdatePerson);
 }
 
-int graphicDraw()
+void graphicDraw()
 {
     int i, j;
     for (i = 0; i < OUTPUT_HEIGHT; i++) {
-        for (j = 0; j < OUTPUT_WIDTH; j++)
-            printf("%c", tokenToChar(outputScreen[i][j]));
+        for (j = 0; j < OUTPUT_WIDTH; j++) {
+            printf("%c", engine->outputScreen[i][j]);
+        }
         printf("\n");
     }
-    return 0;
 }
 
 void graphicFinish()
 {
-    /* Nada a ser feito, a matriz eh alocada estaticamente. */
+    free(engine);
+    engine = NULL;
 }

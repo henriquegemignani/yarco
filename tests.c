@@ -19,16 +19,12 @@
 int main(int argc, char **argv)
 {
     char opt = 0;
-    double genMax = 0, genMin = 999, genAvg = 0, sumPeople =
-        0, curMax, curMin, curAvg, curPeople;
+    double genMax = 0, genMin = 999, genAvg = 0, sumPeople = 0,
+        curMax, curMin, curAvg, curPeople;
     configuration defaults = configurationInit();
     personTable table;
-    int i, customTable = 0, reportOpt = 0, keepSpeed = 0, invalidOpt = 1, numPeople =
-        PERSON_NUM_INIT;
-    //point tmppos;
-    //velocity tmpvel;
-
-
+    int i, customTable = 0, reportOpt = 0, keepSpeed = 0, invalidOpt = 1,
+        numPeople = PERSON_NUM_INIT;
 
     argRead(argc, argv, defaults);
     do {
@@ -46,71 +42,39 @@ int main(int argc, char **argv)
         }
         opt = getchar();
         if (opt != '\n') {
+            invalidOpt = 0;
             switch (opt) {
             case '0':
                 exit(0);
-                invalidOpt = 0;
                 break;
+            case '7':
+                reportOpt = 1; /* aproveitando que eh um switch */
             case '1':
                 table =
                     personTableInit(defaults->defaultSpeed,
-                                    defaults->createRate);
-                invalidOpt = 0;
+                                    defaults->createRate, 
+                                    defaults->uniqueGraphic);
                 /* nothing to do, it's up to you */
                 break;
             case '2':
-                //printf("era pra ter sÃ 3 pessoas aqui!!!\n");
-                table = personTableInit(defaults->defaultSpeed, 0);
+                table = personTableInit(defaults->defaultSpeed, 0, defaults->uniqueGraphic);
                 numPeople = 3;
-                invalidOpt = 0;
                 break;
             case '3':
-                table = personTableInit(defaults->defaultSpeed, 0);
+                table = personTableInit(defaults->defaultSpeed, 0, defaults->uniqueGraphic);
                 numPeople = 99;
-                invalidOpt = 0;
                 break;
             case '4':
-                table = personTableInit(1, defaults->createRate);
-                invalidOpt = 0;
+                table = personTableInit(1, defaults->createRate, defaults->uniqueGraphic);
                 break;
             case '5':
-                table = personTableInit(100, defaults->createRate);
-                invalidOpt = 0;
+                table = personTableInit(100, defaults->createRate, defaults->uniqueGraphic);
                 break;
             case '6':
-                /* mais um pedaco de codigo q sera uma icognita rodando
-                 * atualmente: Notworking
-                 * */
-                /* sorry guys, muito sono pra terminar isso
-                   person p = personTableAddNew();
-                   p->pos = vectorCreate( 10, 10 );
-                   p->vel = ( 8, 0 );
-                   p = personTableAddNew();
-                   p->pos = vectorCreate( 20, 10 );
-                   p->vel = ( 0, 0 );
-                   p = personTableAdd();
-                   p->pos = vectorCreate( 15, 15 );
-                   p->vel = vectorCreate( 0, 0 );
-                   p = personTableAdd();
-                   p->pos = vectorCreate( 15, 25 );
-                   p->vel = vectorCreate( 0, -5 );
-                 */
-	        table = personTableInit(defaults->defaultSpeed, 0);
-
-		/*******************************************************************************/
-                numPeople = 2;/*Mudar isso aqui conforme conveniente*/
-		/*******************************************************************************/
-
-                invalidOpt = 0;
-		customTable = 1;
-		keepSpeed = 1;
-                break;
-            case '7':
-                table =
-                    personTableInit(defaults->defaultSpeed,
-                                    defaults->createRate);
-                reportOpt = 1;
-                invalidOpt = 0;
+                table = personTableInit(defaults->defaultSpeed, 0, 1);
+                numPeople = 4;
+                customTable = 1;
+                keepSpeed = 1;
                 break;
             default:
                 printf("Opcao nao reconhecida: %c. Try again.\n", opt);
@@ -132,8 +96,10 @@ int main(int argc, char **argv)
     /**********************************************************************************/
     srand(defaults->randomSeed);
     if(customTable){
-      personTableCreate(table, /*vetor posicao*/,/*vetor velocidade*/);
-      personTableCreate(table, /*vetor posicao*/,/*vetor velocidade*/);
+      personTableCreate(table, vectorCreate( 1.0*MAX_X / 4.0, 1.0*MAX_Y / 4.0 ), vectorCreate( 10, 0 ));
+      personTableCreate(table, vectorCreate( 1.0*MAX_X / 4.0, 2.0*MAX_Y / 4.0 ), vectorCreate( 10, 0 ));
+      personTableCreate(table, vectorCreate( 3.0*MAX_X / 4.0, 2.0*MAX_Y / 4.0 ), vectorCreate(-10, 0 ));
+      personTableCreate(table, vectorCreate( 3.0*MAX_X / 4.0, 3.0*MAX_Y / 4.0 ), vectorCreate(-10, 0 ));
     }
     else
       for (i = 0; i < numPeople; i++)
@@ -144,12 +110,12 @@ int main(int argc, char **argv)
     /* AVISO: genError sai do programa */
 
     /* Inicializa parte grafica */
-    graphicInitialize();
+    graphicInitialize(table);
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
         personTableUpdate(table, keepSpeed);
-        graphicUpdate(table);
+        graphicUpdate();
         if (defaults->graphic)
             graphicDraw();
         if (defaults->debugMode)

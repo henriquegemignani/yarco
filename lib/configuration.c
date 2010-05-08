@@ -21,6 +21,7 @@ configuration configurationInit()
     config->pause = 0;
     config->graphic = 1;
     config->randomSeed = time(NULL);
+    config->uniqueGraphic = 0;
 
     return config;
 }
@@ -43,18 +44,21 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao.\n"
-               "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n",
+               "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
+               "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n",
                argv[0], defaults->defaultSpeed, defaults->createRate,
                defaults->repetitions);
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dpg");
+    argValue = argShortFlags(argc, argv, "dpgu");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-p") || argValue[1])
         defaults->pause = 1;
     if (argFind(argc, argv, "--nographic", "-g") || argValue[2])
         defaults->graphic = 0;
+    if (argFind(argc, argv, "--unique", "-u") || argValue[3])
+        defaults->uniqueGraphic = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);

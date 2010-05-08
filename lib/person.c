@@ -8,7 +8,7 @@
 #include "physics.h"
 #include "person.h"
 
-person personCreate(point pos, velocity speed)
+person personCreate(texture tex, point pos, velocity speed)
 {
     person p;
     //double personDirection;
@@ -18,6 +18,7 @@ person personCreate(point pos, velocity speed)
     p->radius = PERSON_RADIUS;
     p->pos = pos;
     p->vel = speed;
+    p->tex = tex;
     //personDirection = (double) randInt(0, 7) / 4;
     //p->vel =
     //    vectorPolarToCartesian(vectorCreate(speed, personDirection * PI));
@@ -25,7 +26,7 @@ person personCreate(point pos, velocity speed)
     return p;
 }
 
-person personNew(double speed)
+person personNew(texture tex, double speed)
 {
     //int randNum;
     double dir;
@@ -61,7 +62,7 @@ person personNew(double speed)
         vectorPolarToCartesian(vectorCreate
                                (randomizeAround(speed, STD_DIST),
                                 dir + PI / 4 * randInt(0, 4)));
-    return personCreate(pos, vel);
+    return personCreate(tex, pos, vel);
 }
 
 
@@ -75,6 +76,10 @@ void personUpdate(person p, int keepSpeed)
     if (!keepSpeed)
         p->vel = newDirection(p->vel);
     updateObject(p);
+}
+
+texture personGetTexture(person p) {
+    return p->tex;
 }
 
 point personGetPos(person p)

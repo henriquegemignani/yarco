@@ -13,8 +13,10 @@ struct PersonTable {
     person list[PERSON_NUM_LIMIT];
     unsigned int curMax, lastID;
     double defaultSpeed, createRate, createCounter;
+    int uniqueGraphics;
 };
 
+#define PERSON_DEFAULTTEX '#'
 
 /* Funcoes privadas. */
 person personTableAdd(personTable table, person p)
@@ -62,9 +64,13 @@ void quicksort(person * vet, int ini, int fim)
 }
 
 
+char createPersonGraphic(personTable table) {
+    return table->uniqueGraphics ? (char)('@' + ( table->lastID % ('z' - 'A'))) : PERSON_DEFAULTTEX;
+}
+
 /* Funcoes publicas. */
 
-personTable personTableInit(double defaultSpeed, double createRate)
+personTable personTableInit(double defaultSpeed, double createRate, int uniqueGraphics)
 {
     personTable table;
     AUTOMALLOC(table);
@@ -73,6 +79,7 @@ personTable personTableInit(double defaultSpeed, double createRate)
     table->defaultSpeed = defaultSpeed;
     table->createRate = createRate;
     table->createCounter = randomizeAround(createRate, STD_DIST);
+    table->uniqueGraphics = uniqueGraphics;
 
     return table;
 }
@@ -80,7 +87,7 @@ personTable personTableInit(double defaultSpeed, double createRate)
 
 person personTableAddNew(personTable table)
 {
-    person aux = personNew(table->defaultSpeed),
+    person aux = personNew(createPersonGraphic(table), table->defaultSpeed),
         p = personTableAdd(table, aux);
     if (p == ERROR_PERSON_LIMIT_EXCEEDED)
         personRemove(aux);
@@ -90,13 +97,13 @@ person personTableAddNew(personTable table)
 
 person personTableCreate(personTable table, point pos, velocity vel)
 {
-    person p, aux = personCreate(pos, vel);
+    person p, aux = personCreate(createPersonGraphic(table), pos, vel);
     p = personTableAdd(table, aux);
     if (p == ERROR_PERSON_LIMIT_EXCEEDED)
         personRemove(aux);
     return p;
 }
-
+ 
 person personTableSearch(personTable table, unsigned int id)
 {
     int i;
@@ -156,7 +163,7 @@ void personTableUpdate(personTable table, int keepSpeed)
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
                 /* Entao cria uma nova em alguma borda */
                 personRemove(table->list[i]);
-                table->list[i] = personNew(table->defaultSpeed);
+                table->list[i] = personNew(createPersonGraphic(table), table->defaultSpeed);
                 personSetID(table->list[i], ++table->lastID);
             }
         }
