@@ -8,47 +8,60 @@
 #include "physics.h"
 #include "person.h"
 
-person personCreate(point pos, double speed)
+person personCreate(point pos, velocity speed)
 {
     person p;
-    double personDirection;
+    //double personDirection;
     AUTOMALLOC(p);
     p->id = 0;
     p->type = TYPE_PERSON;
     p->radius = PERSON_RADIUS;
     p->pos = pos;
-    personDirection = (double) randInt(0, 7) / 4;
-    p->vel =
-        vectorPolarToCartesian(vectorCreate(speed, personDirection * PI));
+    p->vel = speed;
+    //personDirection = (double) randInt(0, 7) / 4;
+    //p->vel =
+    //    vectorPolarToCartesian(vectorCreate(speed, personDirection * PI));
     p->acc = vectorCreate(0, 0);
     return p;
 }
 
 person personNew(double speed)
 {
+    //int randNum;
+    double dir;
     point pos;
+    velocity vel;
     switch (randInt(1, 4)) {
     case 1:
         pos.x = 0;
         pos.y = randDouble(0, MAX_Y);
+        dir = -PI / 2;
         break;
     case 2:
         pos.x = MAX_X;
         pos.y = randDouble(0, MAX_Y);
+        dir = PI / 2;
         break;
     case 3:
         pos.x = randDouble(0, MAX_X);
         pos.y = 0;
+        dir = 0;
         break;
     case 4:
         pos.x = randDouble(0, MAX_X);
         pos.y = MAX_Y;
+        dir = PI;
         break;
     default:
         genError
-            ("Erro em personNew: numero aleatorio nao esta emtre 1 e 4\n");
+            ("Erro em personNew: numero aleatorio nao esta entre 1 e 4\n");
     }
-    return personCreate(pos, randomizeAround(speed, STD_DIST));
+    // randNum = randInt(0, 4);
+    vel =
+        vectorPolarToCartesian(vectorCreate
+                               (randomizeAround(speed, STD_DIST),
+                                dir + PI / 4 * randInt(0, 4)));
+    return personCreate(pos, vel);
 }
 
 
@@ -57,9 +70,10 @@ void personRemove(person p)
     free(p);
 }
 
-void personUpdate(person p)
+void personUpdate(person p, int keepSpeed)
 {
-    p->vel = newDirection(p->vel);
+    if (!keepSpeed)
+        p->vel = newDirection(p->vel);
     updateObject(p);
 }
 

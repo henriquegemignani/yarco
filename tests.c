@@ -24,7 +24,8 @@ int main(int argc, char **argv)
         0, curMax, curMin, curAvg, curPeople;
     configuration defaults = configurationInit();
     personTable table;
-    int i, reportOpt = 0, invalidOpt = 1, numPeople = PERSON_NUM_INIT;
+    int i, reportOpt = 0, keepSpeed = 0, invalidOpt = 1, numPeople =
+        PERSON_NUM_INIT;
 
 
 
@@ -134,7 +135,7 @@ int main(int argc, char **argv)
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate(table);
+        personTableUpdate(table, keepSpeed);
         graphicUpdate(table);
         if (defaults->graphic)
             graphicDraw();

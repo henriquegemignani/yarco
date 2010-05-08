@@ -55,7 +55,7 @@ double vectorLength(vector);
 vector vectorAngleSet(vector v, double ang);
 /*Seta o comprimento do vetor*/
 vector vectorLengthSet(vector v, double length);
-/*Rotaciona o vetor de acordo com o angulo dado, no sentido horario*/
+/*Rotaciona o vetor de acordo com o angulo dado, no sentido anti-horario*/
 vector vectorRotate(vector v, double ang);
 /*Imprime o vetor, retorna quantos caracteres foram impressos*/
 int vectorPrint(vector);

@@ -17,6 +17,8 @@ personTable personTableInit(double defaultSpeed, double createRate);
 Devolve a pessoa criada e ERROR_PERSON_LIMIT_EXCEEDED em erro. */
 person personTableAddNew(personTable table);
 
+person personTableCreate(personTable table, point pos, velocity vel);
+
 /*Procura a pessoa com ID id na tabela*/
 person personTableSearch(personTable table, unsigned int id);
 
@@ -30,7 +32,7 @@ int personTableRemoveByPerson(personTable table, person p);
 void personTableSort(personTable table);
 
 /*Atualiza a tabela*/
-void personTableUpdate(personTable table);
+void personTableUpdate(personTable table, int keepSpeed);
 
 /*Para cada pessoa na tabela, chama func passando tal pessoa como parametro.*/
 void personTableExecute(personTable table, void (*func) (person p));

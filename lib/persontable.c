@@ -88,6 +88,15 @@ person personTableAddNew(personTable table)
 }
 
 
+person personTableCreate(personTable table, point pos, velocity vel)
+{
+    person p, aux = personCreate(pos, vel);
+    p = personTableAdd(table, aux);
+    if (p == ERROR_PERSON_LIMIT_EXCEEDED)
+        personRemove(aux);
+    return p;
+}
+
 person personTableSearch(personTable table, unsigned int id)
 {
     int i;
@@ -126,7 +135,7 @@ void personTableSort(personTable table)
 
 
 /* Management functions */
-void personTableUpdate(personTable table)
+void personTableUpdate(personTable table, int keepSpeed)
 {
     int i, j;
     point pos;
@@ -140,7 +149,7 @@ void personTableUpdate(personTable table)
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
-            personUpdate(table->list[i]);
+            personUpdate(table->list[i], keepSpeed);
 
             /* Verifica se saiu do mapa. */
             pos = personGetPos(table->list[i]);

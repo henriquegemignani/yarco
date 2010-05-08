@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate(table);
+        personTableUpdate(table, 0);
         graphicUpdate(table);
         if (defaults->graphic)
             graphicDraw();
