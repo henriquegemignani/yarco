@@ -52,7 +52,7 @@ TODO :
 publish : moreclean yarco
 	mkdir -p publish
 	rm -f publish/yarco.tar
-	tar -cvf publish/yarco.tar yarco* --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
+	tar -cvzf publish/yarco.tar.gz yarco* --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
     
 .PHONY: publish-source
 publish-source :
@@ -60,4 +60,4 @@ publish-source :
 	make moreclean
 	mkdir -p publish
 	rm -f publish/source.tar
-	tar -cvf publish/source.tar * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
+	tar -cvzf publish/source.tar.gz * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish

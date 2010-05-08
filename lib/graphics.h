@@ -18,4 +18,6 @@ int graphicUpdate();
 /*Mostra o que tem que ser mostrado*/
 int graphicDraw();
 
+void graphicFinish();
+
 #endif                          /* _GRAPHICS_H_ */

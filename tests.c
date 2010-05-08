@@ -116,5 +116,8 @@ int main(int argc, char **argv)
             while (getchar() != '\n');
         }
     }
+    graphicFinish();
+    personTableRemove(table);
+    configurationRemove(defaults);
     return 0;
 }

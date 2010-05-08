@@ -84,3 +84,7 @@ int graphicDraw()
     }
     return 0;
 }
+
+void graphicFinish() {
+    /* Nada a ser feito, a matriz eh alocada estaticamente. */
+}
