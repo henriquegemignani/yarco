@@ -62,7 +62,6 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->defaultSpeed = atof(argValue);
     if ((argValue = argVal(argc, argv, "--repetitions", "-R")))
         defaults->repetitions = atoi(argValue);
-    printf("lol\n");
     if ((argValue = argVal(argc, argv, "--randomseed", "-S")))
         defaults->randomSeed = atoi(argValue);
 }
