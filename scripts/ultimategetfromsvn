@@ -1,4 +1,4 @@
 #!/bin/bash
 cat ultimategetfromsvn
 rm -rf ../[a-zA-Z0-9]*
-svn up
+svn up ../
