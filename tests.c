@@ -8,7 +8,6 @@
 /** Renan Teruo Carneiro                nUSP: 6514157             **/
 /*******************************************************************/
 
-/* #include <stdio.h> -- ta no common.h agora */
 #include "lib/common.h"
 #include "lib/graphics.h"
 #include "lib/person.h"
@@ -24,8 +23,10 @@ int main(int argc, char **argv)
         0, curMax, curMin, curAvg, curPeople;
     configuration defaults = configurationInit();
     personTable table;
-    int i, reportOpt = 0, keepSpeed = 0, invalidOpt = 1, numPeople =
+    int i, customTable = 0, reportOpt = 0, keepSpeed = 0, invalidOpt = 1, numPeople =
         PERSON_NUM_INIT;
+    //point tmppos;
+    //velocity tmpvel;
 
 
 
@@ -39,7 +40,7 @@ int main(int argc, char **argv)
                  "3) muitas pessoas\n"
                  "4) baixa velocidade\n"
                  "5) muita velocidade\n"
-                 "6) teste de colisoes\n"
+                 "6) teste de colisoes simples\n"
                  "7) rodar normalmente com relatorio de velocidades\n"
                  "...\n" "0) sair\n");
         }
@@ -94,8 +95,15 @@ int main(int argc, char **argv)
                    p->pos = vectorCreate( 15, 25 );
                    p->vel = vectorCreate( 0, -5 );
                  */
-                numPeople = 0;
+	        table = personTableInit(defaults->defaultSpeed, 0);
+
+		/*******************************************************************************/
+                numPeople = 2;/*Mudar isso aqui conforme conveniente*/
+		/*******************************************************************************/
+
                 invalidOpt = 0;
+		customTable = 1;
+		keepSpeed = 1;
                 break;
             case '7':
                 table =
@@ -121,12 +129,17 @@ int main(int argc, char **argv)
     /*  aqui se muda a persontable na unha */
 
 
-
+    /**********************************************************************************/
     srand(defaults->randomSeed);
-    for (i = 0; i < numPeople; i++)
-        if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
-            genError("Erro: limite de naufragos atingido!\n");
-
+    if(customTable){
+      personTableCreate(table, /*vetor posicao*/,/*vetor velocidade*/);
+      personTableCreate(table, /*vetor posicao*/,/*vetor velocidade*/);
+    }
+    else
+      for (i = 0; i < numPeople; i++)
+	if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
+	  genError("Erro: limite de naufragos atingido!\n");
+      /**********************************************************************************/
 
     /* AVISO: genError sai do programa */
 
