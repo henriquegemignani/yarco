@@ -203,3 +203,60 @@ void personTableRemove(personTable table)
             personRemove(table->list[i]);
     free(table);
 }
+
+
+double personTableMaxSpeed(personTable table)
+{
+    int i;
+    double max, curspeed;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL) {
+            max = personGetSpeed(table->list[i++]);
+            break;
+        }
+    for (; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            if ((curspeed = personGetSpeed(table->list[i])) > max)
+                max = curspeed;
+    return max;
+}
+
+
+double personTableMinSpeed(personTable table)
+{
+    int i;
+    double min, curspeed;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL) {
+            min = personGetSpeed(table->list[i++]);
+            break;
+        }
+    for (; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            if ((curspeed = personGetSpeed(table->list[i])) < min)
+                min = curspeed;
+    return min;
+}
+
+
+double personTableAvgSpeed(personTable table)
+{
+    int i, numPeople = 0;
+    double sum = 0;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL) {
+            sum += personGetSpeed(table->list[i]);
+            numPeople++;
+        }
+    return sum / numPeople;
+}
+
+
+int personTableCount(personTable table)
+{
+    int i, numPeople = 0;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            numPeople++;
+    return numPeople;
+}

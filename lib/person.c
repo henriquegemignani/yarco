@@ -68,6 +68,11 @@ point personGetPos(person p)
     return p->pos;
 }
 
+double personGetSpeed(person p)
+{
+    return vectorLength(p->vel);
+}
+
 unsigned int personGetID(person p)
 {
     return p->id;

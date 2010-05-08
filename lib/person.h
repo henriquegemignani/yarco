@@ -24,6 +24,9 @@ void personUpdate(person p);
 /*Retorna a posicao da pessoa*/
 point personGetPos(person p);
 
+/*Retorna a velocidade da pessoa*/
+double personGetSpeed(person p);
+
 /*Retorna o ID da pessoa*/
 unsigned int personGetID(person p);
 

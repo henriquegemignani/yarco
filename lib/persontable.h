@@ -41,4 +41,16 @@ void personTableDump(personTable table);
 /*Remove a tabela*/
 void personTableRemove(personTable table);
 
+/*Retorna a velocidade maxima das pessoas na tabela*/
+double personTableMaxSpeed(personTable table);
+
+/*Retorna a velocidade minima das pessoas na tabela*/
+double personTableMinSpeed(personTable table);
+
+/*Retorna a velocidade media das pessas na tabela*/
+double personTableAvgSpeed(personTable table);
+
+/*Retorna o numero de pessoas na tabela*/
+int personTableCount(personTable table);
+
 #endif                          /* _PERSONTABLE_H_ */
