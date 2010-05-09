@@ -1,0 +1,4 @@
+#!/bin/bash
+cat scripts/ultimategetfromsvnfromroot
+rm -rf [a-zA-Z0-9]*
+svn up
