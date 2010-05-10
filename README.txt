@@ -12,36 +12,36 @@ Renan Teruo Carneiro                nUSP: 6514157
 O programa, no momento chamado "Yarco" por motivos desconhecidos, atualmente apenas imprime os
 passageiros na tela conforme eles esariam a cada segundo. # representa um passageiro enquanto
 ! representa dois ou mais passageiros, muito provavelmente colidindo. Ele pode ser configurado
-atrav√©s de diversos par√¢metros da linha de comando.
-Para mais informa√ß√µes, execute-o com a op√ßao -h ou --help.
+atravÈs de diversos par‚metros da linha de comando.
+Para mais informaÁıes, execute-o com a opÁao -h ou --help.
 
-√â possivel criar tamb√©m um execut√°vel de testes, com algumas op√ß√µes pr√©-definidas. N√£o tivemos
-tempo de fazer algo completamente customiz√°vel, embora isso possivelmente se de pelo fato de essa
-ideia sequer ter sido discutida. Ele aceita os mesmos pa√¢metros que o execut√°vel principal, embora
-algumas das op√ß√µes possam ignorar o valor fornecido pelo usu√°rio.
+… possÌvel criar tambÈm um execut·vel de testes, com algumas opÁıes prÈ-definidas. N„o tivemos
+tempo de fazer algo completamente customiz·vel, embora isso possivelmente se de pelo fato de essa
+ideia sequer ter sido discutida. Ele aceita os mesmos pa‚metros que o execut·vel principal, embora
+algumas das opÁıes possam ignorar o valor fornecido pelo usu·rio.
 
 
 2) Gerando o programa e outros comandos do Makefile
 
-Para gerar o programa execut√°vel principal, basta um simples "make", ou "make yarco" caso queira
+Para gerar o programa execut·vel principal, basta um simples "make", ou "make yarco" caso queira
 ser criterioso. O arquivo de testes pode ser gerado a partir do comando "make yarco.test".
 
 Existem os comando "make clean", "make moreclean" e "make realclean". O comando "make clean" remove
-todos os .o e os executaveis, e qualquer outro arquivo infeliz cujo nome comece com yarco. "make
-moreclean" tamb√©m remove quaisquer arquivos de backup presentes. Finalmente, "make realclean" remove
-tamb√©m a pasta publish, criada pelos comando "make publish" e "make publish-source", caso ela exista.
+todos os .o e os execut·veis, e qualquer outro arquivo infeliz cujo nome comece com yarco. "make
+moreclean" tambÈm remove quaisquer arquivos de backup presentes. Finalmente, "make realclean" remove
+tambÈm a pasta publish, criada pelos comando "make publish" e "make publish-source", caso ela exista.
 
 Os comandos "make publish" e "make publish-source" servem para criar automaticamente pacotes prontos
-para a distribui√ß√£o desse programa. "make publish" gera um pacote com o executavel pronto para
-execu√ß√£o, enquanto "make publish-source" gera o pacote com o c√≥digo fonte do programa, al√©m deste 
-Readme. (o pacote que entregue foi gerado com esse comando)
+para a distribuiÁ„o desse programa. "make publish" gera um pacote com o execut·vel pronto para
+execuÁ„o, enquanto "make publish-source" gera o pacote com o cÛdigo fonte do programa, alÈm deste 
+Readme. (o pacote entregue foi gerado com esse comando)
 
-"make TODO" √© algo para os desenvolvedors saberem o que tem que fazer sem olhar arquivo por arquivo.
-Voc√™ pode tentar, mas n√£o deve fazer muita coisa. Al√©m de criar um autoTODO.txt vazio. Eu espero.
+"make TODO" È algo para os desenvolvedores saberem o que tem que fazer sem olhar arquivo por arquivo.
+VocÍ pode tentar, mas n„o deve fazer muita coisa. AlÈm de criar um autoTODO.txt vazio. Eu espero.
 
-Nesse pacote deve estar incluso o Makefile. Se n√£o estiver, culpe o Haruki. Sim, ele √© de outro
-grupo, mas isso √© um pequeno detalhe.
+Nesse pacote deve estar incluso o Makefile. Se n„o estiver, culpe o Haruki. Sim, ele È de outro
+grupo, mas isso È um pequeno detalhe.
 
-"make nuke" ainda n√£o existe, est√° em processo de enriquecimento de ur√¢nio. Estar√° pronto em breve.
-Ainda n√£o temos suporte ao preparo de sandu√≠ches nem ao faz-de-conta. Tambem n√£o foram implementados
-ainda poderes de vaca.
+"make nuke" ainda n„o existe, est· em processo de enriquecimento de ur‚nio. Logo estar· pronto.
+Ainda n„o temos suporte ao preparo de sanduÌches nem ao faz-de-conta. TambÈm n„o foi implementado
+os poderes de vaca.
