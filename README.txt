@@ -42,6 +42,6 @@ Você pode tentar, mas não deve fazer muita coisa. Além de criar um autoTODO.t
 Nesse pacote deve estar incluso o Makefile. Se não estiver, culpe o Haruki. Sim, ele é de outro
 grupo, mas isso é um pequeno detalhe.
 
-"make nuke" ainda nao existe, esta em processo de enriquecimento de uranio. Logo estara pronto.
-Ainda não temos suporte ao preparo de sanduíches nem ao faz-de-conta. Tambem nao foi implementado
+"make nuke" ainda não existe, está em processo de enriquecimento de urânio. Estará pronto em breve.
+Ainda não temos suporte ao preparo de sanduíches nem ao faz-de-conta. Tambem não foram implementados
 ainda poderes de vaca.
