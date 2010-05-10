@@ -1,20 +1,43 @@
-Colisoes (Massas? Criterio de colisao? Coeficiente de elasticidade?)
-Main robusto
---- O que seria um main "robusto"? o que falta para ele se tornar um?
+-----------------------------
+Colisoes:
+- Massas?
+- Criterio de colisao? 
+- Coeficiente de elasticidade?
 
 -----------------------------
-Sobre Testes Automatizados:
-Ao rodar, ele imprime na tela uma lista de possiveis testes a serem executados. Cada teste é 
-numerado e o usuário digita o numero do teste desejado.
-Feito isso, o executavel prepara tudo e deixa na situação de teste, e o programa roda como deveria.
-
+Testes Automatizados:
 - Geracao de Relatorios?
+
 -----------------------------
+Possiveis objetos no mundo:
+- Tubarao (SHARK): colisao mata PERSON e diminui ponto de um BOAT
+- Item (ITEM): da algum bonus para o BOAT que pegar (+speed, invulnerabilidade)
+- Detrito (JUNK): restos do barco que colide com BOAT e {UNKNOWN} com PERSON. Move-se normalmente pelo mar
+- Coral (CORAL): obstaculo estatico que atrapalha BOAT e {UNKNOWN} com PERSON.
 
-Deixar todos esses structs que temos (Configuration, PersonTable) e alguns novos (um para o 
-graphics_terminal.c) como tipos de primeira classe. Isso daria mais poder ao executavel de teste 
-(e talvez o codigo fique mais elegante).
+Mais ideias ou alterar essas?
 
+-----------------------------
+Orientacao a Objetos:
+Criar uma estrutura CLASS (com class.c/h), que possui apontador para as seguintes funcoes:
+- Update (devolve void, recebe object)
+- Remove (devolve void, recebe object)
+- Compare (devolve int, recebe 2 object)
+- Collide (devolve void, recebe 2 object)
+- Dump (devolve void, recebe object)
+Teriamos uma "instancia" de CLASS para cada "classe" que tivermos, como PERSON, BOAT, ITEM.
+Tais instancias seriam armazenadas de alguma forma (vetor? LL?), possivelmetne no prorio class.c/h.
 
+Dado um OBJECT, seria só acessar ao campo CLASS (atualmente type), e entao `a instancia adequada
+de CLASS, e conseguir funcao desejada. Pode-se ter um define para simplificar esse processo.
 
--> Alguns caras não estão sendo corretamente impressos. Why?
+Com isso, o tipo "object" passaria a ser um "struct Object *".
+
+Vantagens:
+- Possivel ter um vetor de OBJECTs, onde se mistura PERSON, BOAT, ITEM, etc. sem perder a funcionalidade.
+- PersonTable se tornaria ObjectTable e solucionaria o futuro problema de organizar mais de um tipo de object.
+- Implementar novas "classes" se torna um processo bem simples.
+
+Desvantagens:
+- Mais complicado (ou nao, dependendo de como for a outra solucao para a PersonTable)
+- Se der erro, vai ser um erro catastrofico onde nada funciona
