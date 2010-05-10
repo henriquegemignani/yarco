@@ -32,7 +32,7 @@ typedef struct Vector velocity;
 typedef struct Vector acceleration;
 /*Afinal, em fisica, posicao, aceleracao, e velocidade podem ser representados por vetores!*/
 
-typedef char texture; /* Afinal, em modo texto graficos eh uma letra! */
+typedef char texture;           /* Afinal, em modo texto graficos eh uma letra! */
 
 /*Cria um vetor*/
 vector vectorCreate(double x, double y);
@@ -89,7 +89,6 @@ void genError(char *msg);
 
 /* Imprime um erro padrao para erro com malloc e encerra a execucao
  do programa, devolvendo o erro 1. */
-/*Poderia ser encaixado no genError...*/
 void MALLOC_DIE();
 
 #endif                          /* _COMMON_H_ */

@@ -34,7 +34,7 @@ sandwich :
 
 .PHONY : clean
 clean : 
-	rm -f $(objects) $(objectmain) $(objecttest) yarco* #yarco.exe
+	rm -f $(objects) $(objectmain) $(objecttest) yarco*
 
 .PHONY : moreclean
 moreclean : clean
@@ -47,17 +47,16 @@ realclean : moreclean
 .PHONY : TODO
 TODO : 
 	grep TODO *.[ch] lib/*.[ch] > autoTODO.txt
-    
+
 .PHONY: publish
 publish : moreclean yarco
 	mkdir -p publish
 	rm -f publish/yarco.tar
 	tar -cvzf publish/yarco.tar.gz yarco* --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
-    
+
 .PHONY: publish-source
-publish-source :
-	scripts/indentallfromroot
-	make moreclean
+publish-source : moreclean
+	indent -i4 -kr -nut *.c lib/*.[ch]
 	mkdir -p publish
 	rm -f publish/source.tar
-	tar -cvzf publish/source.tar.gz * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
+	tar -cvzf publish/source.tar.gz * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish --exclude=*~

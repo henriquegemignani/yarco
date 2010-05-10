@@ -8,28 +8,23 @@
 #include "physics.h"
 #include "person.h"
 
-person personCreate(texture tex, point pos, velocity speed)
+person personCreate(texture tex, point pos, velocity vel)
 {
     person p;
-    //double personDirection;
     AUTOMALLOC(p);
     p->id = 0;
     p->type = TYPE_PERSON;
     p->radius = PERSON_RADIUS;
     p->pos = pos;
-    p->vel = speed;
+    p->vel = vel;
     p->tex = tex;
-    //personDirection = (double) randInt(0, 7) / 4;
-    //p->vel =
-    //    vectorPolarToCartesian(vectorCreate(speed, personDirection * PI));
     p->acc = vectorCreate(0, 0);
     return p;
 }
 
 person personNew(texture tex, double speed)
 {
-    //int randNum;
-    double dir;
+    double dir;                 /*Dir determina a primeira direcao do passageiro de modo que ele nao saia imediatamente da tela */
     point pos;
     velocity vel;
     switch (randInt(1, 4)) {
@@ -57,7 +52,6 @@ person personNew(texture tex, double speed)
         genError
             ("Erro em personNew: numero aleatorio nao esta entre 1 e 4\n");
     }
-    // randNum = randInt(0, 4);
     vel =
         vectorPolarToCartesian(vectorCreate
                                (randomizeAround(speed, STD_DIST),
@@ -78,7 +72,8 @@ void personUpdate(person p, int keepSpeed)
     updateObject(p);
 }
 
-texture personGetTexture(person p) {
+texture personGetTexture(person p)
+{
     return p->tex;
 }
 
@@ -117,7 +112,6 @@ int personCompare(person r, person s)
     if (r->pos.y == s->pos.y)
         return r->pos.x - s->pos.x;
     return r->pos.y - s->pos.y;
-/*Mais elegante assim, non? De quebra, se precisar saber exatamente a diferenca no eixo relevante, la esta*/
 }
 
 void personDump(person p)
@@ -126,6 +120,4 @@ void personDump(person p)
     vectorPrint(p->pos);
     printf(" V");
     vectorPrint(p->vel);
-    printf(" A");
-    vectorPrint(p->acc);
 }

@@ -11,12 +11,14 @@
 typedef struct PersonTable *personTable;
 
 /*Inicializa tabela de pessoas*/
-personTable personTableInit(double defaultSpeed, double createRate, int uniqueGraphics);
+personTable personTableInit(double defaultSpeed, double createRate,
+                            int uniqueGraphics);
 
 /*Cria uma nova pessoa em alguma borda e a adiciona na tabela. 
 Devolve a pessoa criada e ERROR_PERSON_LIMIT_EXCEEDED em erro. */
 person personTableAddNew(personTable table);
 
+/*Cria uma pessoa na posicao pos com vetor velocidade vel e a adiciona na tabela. Devolve a pessoa criada e ERROR_PERSON_LIMIT_EXCEEDED em erro. */
 person personTableCreate(personTable table, point pos, velocity vel);
 
 /*Procura a pessoa com ID id na tabela*/

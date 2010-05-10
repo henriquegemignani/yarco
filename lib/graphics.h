@@ -21,7 +21,7 @@ void graphicInitialize(personTable table);
 void graphicUpdate();
 /*Mostra o que tem que ser mostrado*/
 void graphicDraw();
-
+/*Libera a memoria da parte grafica*/
 void graphicFinish();
 
 #endif                          /* _GRAPHICS_H_ */

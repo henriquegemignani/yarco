@@ -64,13 +64,18 @@ void quicksort(person * vet, int ini, int fim)
 }
 
 
-char createPersonGraphic(personTable table) {
-    return table->uniqueGraphics ? (char)('@' + ( table->lastID % ('z' - 'A'))) : PERSON_DEFAULTTEX;
+char createPersonGraphic(personTable table)
+{
+    return table->uniqueGraphics ? (char) ('@' +
+                                           (table->lastID %
+                                            ('z' -
+                                             'A'))) : PERSON_DEFAULTTEX;
 }
 
 /* Funcoes publicas. */
 
-personTable personTableInit(double defaultSpeed, double createRate, int uniqueGraphics)
+personTable personTableInit(double defaultSpeed, double createRate,
+                            int uniqueGraphics)
 {
     personTable table;
     AUTOMALLOC(table);
@@ -87,8 +92,9 @@ personTable personTableInit(double defaultSpeed, double createRate, int uniqueGr
 
 person personTableAddNew(personTable table)
 {
-    person aux = personNew(createPersonGraphic(table), table->defaultSpeed),
-        p = personTableAdd(table, aux);
+    person aux =
+        personNew(createPersonGraphic(table), table->defaultSpeed), p =
+        personTableAdd(table, aux);
     if (p == ERROR_PERSON_LIMIT_EXCEEDED)
         personRemove(aux);
     return p;
@@ -97,13 +103,13 @@ person personTableAddNew(personTable table)
 
 person personTableCreate(personTable table, point pos, velocity vel)
 {
-    person p, aux = personCreate(createPersonGraphic(table), pos, vel);
-    p = personTableAdd(table, aux);
+    person aux = personCreate(createPersonGraphic(table), pos, vel),
+        p = personTableAdd(table, aux);
     if (p == ERROR_PERSON_LIMIT_EXCEEDED)
         personRemove(aux);
     return p;
 }
- 
+
 person personTableSearch(personTable table, unsigned int id)
 {
     int i;
@@ -163,7 +169,9 @@ void personTableUpdate(personTable table, int keepSpeed)
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
                 /* Entao cria uma nova em alguma borda */
                 personRemove(table->list[i]);
-                table->list[i] = personNew(createPersonGraphic(table), table->defaultSpeed);
+                table->list[i] =
+                    personNew(createPersonGraphic(table),
+                              table->defaultSpeed);
                 personSetID(table->list[i], ++table->lastID);
             }
         }

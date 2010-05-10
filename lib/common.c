@@ -102,7 +102,7 @@ int randInt(int min, int max)
     return (((max - min +
               1) * ((double) (1.0 * rand()) / (double) (1.0 * RAND_MAX +
                                                         1.0))) + min);
-    /*Trecho de codigo oferecido pelo monitor de MAC122 08 */
+    /*Trecho de codigo oferecido pelo monitor de MAC122-08, levemente adaptado */
 }
 
 double randDouble(double min, double max)
@@ -123,5 +123,6 @@ void genError(char *msg)
 
 void MALLOC_DIE()
 {
+    fprintf(stderr, "Erro de alocacao de memoria\n");
     exit(ERROR_MALLOC_FAILURE);
 }

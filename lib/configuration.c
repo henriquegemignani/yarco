@@ -13,7 +13,7 @@ configuration configurationInit()
     configuration config;
     AUTOMALLOC(config);
 
-    /* Valores padroes. */
+    /* Valores padrao. */
     config->defaultSpeed = PERSON_SPEED_DEFAULT;
     config->createRate = PERSON_CREATE_RATE_DEFAULT;
     config->debugMode = 0;
@@ -22,6 +22,7 @@ configuration configurationInit()
     config->graphic = 1;
     config->randomSeed = time(NULL);
     config->uniqueGraphic = 0;
+    config->keepSpeed = 0;
 
     return config;
 }
@@ -45,12 +46,13 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
-               "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n",
+               "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
+               "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n",
                argv[0], defaults->defaultSpeed, defaults->createRate,
                defaults->repetitions);
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dpgu");
+    argValue = argShortFlags(argc, argv, "dpguk");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-p") || argValue[1])
@@ -59,6 +61,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->graphic = 0;
     if (argFind(argc, argv, "--unique", "-u") || argValue[3])
         defaults->uniqueGraphic = 1;
+    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[4])
+        defaults->keepSpeed = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
@@ -87,16 +91,16 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort)
     for (i = 0; i < argc; i++) {
         if (!strncmp(argv[i], argLong, len = strlen(argLong))) {
             if (strlen(argv[i]) > len)
-                return argv[i] + len;
+                return argv[i] + len;   /*Argumentos da forma -aX ou --argumentX */
             else
-                return argv[i + 1];
+                return argv[i + 1];     /*Argumentos da forma -a X ou --argument X */
         }
         if (argShort != NULL) {
             if (!strncmp(argv[i], argShort, len = strlen(argShort))) {
                 if (strlen(argv[i]) > len)
-                    return argv[i] + len;
+                    return argv[i] + len;       /*Argumentos da forma -aX ou --argumentX */
                 else
-                    return argv[i + 1];
+                    return argv[i + 1]; /*Argumentos da forma -a X ou --argument X */
             }
         }
     }
@@ -112,10 +116,10 @@ char *argShortFlags(int argc, char **argv, char *args)
     for (i = 0; i < argsLen; i++)
         res[i] = 0;
     for (i = 1; i < argc; i++)
-        if (argv[i][0] == '-' && argv[i][1] != '-')
+        if (argv[i][0] == '-' && argv[i][1] != '-')     /*Sumariamente: Para cada agumento de main que comeca com '-' mas nao com "--"... */
             for (j = 1; j < strlen(argv[i]); j++)
                 for (k = 0; k < argsLen; k++)
-                    if (argv[i][j] == args[k])
+                    if (argv[i][j] == args[k])  /*...verifica, char a char, se cada letra da string args esta presente */
                         res[k] = 1;
     return res;
 }

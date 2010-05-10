@@ -45,6 +45,7 @@ void graphicUpdatePerson(person per)
             engine->outputScreen[y][x] = TERMINAL_COLLISION;
     }
 }
+
 void graphicUpdate()
 {
     int i, j;

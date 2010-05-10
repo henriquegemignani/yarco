@@ -8,7 +8,6 @@
 /** Renan Teruo Carneiro                nUSP: 6514157             **/
 /*******************************************************************/
 
-/* #include <stdio.h> -- ta no common.h agora */
 #include "lib/common.h"
 #include "lib/graphics.h"
 #include "lib/persontable.h"
@@ -23,7 +22,9 @@ int main(int argc, char **argv)
     argRead(argc, argv, defaults);
 
     /* Inicializa tabela de passageiros */
-    table = personTableInit(defaults->defaultSpeed, defaults->createRate, defaults->uniqueGraphic);
+    table =
+        personTableInit(defaults->defaultSpeed, defaults->createRate,
+                        defaults->uniqueGraphic);
     srand(defaults->randomSeed);
     for (i = 0; i < PERSON_NUM_INIT; i++)
         if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
@@ -35,7 +36,7 @@ int main(int argc, char **argv)
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate(table, 0);
+        personTableUpdate(table, defaults->keepSpeed);
         graphicUpdate();
         if (defaults->graphic)
             graphicDraw();

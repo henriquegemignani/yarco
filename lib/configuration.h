@@ -15,6 +15,7 @@ struct Configuration {
     int graphic;
     int randomSeed;
     int uniqueGraphic;
+    int keepSpeed;
 };
 typedef struct Configuration *configuration;
 
@@ -23,9 +24,11 @@ void configurationRemove(configuration config);
 
 /* Le argumentos e seta variaveis de acordo com os mesmos */
 void argRead(int argc, char **argv, configuration defaults);
-
+/*Se o argumento existe, retorna o indice do mesmo. Caso contrario, retorna 0*/
 int argFind(int argc, char **argv, char *argLong, char *argShort);
+/*Se o argumento existe, retorna o valor dele em forma de string. Caso contrario, retorna NULL*/
 char *argVal(int argc, char **argv, char *argLong, char *argShort);
+/*Retorna um vetor, onde cada indice representa se a letra daquele indice existe como argumento*/
 char *argShortFlags(int argc, char **argv, char *args);
 
 #endif                          /* _CONFIGURATION_H_ */

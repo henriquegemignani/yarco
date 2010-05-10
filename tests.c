@@ -23,7 +23,7 @@ int main(int argc, char **argv)
         curMax, curMin, curAvg, curPeople;
     configuration defaults = configurationInit();
     personTable table;
-    int i, customTable = 0, reportOpt = 0, keepSpeed = 0, invalidOpt = 1,
+    int i, customTable = 0, reportOpt = 0, invalidOpt = 1,
         numPeople = PERSON_NUM_INIT;
 
     argRead(argc, argv, defaults);
@@ -48,33 +48,41 @@ int main(int argc, char **argv)
                 exit(0);
                 break;
             case '7':
-                reportOpt = 1; /* aproveitando que eh um switch */
+                reportOpt = 1;  /* aproveitando que eh um switch */
             case '1':
                 table =
                     personTableInit(defaults->defaultSpeed,
-                                    defaults->createRate, 
+                                    defaults->createRate,
                                     defaults->uniqueGraphic);
                 /* nothing to do, it's up to you */
                 break;
             case '2':
-                table = personTableInit(defaults->defaultSpeed, 0, defaults->uniqueGraphic);
+                table =
+                    personTableInit(defaults->defaultSpeed, 0,
+                                    defaults->uniqueGraphic);
                 numPeople = 3;
                 break;
             case '3':
-                table = personTableInit(defaults->defaultSpeed, 0, defaults->uniqueGraphic);
+                table =
+                    personTableInit(defaults->defaultSpeed, 0,
+                                    defaults->uniqueGraphic);
                 numPeople = 99;
                 break;
             case '4':
-                table = personTableInit(1, defaults->createRate, defaults->uniqueGraphic);
+                table =
+                    personTableInit(1, defaults->createRate,
+                                    defaults->uniqueGraphic);
                 break;
             case '5':
-                table = personTableInit(100, defaults->createRate, defaults->uniqueGraphic);
+                table =
+                    personTableInit(100, defaults->createRate,
+                                    defaults->uniqueGraphic);
                 break;
             case '6':
                 table = personTableInit(defaults->defaultSpeed, 0, 1);
                 numPeople = 4;
                 customTable = 1;
-                keepSpeed = 1;
+                defaults->keepSpeed = 1;
                 break;
             default:
                 printf("Opcao nao reconhecida: %c. Try again.\n", opt);
@@ -85,28 +93,29 @@ int main(int argc, char **argv)
         }
     } while (invalidOpt);
 
-    /* Inicializa tabela de passageiros */
-
-    /*
-       personTableInit(defaults->defaultSpeed, defaults->createRate);
-     */
-    /*  aqui se muda a persontable na unha */
-
-
-    /**********************************************************************************/
     srand(defaults->randomSeed);
-    if(customTable){
-      personTableCreate(table, vectorCreate( 1.0*MAX_X / 4.0, 1.0*MAX_Y / 4.0 ), vectorCreate( 10, 0 ));
-      personTableCreate(table, vectorCreate( 1.0*MAX_X / 4.0, 2.0*MAX_Y / 4.0 ), vectorCreate( 10, 0 ));
-      personTableCreate(table, vectorCreate( 3.0*MAX_X / 4.0, 2.0*MAX_Y / 4.0 ), vectorCreate(-10, 0 ));
-      personTableCreate(table, vectorCreate( 3.0*MAX_X / 4.0, 3.0*MAX_Y / 4.0 ), vectorCreate(-10, 0 ));
-    }
-    else
-      for (i = 0; i < numPeople; i++)
-	if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
-	  genError("Erro: limite de naufragos atingido!\n");
-      /**********************************************************************************/
-
+    if (customTable) {
+        /*Valores convenientes */
+        personTableCreate(table,
+                          vectorCreate(1.0 * MAX_X / 4.0,
+                                       1.0 * MAX_Y / 4.0), vectorCreate(10,
+                                                                        0));
+        personTableCreate(table,
+                          vectorCreate(1.0 * MAX_X / 4.0,
+                                       2.0 * MAX_Y / 4.0), vectorCreate(10,
+                                                                        0));
+        personTableCreate(table,
+                          vectorCreate(3.0 * MAX_X / 4.0,
+                                       2.0 * MAX_Y / 4.0),
+                          vectorCreate(-10, 0));
+        personTableCreate(table,
+                          vectorCreate(3.0 * MAX_X / 4.0,
+                                       3.0 * MAX_Y / 4.0),
+                          vectorCreate(-10, 0));
+    } else
+        for (i = 0; i < numPeople; i++)
+            if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
+                genError("Erro: limite de naufragos atingido!\n");
     /* AVISO: genError sai do programa */
 
     /* Inicializa parte grafica */
@@ -114,7 +123,7 @@ int main(int argc, char **argv)
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate(table, keepSpeed);
+        personTableUpdate(table, defaults->keepSpeed);
         graphicUpdate();
         if (defaults->graphic)
             graphicDraw();
@@ -133,8 +142,8 @@ int main(int argc, char **argv)
             if (curMin < genMin)
                 genMin = curMin;
             curPeople = personTableCount(table);
-            sumPeople += curPeople;
-            genAvg += curAvg * curPeople;
+            sumPeople += curPeople;     /*Valor que sera usado para a media ponderada no final */
+            genAvg += curAvg * curPeople;       /*Somando termos da media ponderada */
         }
         if (defaults->pause) {
             printf("Aperte Enter para continuar...\n");
@@ -142,11 +151,7 @@ int main(int argc, char **argv)
         }
     }
     if (reportOpt) {
-        printf("\n"
-               "Velocidade maxima geral: %3.2f\n"
-               "Velocidade minima geral: %3.2f\n"
-               "Velocidade media geral: %3.2f\n",
-               genMax, genMin, genAvg / sumPeople);
+        printf("\n" "Velocidade maxima geral: %3.2f\n" "Velocidade minima geral: %3.2f\n" "Velocidade media geral: %3.2f\n", genMax, genMin, genAvg / sumPeople);       /*Passo final da media ponderada */
     }
     graphicFinish();
     personTableRemove(table);
