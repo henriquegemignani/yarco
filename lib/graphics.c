@@ -8,7 +8,7 @@
 #include "person.h"
 #include "persontable.h"
 #include "physics.h"
-#include <allegro.h>
+//#include <allegro.h>
 
 BITMAP *buffer;
 
