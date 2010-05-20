@@ -37,12 +37,12 @@ int main(int argc, char **argv)
     personInitializeClass(defaults->keepSpeed);
     
     /* Inicializa parte grafica */
-    graphicInitialize(table);
+    graphicInitialize( WINDOWED_MODE ); /*pode ser FULLSCREEN_MODE*/
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
         personTableUpdate(table);
-        graphicUpdate();
+        graphicUpdate(table);
         if (defaults->graphic)
             graphicDraw();
         if (defaults->debugMode)

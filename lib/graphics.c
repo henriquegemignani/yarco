@@ -13,6 +13,8 @@
 
 BITMAP *buffer;
 
+void graphicUpdatePerson( person per );
+
 void graphicInitialize( int mode )
 {
 	allegro_init();
@@ -22,7 +24,7 @@ void graphicInitialize( int mode )
 	else if( mode == FULLSCREEN_MODE )
 		set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0, 0 );
 
-	buffer = create_bitmap( SCREE_SIZE_X, SCREEN_SIZE_Y	);
+	buffer = create_bitmap( SCREEN_SIZE_X, SCREEN_SIZE_Y	);
 }
 
 void graphicUpdate( personTable table )
@@ -33,8 +35,8 @@ void graphicUpdate( personTable table )
 
 void graphicUpdatePerson( person per )
 {
-	BITMAP tmp = create_bitmap( 15, 15 );
-	point p = personGetPos( per );
+	BITMAP *tmp = create_bitmap( 15, 15 );
+	point p = objectGetPos( per );
 	rectfill( tmp, 0, 0, 15, 15, 3000 ); /* essa linha ainda vai perecer */
 	draw_sprite( buffer, tmp, p.x, p.y );
 }
