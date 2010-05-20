@@ -64,3 +64,6 @@ Limpar TODO. <_<
 
 -----------
 Desenhar direito as coisas, fazer coisas alem de pessoinhas
+
+-----------
+Suavizar animações. acho que para isso, basta lidar com frequencia de atualizações e atualização de velocidades.
