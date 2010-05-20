@@ -5,7 +5,8 @@
 
 #include "object.h"
 
-object objectCreate(objectType type, unsigned int id, point pos, velocity vel, double radius, texture tex)
+object objectCreate(objectType type, unsigned int id, point pos,
+                    velocity vel, double radius, texture tex)
 {
     object o;
     AUTOMALLOC(o);
@@ -38,6 +39,7 @@ unsigned int objectGetID(object a)
 {
     return a->id;
 }
+
 void objectSetID(object a, unsigned int id)
 {
     a->id = id;
@@ -75,7 +77,8 @@ double objectGetDistFrom(object o, point p)
 
 int objectIsColiding(object a, object b)
 {
-    return (distanceBetweenPoints(a->pos, b->pos) < (a->radius + b->radius));
+    return (distanceBetweenPoints(a->pos, b->pos) <
+            (a->radius + b->radius));
 }
 
 void objectDump(object a)

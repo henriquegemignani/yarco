@@ -9,10 +9,12 @@
 #include "person.h"
 #include "class.h"
 
-void personInitializeClass(int keepSpeed) {
-    classAdd( TYPE_PERSON, 
-        keepSpeed != 0 ? personUpdateKeepSpeed : personUpdateChangeSpeed, 
-        removeObject, executeCollision, objectDump );
+void personInitializeClass(int keepSpeed)
+{
+    classAdd(TYPE_PERSON,
+             keepSpeed !=
+             0 ? personUpdateKeepSpeed : personUpdateChangeSpeed,
+             removeObject, executeCollision, objectDump);
 }
 
 person personCreate(texture tex, point pos, velocity vel)
@@ -68,7 +70,9 @@ void personUpdateChangeSpeed(person p)
     p->vel = newDirection(p->vel);
     updateObject(p);
 }
-void personUpdateKeepSpeed(person p) {
+
+void personUpdateKeepSpeed(person p)
+{
     updateObject(p);
 }
 

@@ -19,9 +19,9 @@ typedef struct GraphicEngine *graphicEngine;
 
 /*Inicializa parte grafica. uniquePerson define se deve usar um caracter diferente 
 para cada pessoa desenhada.*/
-void graphicInitialize( int mode );
+void graphicInitialize(int mode);
 /*Atualiza os buffers*/
-void graphicUpdate( personTable table );
+void graphicUpdate(personTable table);
 /*Mostra o que tem que ser mostrado*/
 void graphicDraw();
 /*Libera a memoria da parte grafica*/

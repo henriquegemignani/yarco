@@ -12,42 +12,44 @@
 
 BITMAP *buffer;
 
-void graphicUpdatePerson( person per );
+void graphicUpdatePerson(person per);
 
-void graphicInitialize( int mode )
+void graphicInitialize(int mode)
 {
-	allegro_init();
-	set_color_depth(32);
-	if( mode == WINDOWED_MODE )
-		set_gfx_mode( GFX_AUTODETECT_WINDOWED, 	SCREEN_SIZE_X, SCREEN_SIZE_Y, 0, 0 );
-	else if( mode == FULLSCREEN_MODE )
-		set_gfx_mode( GFX_AUTODETECT_FULLSCREEN, SCREEN_SIZE_X, SCREEN_SIZE_Y, 0, 0 );
+    allegro_init();
+    set_color_depth(32);
+    if (mode == WINDOWED_MODE)
+        set_gfx_mode(GFX_AUTODETECT_WINDOWED, SCREEN_SIZE_X, SCREEN_SIZE_Y,
+                     0, 0);
+    else if (mode == FULLSCREEN_MODE)
+        set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, SCREEN_SIZE_X,
+                     SCREEN_SIZE_Y, 0, 0);
 
-	buffer = create_bitmap( SCREEN_SIZE_X, SCREEN_SIZE_Y	);
+    buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 }
 
-void graphicUpdatePerson( person per )
+void graphicUpdatePerson(person per)
 {
-	BITMAP *tmp = create_bitmap( 15, 15 );
-	point p = objectGetPos( per );
-	rectfill( tmp, 0, 0, 15, 15, 3000 ); /* essa linha ainda vai perecer */
-	draw_sprite( buffer, tmp, p.x, p.y );
+    BITMAP *tmp = create_bitmap(15, 15);
+    point p = objectGetPos(per);
+    rectfill(tmp, 0, 0, 15, 15, 3000);  /* essa linha ainda vai perecer */
+    draw_sprite(buffer, tmp, p.x, p.y);
 }
 
-void graphicUpdate( personTable table )
+void graphicUpdate(personTable table)
 {
-	clear( buffer );
-	personTableExecute( table, graphicUpdatePerson );
+    clear(buffer);
+    personTableExecute(table, graphicUpdatePerson);
 }
 
 
 void graphicDraw()
 {
-	draw_sprite( screen, buffer, 0, 0 );
+    draw_sprite(screen, buffer, 0, 0);
 }
 
 void graphicFinish()
 {
-	destroy_bitmap( buffer );
-	allegro_exit();
+    destroy_bitmap(buffer);
+    allegro_exit();
 }

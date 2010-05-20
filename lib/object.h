@@ -15,11 +15,11 @@ typedef enum {
 typedef struct Object *object;
 
 struct Object {
-	objectType type;
-	unsigned int id;
-	point pos;
+    objectType type;
+    unsigned int id;
+    point pos;
     velocity vel;
-	acceleration acc;
+    acceleration acc;
     double radius;
     texture tex;
 };
@@ -41,7 +41,8 @@ unsigned int objectGetID(object a);
 void objectSetID(object a, unsigned int id);
 
 /*Cria um novo objeto.*/
-object objectCreate(objectType type, unsigned int id, point pos, velocity vel, double radius, texture tex);
+object objectCreate(objectType type, unsigned int id, point pos,
+                    velocity vel, double radius, texture tex);
 
 /*Atualiza o objeto*/
 void updateObject(object o);

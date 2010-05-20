@@ -35,9 +35,9 @@ int main(int argc, char **argv)
     /* Incializa as classes. */
     classInitialize();
     personInitializeClass(defaults->keepSpeed);
-    
+
     /* Inicializa parte grafica */
-    graphicInitialize( WINDOWED_MODE ); /*pode ser FULLSCREEN_MODE*/
+    graphicInitialize(WINDOWED_MODE);   /*pode ser FULLSCREEN_MODE */
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
