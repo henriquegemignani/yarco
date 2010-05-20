@@ -21,6 +21,7 @@
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
+#include <allegro.h>
 struct Vector {
     double x, y;
 };

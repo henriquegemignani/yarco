@@ -2,7 +2,6 @@
 /** MAC0211 - Laboratorio de Programacao I                        **/
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
-
 #include "common.h"
 #include "object.h"
 #include "graphics.h"
@@ -27,12 +26,6 @@ void graphicInitialize( int mode )
 	buffer = create_bitmap( SCREEN_SIZE_X, SCREEN_SIZE_Y	);
 }
 
-void graphicUpdate( personTable table )
-{
-	clear( buffer );
-	personTableExecute( table, graphicUpdatePerson );
-}
-
 void graphicUpdatePerson( person per )
 {
 	BITMAP *tmp = create_bitmap( 15, 15 );
@@ -40,6 +33,13 @@ void graphicUpdatePerson( person per )
 	rectfill( tmp, 0, 0, 15, 15, 3000 ); /* essa linha ainda vai perecer */
 	draw_sprite( buffer, tmp, p.x, p.y );
 }
+
+void graphicUpdate( personTable table )
+{
+	clear( buffer );
+	personTableExecute( table, graphicUpdatePerson );
+}
+
 
 void graphicDraw()
 {
