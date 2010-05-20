@@ -33,6 +33,7 @@ void classAdd(objectType type, void (*updateFunc) (object),
 #define OBJECT_UPDATE(obj)          getClass((*obj).type)->updateFunc(obj)
 #define OBJECT_COLLIDE(obj, tar)    getClass((*obj).type)->collideFunc((obj),(tar))
 #define OBJECT_REMOVE(obj)          getClass((*obj).type)->removeFunc(obj)
+#define OBJECT_DUMP(obj)            getClass((*obj).type)->dumpFunc(obj)
     
 /* Inicializa a lista de classes. */ 
 void classInitialize();

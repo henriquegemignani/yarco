@@ -11,7 +11,7 @@
 #include "physics.h"
 
 struct PersonTable {
-    person list[PERSON_NUM_LIMIT];
+    object list[PERSON_NUM_LIMIT];
     unsigned int curMax, lastID;
     double defaultSpeed, createRate, createCounter;
     int uniqueGraphics;
@@ -20,7 +20,7 @@ struct PersonTable {
 #define PERSON_DEFAULTTEX '#'
 
 /* Funcoes privadas. */
-person personTableAdd(personTable table, person p)
+object personTableAdd(personTable table, object p)
 {
     if (table->curMax == PERSON_NUM_LIMIT) {
         personTableSort(table);
@@ -32,10 +32,10 @@ person personTableAdd(personTable table, person p)
     return p;
 }
 
-int particao(person * vet, int ini, int fim)
+int particao(object * vet, int ini, int fim)
 {
     int i, j;
-    person tmp;
+    object tmp;
 
     i = ini;
     for (j = ini + 1; j <= fim; ++j) {
@@ -54,7 +54,7 @@ int particao(person * vet, int ini, int fim)
 }
 
 
-void quicksort(person * vet, int ini, int fim)
+void quicksort(object * vet, int ini, int fim)
 {
     int r;
     if (fim > ini) {
@@ -111,7 +111,7 @@ person personTableCreate(personTable table, point pos, velocity vel)
     return p;
 }
 
-person personTableSearch(personTable table, unsigned int id)
+object personTableSearch(personTable table, unsigned int id)
 {
     int i;
     for (i = 0; i < table->curMax; i++)
@@ -124,19 +124,19 @@ person personTableSearch(personTable table, unsigned int id)
 int personTableRemoveByID(personTable table, unsigned int id)
 {
     int i;
-    person pAux;
+    object pAux;
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id) {
             pAux = table->list[i];
             table->list[i] = NULL;
-            personRemove(pAux);
+            OBJECT_REMOVE(pAux);
             return 0;
         }
     return WARNING_PERSON_NOT_FOUND;
 }
 
 
-int personTableRemoveByPerson(personTable table, person p)
+int personTableRemoveByPerson(personTable table, object p)
 {
     return personTableRemoveByID(table, objectGetID(p));
 }
@@ -157,19 +157,19 @@ void personTableUpdate(personTable table)
     for (i = 0; i < table->curMax; i++)
         for (j = i + 1; j < table->curMax; j++)
             if (objectIsColiding(table->list[i], table->list[j]))
-                executeCollision(table->list[i], table->list[j]);
+                OBJECT_COLLIDE(table->list[i], table->list[j]);
 
     /* Para cada pessoa... */
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
-            personUpdateChangeSpeed(table->list[i]);
+            OBJECT_UPDATE(table->list[i]);
 
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
                 /* Entao cria uma nova em alguma borda */
-                personRemove(table->list[i]);
+                OBJECT_REMOVE(table->list[i]);
                 table->list[i] =
                     personNew(createPersonGraphic(table),
                               table->defaultSpeed);
@@ -208,9 +208,9 @@ void personTableDump(personTable table)
 {
     int i;
     for (i = 0; i < table->curMax; i++) {
-        printf("Person[%2d]: ", i);
+        printf("Object[%2d]: ", i);
         if (table->list[i] != NULL)
-            personDump(table->list[i]);
+            OBJECT_DUMP(table->list[i]);
         else
             printf("NULL");
         printf("\n");
@@ -225,7 +225,7 @@ void personTableRemove(personTable table)
     int i;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
-            personRemove(table->list[i]);
+            OBJECT_REMOVE(table->list[i]);
     free(table);
 }
 
