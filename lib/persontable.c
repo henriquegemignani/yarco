@@ -5,6 +5,7 @@
 
 #include "common.h"
 #include "object.h"
+#include "class.h"
 #include "person.h"
 #include "persontable.h"
 #include "physics.h"
@@ -27,7 +28,7 @@ person personTableAdd(personTable table, person p)
             return ERROR_PERSON_LIMIT_EXCEEDED;
     }
     table->list[table->curMax++] = p;
-    personSetID(p, ++table->lastID);
+    objectSetID(p, ++table->lastID);
     return p;
 }
 
@@ -38,7 +39,7 @@ int particao(person * vet, int ini, int fim)
 
     i = ini;
     for (j = ini + 1; j <= fim; ++j) {
-        if (personCompare(vet[j], vet[ini]) < 0) {      /*< */
+        if (objectCompare(vet[j], vet[ini]) < 0) {      /*< */
             i++;
             tmp = vet[i];
             vet[i] = vet[j];
@@ -114,7 +115,7 @@ person personTableSearch(personTable table, unsigned int id)
 {
     int i;
     for (i = 0; i < table->curMax; i++)
-        if (personGetID(table->list[i]) == id)
+        if (objectGetID(table->list[i]) == id)
             return table->list[i];
     return NULL;
 }
@@ -125,7 +126,7 @@ int personTableRemoveByID(personTable table, unsigned int id)
     int i;
     person pAux;
     for (i = 0; i < table->curMax; i++)
-        if (personGetID(table->list[i]) == id) {
+        if (objectGetID(table->list[i]) == id) {
             pAux = table->list[i];
             table->list[i] = NULL;
             personRemove(pAux);
@@ -137,7 +138,7 @@ int personTableRemoveByID(personTable table, unsigned int id)
 
 int personTableRemoveByPerson(personTable table, person p)
 {
-    return personTableRemoveByID(table, personGetID(p));
+    return personTableRemoveByID(table, objectGetID(p));
 }
 
 
@@ -148,31 +149,31 @@ void personTableSort(personTable table)
 
 
 /* Management functions */
-void personTableUpdate(personTable table, int keepSpeed)
+void personTableUpdate(personTable table)
 {
     int i, j;
     point pos;
     /* Verificando colisoes. */
     for (i = 0; i < table->curMax; i++)
         for (j = i + 1; j < table->curMax; j++)
-            if (objectIsColiding(*table->list[i], *(table->list[j])))
+            if (objectIsColiding(table->list[i], table->list[j]))
                 executeCollision(table->list[i], table->list[j]);
 
     /* Para cada pessoa... */
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
-            personUpdate(table->list[i], keepSpeed);
+            personUpdateChangeSpeed(table->list[i]);
 
             /* Verifica se saiu do mapa. */
-            pos = personGetPos(table->list[i]);
+            pos = objectGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
                 /* Entao cria uma nova em alguma borda */
                 personRemove(table->list[i]);
                 table->list[i] =
                     personNew(createPersonGraphic(table),
                               table->defaultSpeed);
-                personSetID(table->list[i], ++table->lastID);
+                objectSetID(table->list[i], ++table->lastID);
             }
         }
 
@@ -235,12 +236,12 @@ double personTableMaxSpeed(personTable table)
     double max, curspeed;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
-            max = personGetSpeed(table->list[i++]);
+            max = objectGetSpeed(table->list[i++]);
             break;
         }
     for (; i < table->curMax; i++)
         if (table->list[i] != NULL)
-            if ((curspeed = personGetSpeed(table->list[i])) > max)
+            if ((curspeed = objectGetSpeed(table->list[i])) > max)
                 max = curspeed;
     return max;
 }
@@ -252,12 +253,12 @@ double personTableMinSpeed(personTable table)
     double min, curspeed;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
-            min = personGetSpeed(table->list[i++]);
+            min = objectGetSpeed(table->list[i++]);
             break;
         }
     for (; i < table->curMax; i++)
         if (table->list[i] != NULL)
-            if ((curspeed = personGetSpeed(table->list[i])) < min)
+            if ((curspeed = objectGetSpeed(table->list[i])) < min)
                 min = curspeed;
     return min;
 }
@@ -269,7 +270,7 @@ double personTableAvgSpeed(personTable table)
     double sum = 0;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
-            sum += personGetSpeed(table->list[i]);
+            sum += objectGetSpeed(table->list[i]);
             numPeople++;
         }
     return sum / numPeople;

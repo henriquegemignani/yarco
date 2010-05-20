@@ -12,6 +12,7 @@
 #include "lib/graphics.h"
 #include "lib/persontable.h"
 #include "lib/configuration.h"
+#include "lib/class.h"
 
 int main(int argc, char **argv)
 {
@@ -31,12 +32,16 @@ int main(int argc, char **argv)
             genError("Erro: limite de naufragos atingido!\n");
     /* AVISO: genError sai do programa */
 
+    /* Incializa as classes. */
+    classInitialize();
+    personInitializeClass(defaults->keepSpeed);
+    
     /* Inicializa parte grafica */
     graphicInitialize(table);
 
     for (i = 0; i < defaults->repetitions; i++) {
         printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate(table, defaults->keepSpeed);
+        personTableUpdate(table);
         graphicUpdate();
         if (defaults->graphic)
             graphicDraw();
@@ -50,5 +55,6 @@ int main(int argc, char **argv)
     graphicFinish();
     personTableRemove(table);
     configurationRemove(defaults);
+    classFinish();
     return 0;
 }

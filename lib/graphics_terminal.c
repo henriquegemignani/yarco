@@ -4,6 +4,7 @@
 /*******************************************************************/
 
 #include "common.h"
+#include "object.h"
 #include "graphics.h"
 #include "person.h"
 #include "persontable.h"
@@ -36,11 +37,11 @@ void graphicInitialize(personTable table)
 
 void graphicUpdatePerson(person per)
 {
-    point p = personGetPos(per);
+    point p = objectGetPos(per);
     int x = p.x / PIXEL_SIZE_X, y = p.y / PIXEL_SIZE_Y;
     if (x >= 0 && y >= 0 && x < OUTPUT_WIDTH && y < OUTPUT_HEIGHT) {
         if (engine->outputScreen[y][x] == TERMINAL_NOTHING)
-            engine->outputScreen[y][x] = personGetTexture(per);
+            engine->outputScreen[y][x] = objectGetTexture(per);
         else
             engine->outputScreen[y][x] = TERMINAL_COLLISION;
     }

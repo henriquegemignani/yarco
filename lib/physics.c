@@ -14,7 +14,7 @@ vector newDirection(vector v)
     return v;
 }
 
-void executeCollision(object * a, object * b)
+void executeCollision(object a, object b)
 {
     /*Lembre-se: Colisao inelastica e massas identicas... */
     velocity tmp = a->vel;

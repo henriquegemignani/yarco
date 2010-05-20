@@ -7,19 +7,17 @@
 #include "object.h"
 #include "physics.h"
 #include "person.h"
+#include "class.h"
+
+void personInitializeClass(int keepSpeed) {
+    classAdd( TYPE_PERSON, 
+        keepSpeed != 0 ? personUpdateKeepSpeed : personUpdateChangeSpeed, 
+        removeObject, objectCompare, executeCollision, objectDump );
+}
 
 person personCreate(texture tex, point pos, velocity vel)
 {
-    person p;
-    AUTOMALLOC(p);
-    p->id = 0;
-    p->type = TYPE_PERSON;
-    p->radius = PERSON_RADIUS;
-    p->pos = pos;
-    p->vel = vel;
-    p->tex = tex;
-    p->acc = vectorCreate(0, 0);
-    return p;
+    return objectCreate(TYPE_PERSON, 0, pos, vel, PERSON_RADIUS, tex);
 }
 
 person personNew(texture tex, double speed)
@@ -65,53 +63,13 @@ void personRemove(person p)
     free(p);
 }
 
-void personUpdate(person p, int keepSpeed)
+void personUpdateChangeSpeed(person p)
 {
-    if (!keepSpeed)
-        p->vel = newDirection(p->vel);
+    p->vel = newDirection(p->vel);
     updateObject(p);
 }
-
-texture personGetTexture(person p)
-{
-    return p->tex;
-}
-
-point personGetPos(person p)
-{
-    return p->pos;
-}
-
-double personGetSpeed(person p)
-{
-    return vectorLength(p->vel);
-}
-
-unsigned int personGetID(person p)
-{
-    return p->id;
-}
-
-void personSetID(person p, unsigned int id)
-{
-    p->id = id;
-}
-
-int personCompare(person r, person s)
-{
-    /* Considera NULL maior que qualquer outro elemento,
-       exceto ele mesmo. */
-    /* retorna <0 se r < s, 0 se iguais, >0 se r > s */
-    if (r == NULL || s == NULL)
-        return (r == NULL) - (s == NULL);
-    /* Retorna: 1, se somente r == NULL
-       0, se ambos sao NULL
-       -1, se apenas s == NULL
-       curti isso :)           
-     */
-    if (r->pos.y == s->pos.y)
-        return r->pos.x - s->pos.x;
-    return r->pos.y - s->pos.y;
+void personUpdateKeepSpeed(person p) {
+    updateObject(p);
 }
 
 void personDump(person p)
