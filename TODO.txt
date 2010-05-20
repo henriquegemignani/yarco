@@ -41,3 +41,26 @@ Vantagens:
 Desvantagens:
 - Mais complicado (ou nao, dependendo de como for a outra solucao para a PersonTable)
 - Se der erro, vai ser um erro catastrofico onde nada funciona
+
+
+-----------
+
+Separar MAX de ScreenSize?
+
+Deixando ambos valores independentes não usa a tela inteira. Talvez devessemos fazer algo em  relação a isso? usar uma proporção?
+
+
+-----------
+
+Separar a tela em quadrantes?
+
+Separar a tela numa matriz que guarda quais objetos estão em cada quadrante, para melhorar a detecção de colisão? Manter a lista de objetos que temos ou fazer cada quadrante ter uma lista, caso implementemos?
+
+-----------
+Arrumar CFLAGS. >_>
+
+-----------
+Limpar TODO. <_<
+
+-----------
+Desenhar direito as coisas, fazer coisas alem de pessoinhas
