@@ -15,14 +15,16 @@ struct ClassStruct {
 	objectType type;
 	void (*updateFunc)(object);
 	void (*removeFunc)(object);
-	int (*compareFunc)(object, object);
+	//int (*compareFunc)(object, object);
 	void (*collideFunc)(object, object);
 	void (*dumpFunc)(object);
 };
 
 /* Adiciona uma nova classe na lista. */
+/* void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(object), 
+	int (*compareFunc)(object, object), void (*collideFunc)(object, object), void (*dumpFunc)(object)); */
 void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(object), 
-	int (*compareFunc)(object, object), void (*collideFunc)(object, object), void (*dumpFunc)(object));
+    void (*collideFunc)(object, object), void (*dumpFunc)(object));
 
 /* Devolve a classe correspondente ao tipo TYPE, ou NULL se nao existe. */
 Class getClass(objectType type);

@@ -12,7 +12,7 @@
 void personInitializeClass(int keepSpeed) {
     classAdd( TYPE_PERSON, 
         keepSpeed != 0 ? personUpdateKeepSpeed : personUpdateChangeSpeed, 
-        removeObject, objectCompare, executeCollision, objectDump );
+        removeObject, executeCollision, objectDump );
 }
 
 person personCreate(texture tex, point pos, velocity vel)

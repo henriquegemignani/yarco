@@ -11,8 +11,10 @@
 
 static Class classList[NUM_CLASS];
 
+/*void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(object), 
+	int (*compareFunc)(object, object), void (*collideFunc)(object, object), void (*dumpFunc)(object)) { */
 void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(object), 
-	int (*compareFunc)(object, object), void (*collideFunc)(object, object), void (*dumpFunc)(object)) {
+	void (*collideFunc)(object, object), void (*dumpFunc)(object)) {
     int i;
     for( i = 0; i < NUM_CLASS; i++ )
         if( classList[i] == NULL )
@@ -23,7 +25,7 @@ void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(ob
     classList[i]->type = type;
     classList[i]->updateFunc = updateFunc;
     classList[i]->removeFunc = removeFunc;
-    classList[i]->compareFunc = compareFunc;
+    //classList[i]->compareFunc = compareFunc;
     classList[i]->collideFunc = collideFunc;
     classList[i]->dumpFunc = dumpFunc;
 }
