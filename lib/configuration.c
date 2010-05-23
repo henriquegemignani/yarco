@@ -66,7 +66,7 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->uniqueGraphic = 1;
     if (argFind(argc, argv, "--keepspeed", "-k") || argValue[4])
         defaults->keepSpeed = 1;
-    if (argFind(argc, argv, "--nosleep", "-n") || argValue[4])
+    if (argFind(argc, argv, "--nosleep", "-n") || argValue[5])
         defaults->noSleep = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
