@@ -23,6 +23,9 @@ void personRemove(person p);
 /*Atualiza status da pessoa*/
 void personUpdate(person p, int keepDir, int fps);
 
+/* Move a person dada para uma borda qualquer da tela e muda a velocidade para ficar de acordo. */
+void personMoveToRandomBorder(person p);
+
 /*Imprime posicao, velocidade e aceleracao de todos os passageiros*/
 void personDump(person p);
 

@@ -171,12 +171,7 @@ void personTableUpdate(personTable table, int keepDir, int newSec)
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
-                /* Entao cria uma nova em alguma borda */
-                OBJECT_REMOVE(table->list[i]);
-                table->list[i] =
-                    personNew(createPersonGraphic(table),
-                              table->defaultSpeed);
-                objectSetID(table->list[i], ++table->lastID);
+                OBJECT_BOUNDS(table->list[i]);
             }
         }
 
