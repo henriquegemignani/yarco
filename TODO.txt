@@ -70,3 +70,6 @@ Suavizar animações. acho que para isso, basta lidar com frequencia de atualizaçõ
 
 -----------
 Melhorar eficiencia ou ajustar FPS e controlar frequencia de atualizações de acordo.
+
+-----------
+Evitar que passageiros sejam criados colidindo imediatamente?
