@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     int i, iterationFrame;
     personTable table;
     struct timespec sleepTime, sleepErrorRemaining;
-    long frameTimeStart, frameDuration = 0, lastFrameDuration = 0;
+    long frameTimeStart, lastFrameDuration = 0;
     sleepTime.tv_sec = 0; /* Tempo entre frames eh sempre menor que 1s */
 
     argRead(argc, argv, defaults);
@@ -76,13 +76,17 @@ int main(int argc, char **argv)
             while (getchar() != '\n');
         } else if (!defaults->noSleep) {
             sleepTime.tv_nsec = 1.0e9 / defaults->fps;
+            /* Se o frame anterior demorou menos do que deveria, espera mais.
+                E se demorou mais do que devia, espera menos no atual. Somente se
+                nao for o primeiro frame. */
+            if( lastFrameDuration != 0 )
+                sleepTime.tv_nsec += sleepTime.tv_nsec - lastFrameDuration * 1000;
             if( nanosleep(&sleepTime, &sleepErrorRemaining) ) {
                 /* Ocorreu algum erro no nanoSleep. */
                 /* TODO: tratar erros no nanosleep */
                 genError("Erro: nanosleep devolveu nao-zero.\n");
             }
-            lastFrameDuration = frameDuration;
-            frameDuration = timeInMicrosecond() - frameTimeStart;
+            lastFrameDuration = timeInMicrosecond() - frameTimeStart;
         }
         if(!iterationFrame)
         	i++;
