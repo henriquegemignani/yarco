@@ -16,7 +16,8 @@ void graphicUpdatePerson(person per);
 
 void graphicInitialize(int mode)
 {
-    allegro_init();
+    if( !allegro_init() )
+        genError("Erro em inicializar o allegro. Se voce esta utilizando modo texto, tente --nographic\n");
     set_color_depth(32);
     if (mode == WINDOWED_MODE)
         set_gfx_mode(GFX_AUTODETECT_WINDOWED, SCREEN_SIZE_X, SCREEN_SIZE_Y,
