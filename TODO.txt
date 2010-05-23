@@ -73,3 +73,6 @@ Melhorar eficiencia ou ajustar FPS e controlar frequencia de atualizações de aco
 
 -----------
 Evitar que passageiros sejam criados colidindo imediatamente?
+
+-----------
+Corrigir Memory Leak
