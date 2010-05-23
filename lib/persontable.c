@@ -149,7 +149,7 @@ void personTableSort(personTable table)
 
 
 /* Management functions */
-void personTableUpdate(personTable table, int keepDir)
+void personTableUpdate(personTable table, int keepDir, int newSec)
 {
     int i, j;
     point pos;
@@ -177,7 +177,7 @@ void personTableUpdate(personTable table, int keepDir)
             }
         }
 
-    if (table->createRate > 0 && table->curMax < PERSON_NUM_LIMIT) {
+    if (table->createRate > 0 && table->curMax < PERSON_NUM_LIMIT && newSec) {
         /* Verifica se ja esta na hora de criar mais uma pessoa. */
         table->createCounter -= 1;
         if (table->createCounter < 0) {

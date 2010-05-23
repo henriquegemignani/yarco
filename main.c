@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     	if(!frameNum)
     		printf("\n\nIteracao: %d\n\n", i + 1);
 		frameNum = (frameNum+1)%_FPS;
-        personTableUpdate(table, (frameNum || defaults->keepSpeed));
+        personTableUpdate(table, (frameNum || defaults->keepSpeed), !frameNum);
         graphicUpdate(table);
         if (defaults->graphic)
             graphicDraw();

@@ -34,7 +34,7 @@ int personTableRemoveByPerson(personTable table, person p);
 void personTableSort(personTable table);
 
 /*Atualiza a tabela*/
-void personTableUpdate(personTable table, int keepDir);
+void personTableUpdate(personTable table, int keepDir, int newSec);
 
 /*Para cada pessoa na tabela, chama func passando tal pessoa como parametro.*/
 void personTableExecute(personTable table, void (*func) (person p));
