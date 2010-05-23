@@ -17,6 +17,7 @@ struct Configuration {
     int uniqueGraphic;
     int keepSpeed;
     int fps;
+    int noSleep;
 };
 typedef struct Configuration *configuration;
 

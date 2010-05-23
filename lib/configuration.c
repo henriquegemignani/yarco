@@ -46,15 +46,16 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
                "  -f\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
-               "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Inutiliza --fps\n"
+               "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
                "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
-               "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n",
+               "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
+               "  -n\t--nosleep\t\tIgnora o sleep.\n",
                argv[0], defaults->defaultSpeed, defaults->createRate,
                defaults->repetitions);
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dpguk");
+    argValue = argShortFlags(argc, argv, "dpgukn");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-p") || argValue[1])
@@ -65,6 +66,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->uniqueGraphic = 1;
     if (argFind(argc, argv, "--keepspeed", "-k") || argValue[4])
         defaults->keepSpeed = 1;
+    if (argFind(argc, argv, "--nosleep", "-n") || argValue[4])
+        defaults->noSleep = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
