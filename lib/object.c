@@ -45,11 +45,11 @@ void objectSetID(object a, unsigned int id)
     a->id = id;
 }
 
-void updateObject(object o)
+void updateObject(object o, int fps)
 {
     vector aux = vectorPolarToCartesian(o->acc);
-    o->pos = vectorSum(o->pos, vectorDiv(o->vel,_FPS));
-    o->vel = vectorSum(o->vel, vectorDiv(aux,_FPS));
+    o->pos = vectorSum(o->pos, vectorDiv(o->vel,fps));
+    o->vel = vectorSum(o->vel, vectorDiv(aux,fps));
 }
 
 int objectCompare(object r, object s)

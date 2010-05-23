@@ -9,7 +9,7 @@
 #include "common.h"
 typedef struct Object *person;
 
-void personInitializeClass(int keepSpeed);
+void personInitializeClass();
 
 /*Cria uma pessoa em uma das bordas, com a textura dada*/
 person personNew(texture tex, double speed);
@@ -21,7 +21,7 @@ person personCreate(texture tex, point pos, velocity speed);
 void personRemove(person p);
 
 /*Atualiza status da pessoa*/
-void personUpdate(person p, int keepDir);
+void personUpdate(person p, int keepDir, int fps);
 
 /*Imprime posicao, velocidade e aceleracao de todos os passageiros*/
 void personDump(person p);

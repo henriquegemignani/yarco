@@ -9,7 +9,7 @@
 #include "person.h"
 #include "class.h"
 
-void personInitializeClass(int keepSpeed)
+void personInitializeClass()
 {
     classAdd(TYPE_PERSON,
              personUpdate,
@@ -64,11 +64,11 @@ void personRemove(person p)
     free(p);
 }
 
-void personUpdate(person p, int keepDir)
+void personUpdate(person p, int keepDir, int fps)
 {
     if(!keepDir)
     	p->vel = newDirection(p->vel);
-    updateObject(p);
+    updateObject(p, fps);
 }
 
 void personDump(person p)

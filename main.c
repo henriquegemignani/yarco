@@ -13,19 +13,32 @@
 #include "lib/persontable.h"
 #include "lib/configuration.h"
 #include "lib/class.h"
+#include <time.h>
+#include <sys/time.h>
+
+/* Devolve o tempo atual em microsegundos.*/
+long timeInMicrosecond()
+{
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return (long)tv->tv_sec * 1000000 + (long)tv->tv_usec;
+}
 
 int main(int argc, char **argv)
 {
     configuration defaults = configurationInit();
-    int i, frameNum;
+    int i, iterationFrame;
     personTable table;
+    struct timespec sleepTime, sleepErrorRemaining;
+    long frameTimeStart;
+    sleepTime.tv_sec = 0; /* Tempo entre frames eh sempre menor que 1s */
 
     argRead(argc, argv, defaults);
 
     /* Inicializa tabela de passageiros */
     table =
         personTableInit(defaults->defaultSpeed, defaults->createRate,
-                        defaults->uniqueGraphic);
+                        defaults->uniqueGraphic, defaults->fps);
     srand(defaults->randomSeed);
     for (i = 0; i < PERSON_NUM_INIT; i++)
         if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
@@ -34,29 +47,46 @@ int main(int argc, char **argv)
 
     /* Incializa as classes. */
     classInitialize();
-    personInitializeClass(defaults->keepSpeed);
+    personInitializeClass();
 
     /* Inicializa parte grafica */
-    graphicInitialize(WINDOWED_MODE);   /*pode ser FULLSCREEN_MODE */
-    frameNum = 0;
+    if (defaults->graphic)
+        graphicInitialize(WINDOWED_MODE);   /*pode ser FULLSCREEN_MODE */
+    
+    iterationFrame = 0; /* se iterationFrame == 0 entao eh uma nova iteracao. Caso contrario,
+        armazena quantos frames se passaram desde a ultima iteracao. */
     for (i = 0; i < defaults->repetitions;){
-    	if(!frameNum)
+    	if(!iterationFrame)
     		printf("\n\nIteracao: %d\n\n", i + 1);
-		frameNum = (frameNum+1)%_FPS;
-        personTableUpdate(table, (frameNum || defaults->keepSpeed), !frameNum);
-        graphicUpdate(table);
-        if (defaults->graphic)
+        
+        frameTimeStart = timeInMicrosecond();
+        
+		iterationFrame = (iterationFrame+1) % defaults->fps;
+        personTableUpdate(table, (iterationFrame || defaults->keepSpeed), !iterationFrame );
+        
+        if (defaults->graphic) {
+            graphicUpdate(table);
             graphicDraw();
+        }
+        
         if (defaults->debugMode)
             personTableDump(table);
-        if (defaults->pause && !frameNum) {
+        if (defaults->pause && !iterationFrame) {
             printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
+        } else {
+            sleepTime.tv_nsec = 1.0e9 / defaults->fps;
+            if( nanosleep(&sleepTime, &sleepErrorRemaining) ) {
+                /* Ocorreu algum erro no nanoSleep. */
+                /* TODO: tratar erros no nanosleep */
+                genError("Erro: nanosleep devolveu nao-zero.\n");
+            }
         }
-        if(!frameNum)
+        if(!iterationFrame)
         	i++;
     }
-    graphicFinish();
+    if (defaults->graphic)
+        graphicFinish();
     personTableRemove(table);
     configurationRemove(defaults);
     classFinish();

@@ -45,7 +45,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
                     velocity vel, double radius, texture tex);
 
 /*Atualiza o objeto*/
-void updateObject(object o);
+void updateObject(object o, int fps);
 
 /*Compara dois objetos de acordo com sua posicao*/
 int objectCompare(object r, object s);

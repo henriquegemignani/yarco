@@ -23,6 +23,7 @@ configuration configurationInit()
     config->randomSeed = time(NULL);
     config->uniqueGraphic = 0;
     config->keepSpeed = 0;
+    config->fps = 10;
 
     return config;
 }
@@ -44,7 +45,8 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
-               "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao.\n"
+               "  -f\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
+               "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Inutiliza --fps\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
                "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
                "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n",
@@ -72,6 +74,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->repetitions = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--randomseed", "-S")))
         defaults->randomSeed = atoi(argValue);
+    if ((argValue = argVal(argc, argv, "--fps", "-f")))
+        defaults->fps = atoi(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)

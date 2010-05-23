@@ -15,6 +15,7 @@ struct PersonTable {
     unsigned int curMax, lastID;
     double defaultSpeed, createRate, createCounter;
     int uniqueGraphics;
+    int fps;
 };
 
 #define PERSON_DEFAULTTEX '#'
@@ -76,7 +77,7 @@ char createPersonGraphic(personTable table)
 /* Funcoes publicas. */
 
 personTable personTableInit(double defaultSpeed, double createRate,
-                            int uniqueGraphics)
+                            int uniqueGraphics, int fps)
 {
     personTable table;
     AUTOMALLOC(table);
@@ -86,6 +87,7 @@ personTable personTableInit(double defaultSpeed, double createRate,
     table->createRate = createRate;
     table->createCounter = randomizeAround(createRate, STD_DIST);
     table->uniqueGraphics = uniqueGraphics;
+    table->fps = fps;
 
     return table;
 }
@@ -163,7 +165,7 @@ void personTableUpdate(personTable table, int keepDir, int newSec)
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
-            OBJECT_UPDATE(table->list[i], keepDir);
+            OBJECT_UPDATE(table->list[i], keepDir, table->fps);
 
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);

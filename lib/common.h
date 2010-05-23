@@ -18,7 +18,6 @@
 #define MAX_Y                       767
 #define REPETITONS_DEFAULT          50
 #define STD_DIST                    0.1
-#define _FPS                        60
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>

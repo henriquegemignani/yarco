@@ -16,6 +16,7 @@ struct Configuration {
     int randomSeed;
     int uniqueGraphic;
     int keepSpeed;
+    int fps;
 };
 typedef struct Configuration *configuration;
 
