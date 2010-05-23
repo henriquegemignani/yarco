@@ -34,6 +34,7 @@ void graphicUpdatePerson(person per)
     point p = objectGetPos(per);
     rectfill(tmp, 0, 0, 15, 15, 3000);  /* essa linha ainda vai perecer */
     draw_sprite(buffer, tmp, p.x, p.y);
+    destroy_bitmap(tmp);
 }
 
 void graphicUpdate(personTable table)
