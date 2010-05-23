@@ -54,7 +54,7 @@ Deixando ambos valores independentes não usa a tela inteira. Talvez devessemos f
 
 Separar a tela em quadrantes?
 
-Separar a tela numa matriz que guarda quais objetos estão em cada quadrante, para melhorar a detecção de colisão? Manter a lista de objetos que temos ou fazer cada quadrante ter uma lista, caso implementemos?
+Separar a tela numa matriz que guarda quais objetos estão em cada quadrante, para melhorar a detecção de colisão? Manter a lista de objetos que temos ou fazer cada quadrante ter uma lista, caso implementemos? /Semi-Done
 
 -----------
 Arrumar CFLAGS. >_>
@@ -66,10 +66,13 @@ Limpar TODO. <_<
 Desenhar direito as coisas, fazer coisas alem de pessoinhas
 
 -----------
-Suavizar animações. acho que para isso, basta lidar com frequencia de atualizações e atualização de velocidades.
+Suavizar animações. acho que para isso, basta lidar com frequencia de atualizações e atualização de velocidades. /Done
 
 -----------
-Melhorar eficiencia ou ajustar FPS e controlar frequencia de atualizações de acordo.
+Melhorar eficiencia ou ajustar FPS e controlar frequencia de atualizações de acordo. /Semi-done
 
 -----------
 Evitar que passageiros sejam criados colidindo imediatamente?
+
+-----------
+Ver se desenhos bugando são só aqui, e corrigir se possivel e necessario.

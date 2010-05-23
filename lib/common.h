@@ -17,10 +17,10 @@
 #define MAX_X                       1023
 #define MAX_Y                       767
 #define REPETITONS_DEFAULT          50
-#define STD_DIST                    0.1
+#define STD_DIST                    0.5
 #define NUM_CLASS                   1
-#define QUAD_SIZE_X                 5
-#define QUAD_SIZE_Y                 5
+#define QUAD_SIZE_X                 15
+#define QUAD_SIZE_Y                 15
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>

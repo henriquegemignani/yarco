@@ -16,7 +16,7 @@ void graphicUpdatePerson(person per);
 
 void graphicInitialize(int mode)
 {
-    if( !allegro_init() )
+    if( allegro_init() )
         genError("Erro em inicializar o allegro. Se voce esta utilizando modo texto, tente --nographic\n");
     set_color_depth(32);
     if (mode == WINDOWED_MODE)
@@ -33,7 +33,7 @@ void graphicUpdatePerson(person per)
 {
     BITMAP *tmp = create_bitmap(15, 15);
     point p = objectGetPos(per);
-    rectfill(tmp, 0, 0, 15, 15, 3000);  /* essa linha ainda vai perecer */
+    rectfill(tmp, 0, 0, PERSON_RADIUS, PERSON_RADIUS, 3000);  /* essa linha ainda vai perecer */
     draw_sprite(buffer, tmp, p.x, p.y);
     destroy_bitmap(tmp);
 }
