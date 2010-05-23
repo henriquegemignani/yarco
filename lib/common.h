@@ -18,12 +18,19 @@
 #define MAX_Y                       767
 #define REPETITONS_DEFAULT          50
 #define STD_DIST                    0.1
+#define QUAD_SIZE_X                 5
+#define QUAD_SIZE_Y                 5
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
 #include <allegro.h>
+
 struct Vector {
     double x, y;
+};
+
+struct Quad{
+	int x, y;
 };
 /* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
 
@@ -32,6 +39,8 @@ typedef struct Vector point;
 typedef struct Vector velocity;
 typedef struct Vector acceleration;
 /*Afinal, em fisica, posicao, aceleracao, e velocidade podem ser representados por vetores!*/
+
+typedef struct Quad quad;
 
 typedef char texture;           /* Afinal, em modo texto graficos eh uma letra! */
 
@@ -63,6 +72,10 @@ vector vectorLengthSet(vector v, double length);
 vector vectorRotate(vector v, double ang);
 /*Imprime o vetor, retorna quantos caracteres foram impressos*/
 int vectorPrint(vector);
+
+quad quadSet(int x, int y);
+
+int quadNear(quad a, quad b);
 
 /*Retorna a distancia entre dois pontos*/
 double distanceBetweenPoints(point a, point b);

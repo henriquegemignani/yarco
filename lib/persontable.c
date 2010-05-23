@@ -158,8 +158,9 @@ void personTableUpdate(personTable table, int keepDir, int newSec)
     /* Verificando colisoes. */
     for (i = 0; i < table->curMax; i++)
         for (j = i + 1; j < table->curMax; j++)
-            if (objectIsColiding(table->list[i], table->list[j]))
-                OBJECT_COLLIDE(table->list[i], table->list[j]);
+			if (quadNear(objectGetQuad(table->list[i]), objectGetQuad(table->list[j])))
+				if (objectIsColiding(table->list[i], table->list[j]))
+					OBJECT_COLLIDE(table->list[i], table->list[j]);
 
     /* Para cada pessoa... */
     for (i = 0; i < table->curMax; i++)

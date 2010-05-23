@@ -102,6 +102,19 @@ int vectorPrint(vector v)
     return printf("(%8.3f,%8.3f)", v.x, v.y);
 }
 
+quad quadSet(int x, int y){
+	quad q;
+	q.x = x;
+	q.y = y;
+	return q;
+}
+
+int quadNear(quad a, quad b){
+	if(a.x-b.x>1 || b.x-a.x>1 || a.y-b.y>1 || b.y-a.y>1)
+		return 0;
+	return 1;
+}
+
 int randInt(int min, int max)
 {
     return (((max - min +

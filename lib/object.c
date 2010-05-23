@@ -17,6 +17,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
     o->vel = vel;
     o->tex = tex;
     o->acc = vectorCreate(0, 0);
+    o->quadrante = quadSet((int)(pos.x/QUAD_SIZE_X), (int)(pos.y/QUAD_SIZE_Y));
     return o;
 }
 
@@ -28,6 +29,10 @@ texture objectGetTexture(object a)
 point objectGetPos(object a)
 {
     return a->pos;
+}
+
+quad objectGetQuad(object a){
+	return a->quadrante;
 }
 
 double objectGetSpeed(object a)
@@ -50,6 +55,7 @@ void updateObject(object o, int fps)
     vector aux = vectorPolarToCartesian(o->acc);
     o->pos = vectorSum(o->pos, vectorDiv(o->vel,fps));
     o->vel = vectorSum(o->vel, vectorDiv(aux,fps));
+    o->quadrante = quadSet((int)(o->pos.x/QUAD_SIZE_X), (int)(o->pos.y/QUAD_SIZE_Y));
 }
 
 int objectCompare(object r, object s)

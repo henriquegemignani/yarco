@@ -21,6 +21,7 @@ struct Object {
     velocity vel;
     acceleration acc;
     double radius;
+    quad quadrante;
     texture tex;
 };
 /*Posicao e velocidade sao dados por coordenadas cartesianas, enquanto a aceleracao e dada por coordenadas polares*/
@@ -33,6 +34,8 @@ point objectGetPos(object a);
 
 /*Devolve a velocidade do objeto*/
 double objectGetSpeed(object a);
+
+quad objectGetQuad(object a);
 
 /*Devolve o ID do objeto*/
 unsigned int objectGetID(object a);
