@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     int i, iterationFrame;
     personTable table;
     struct timespec sleepTime, sleepErrorRemaining;
-    long frameTimeStart, lastFrameDuration = 0;
+    long frameTimeStart, timeToOffset = 0;
     sleepTime.tv_sec = 0; /* Tempo entre frames eh sempre menor que 1s */
 
     argRead(argc, argv, defaults);
@@ -79,14 +79,24 @@ int main(int argc, char **argv)
             /* Se o frame anterior demorou menos do que deveria, espera mais.
                 E se demorou mais do que devia, espera menos no atual. Somente se
                 nao for o primeiro frame. */
-            if( lastFrameDuration != 0 )
-                sleepTime.tv_nsec += sleepTime.tv_nsec - lastFrameDuration * 1000;
-            if( nanosleep(&sleepTime, &sleepErrorRemaining) ) {
-                /* Ocorreu algum erro no nanoSleep. */
-                /* TODO: tratar erros no nanosleep */
-                genError("Erro: nanosleep devolveu nao-zero.\n");
+            
+            if( sleepTime.tv_nsec < -timeToOffset ) {
+                timeToOffset += sleepTime.tv_nsec;
+                sleepTime.tv_nsec = 0;
+            } else {
+                sleepTime.tv_nsec += timeToOffset;
             }
-            lastFrameDuration = timeInMicrosecond() - frameTimeStart;
+            if( sleepTime.tv_nsec > 0 ) {
+                if( nanosleep(&sleepTime, &sleepErrorRemaining) ) {
+                    /* Ocorreu algum erro no nanoSleep. */
+                    /* TODO: tratar erros no nanosleep */
+                    printf("sleepTime:\n\tsec: %ld\nnsec: %ld\n", sleepTime.tv_sec, 
+                        sleepTime.tv_nsec );
+                    genError("Erro: nanosleep devolveu nao-zero.\n");
+                }
+            }
+            /* lastFrameDuration = timeInMicrosecond() - frameTimeStart; */
+            timeToOffset += 1.0e9 / defaults->fps - (timeInMicrosecond() - frameTimeStart) * 1000;
         }
         if(!iterationFrame)
         	i++;
