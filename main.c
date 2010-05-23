@@ -21,7 +21,7 @@ long timeInMicrosecond()
 {
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    return (long)tv->tv_sec * 1000000 + (long)tv->tv_usec;
+    return (long)tv.tv_sec * 1000000 + (long)tv.tv_usec;
 }
 
 int main(int argc, char **argv)
