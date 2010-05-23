@@ -48,8 +48,8 @@ void objectSetID(object a, unsigned int id)
 void updateObject(object o)
 {
     vector aux = vectorPolarToCartesian(o->acc);
-    o->pos = vectorSum(o->pos, o->vel);
-    o->vel = vectorSum(o->vel, aux);
+    o->pos = vectorSum(o->pos, vectorDiv(o->vel,_FPS));
+    o->vel = vectorSum(o->vel, vectorDiv(aux,_FPS));
 }
 
 int objectCompare(object r, object s)

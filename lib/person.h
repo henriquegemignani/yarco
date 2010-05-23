@@ -21,8 +21,7 @@ person personCreate(texture tex, point pos, velocity speed);
 void personRemove(person p);
 
 /*Atualiza status da pessoa*/
-void personUpdateChangeSpeed(person p);
-void personUpdateKeepSpeed(person p);
+void personUpdate(person p, int keepDir);
 
 /*Imprime posicao, velocidade e aceleracao de todos os passageiros*/
 void personDump(person p);

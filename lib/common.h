@@ -18,6 +18,7 @@
 #define MAX_Y                       767
 #define REPETITONS_DEFAULT          50
 #define STD_DIST                    0.1
+#define _FPS                        60
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
@@ -44,7 +45,8 @@ vector vectorSum(vector a, vector b);
 vector vectorSub(vector a, vector b);
 /*Multiplicacao escalar entre dois vetores*/
 double vectorMulEsc(vector a, vector b);
-
+/*Divide um vetor pelo dividendo dado*/
+vector vectorDiv(vector v, double div);
 /*Converte de coordenadas polares para coordenadas cartesianas*/
 vector vectorPolarToCartesian(vector v);
 /*Converte de coordenadas cartesianas para coordenadas polares*/

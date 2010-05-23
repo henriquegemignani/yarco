@@ -12,8 +12,7 @@
 void personInitializeClass(int keepSpeed)
 {
     classAdd(TYPE_PERSON,
-             keepSpeed !=
-             0 ? personUpdateKeepSpeed : personUpdateChangeSpeed,
+             personUpdate,
              removeObject, executeCollision, objectDump);
 }
 
@@ -65,14 +64,10 @@ void personRemove(person p)
     free(p);
 }
 
-void personUpdateChangeSpeed(person p)
+void personUpdate(person p, int keepDir)
 {
-    p->vel = newDirection(p->vel);
-    updateObject(p);
-}
-
-void personUpdateKeepSpeed(person p)
-{
+    if(!keepDir)
+    	p->vel = newDirection(p->vel);
     updateObject(p);
 }
 

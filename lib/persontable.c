@@ -149,7 +149,7 @@ void personTableSort(personTable table)
 
 
 /* Management functions */
-void personTableUpdate(personTable table)
+void personTableUpdate(personTable table, int keepDir)
 {
     int i, j;
     point pos;
@@ -163,7 +163,7 @@ void personTableUpdate(personTable table)
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
-            OBJECT_UPDATE(table->list[i]);
+            OBJECT_UPDATE(table->list[i], keepDir);
 
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);

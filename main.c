@@ -17,7 +17,7 @@
 int main(int argc, char **argv)
 {
     configuration defaults = configurationInit();
-    int i;
+    int i, frameNum;
     personTable table;
 
     argRead(argc, argv, defaults);
@@ -38,19 +38,23 @@ int main(int argc, char **argv)
 
     /* Inicializa parte grafica */
     graphicInitialize(WINDOWED_MODE);   /*pode ser FULLSCREEN_MODE */
-
-    for (i = 0; i < defaults->repetitions; i++) {
-        printf("\n\nIteracao: %d\n\n", i + 1);
-        personTableUpdate(table);
+    frameNum = 0;
+    for (i = 0; i < defaults->repetitions;){
+    	if(!frameNum)
+    		printf("\n\nIteracao: %d\n\n", i + 1);
+		frameNum = (frameNum+1)%_FPS;
+        personTableUpdate(table, (frameNum || defaults->keepSpeed));
         graphicUpdate(table);
         if (defaults->graphic)
             graphicDraw();
         if (defaults->debugMode)
             personTableDump(table);
-        if (defaults->pause) {
+        if (defaults->pause && !frameNum) {
             printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
         }
+        if(!frameNum)
+        	i++;
     }
     graphicFinish();
     personTableRemove(table);

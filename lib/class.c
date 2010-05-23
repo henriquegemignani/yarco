@@ -12,7 +12,7 @@
 
 /*void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(object), 
 	int (*compareFunc)(object, object), void (*collideFunc)(object, object), void (*dumpFunc)(object)) { */
-void classAdd(objectType type, void (*updateFunc)(object), void (*removeFunc)(object), 
+void classAdd(objectType type, void (*updateFunc)(object, int), void (*removeFunc)(object),
 	void (*collideFunc)(object, object), void (*dumpFunc)(object)) {
     int i;
     for( i = 0; i < NUM_CLASS; i++ )

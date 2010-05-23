@@ -35,6 +35,11 @@ double vectorMulEsc(vector a, vector b)
     return ((a.x * b.x) + (a.y * b.y));
 }
 
+vector vectorDiv(vector v, double div)
+{
+	return vectorCreate(v.x/div, v.y/div);
+}
+
 vector vectorPolarToCartesian(vector v)
 {
     double vAng = v.y, vLength = v.x;
