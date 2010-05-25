@@ -11,6 +11,7 @@
 
 #define PERSON_NUM_LIMIT            100
 #define PERSON_NUM_INIT             30
+#define OBJECT_NUM_LIMIT			150
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
 #define PERSON_RADIUS               10
@@ -95,7 +96,9 @@ void genError(char *msg);
 /* WARNING AND ERROR CODES */
 #define ERROR_MALLOC_FAILURE            101
 #define ERROR_PERSON_LIMIT_EXCEEDED     NULL
+#define ERROR_OBJECT_LIMIT_EXCEEDED		NULL
 #define WARNING_PERSON_NOT_FOUND        202
+#define WARNING_OBJECT_NOT_FOUND		303
 
 /* Defines para ajudar o desenvolvimento! */
 #define AUTOMALLOC(p) p=malloc(sizeof(*(p)));if(!p)MALLOC_DIE()
