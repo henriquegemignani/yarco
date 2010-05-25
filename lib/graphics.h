@@ -8,7 +8,7 @@
 
 #include "common.h"
 #include "persontable.h"
-#include <allegro.h>
+
 
 typedef struct GraphicEngine *graphicEngine;
 

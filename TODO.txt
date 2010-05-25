@@ -76,3 +76,7 @@ Evitar que passageiros sejam criados colidindo imediatamente?
 
 -----------
 Ver se desenhos bugando são só aqui, e corrigir se possivel e necessario.
+
+-------------------------------------------------------------------------
+
+Criar objectTable.{c/h}
