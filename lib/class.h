@@ -13,7 +13,7 @@ struct ClassStruct {
     objectType type;
     
     /* Funcao update do objeto. */
-    void (*updateFunc) (object, int, int);
+    void (*updateFunc) (object, int, double);
     
     /* Funcao de remocao do objeto. */
     void (*removeFunc) (object);
@@ -30,7 +30,7 @@ struct ClassStruct {
 
 /* Adiciona uma nova classe na lista. */ 
 void classAdd(objectType type,
-    void (*updateFunc) (object, int, int),
+    void (*updateFunc) (object, int, double),
     void (*removeFunc) (object), 
     void (*collideFunc) (object, object),
     void (*boundsFunc) (object),

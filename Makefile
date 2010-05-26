@@ -1,5 +1,5 @@
 VPATH = ./lib/
-objects =   physics.o graphics.o common.o object.o person.o persontable.o configuration.o class.o
+objects =   physics.o graphics.o common.o object.o person.o objecttable.o configuration.o class.o
 objectmain = main.o
 objecttest = tests.o
 CC = gcc
@@ -19,7 +19,7 @@ common.o :      common.h common.c
 physics.o :     common.h physics.h object.h physics.c
 object.o :      common.h object.h object.c
 person.o :      common.h object.h person.h
-persontable.o : common.h persontable.h object.h class.h person.h physics.h persontable.c
+objecttable.o : common.h objecttable.h object.h class.h physics.h persontable.c
 graphics.o :    common.h persontable.h graphics.h person.h graphics.c
 #	$(CC) $(CFLAGS) -c -o $@ $(VPATH)graphics.c `allegro-config --libs` # -lalleg 
 configuration.o: common.h configuration.h configuration.c

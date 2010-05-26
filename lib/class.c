@@ -8,7 +8,7 @@
     
 static Class classList[NUM_CLASS];
 void classAdd(objectType type,
-        void (*updateFunc)(object, int, int),
+        void (*updateFunc)(object, int, double),
         void (*removeFunc)(object),
         void (*collideFunc)(object, object),
         void (*boundsFunc) (object),

@@ -7,6 +7,7 @@
 #define _PERSON_H_
 
 #include "common.h"
+#include "objecttable.h"
 typedef struct Object *person;
 
 void personInitializeClass();
@@ -21,12 +22,16 @@ person personCreate(texture tex, point pos, velocity speed);
 void personRemove(person p);
 
 /*Atualiza status da pessoa*/
-void personUpdate(person p, int keepDir, int fps);
+void personUpdate(person p, int keepDir, double timedif);
 
 /* Move a person dada para uma borda qualquer da tela e muda a velocidade para ficar de acordo. */
 void personMoveToRandomBorder(person p);
 
 /*Imprime posicao, velocidade e aceleracao de todos os passageiros*/
 void personDump(person p);
+
+/* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
+person personAddNewToTable(objectTable table, double speed);
+person personCreateToTable(objectTable table, point pos, velocity vel);
 
 #endif                          /* _PERSON_H_ */

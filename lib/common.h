@@ -17,7 +17,7 @@
 #define PERSON_RADIUS               10
 #define MAX_X                       1023
 #define MAX_Y                       767
-#define REPETITONS_DEFAULT          50
+#define DURATION_DEFAULT            50.0
 #define STD_DIST                    0.5
 #define NUM_CLASS                   1
 #define QUAD_SIZE_X                 15

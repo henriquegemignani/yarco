@@ -10,6 +10,7 @@
 
 #include "lib/common.h"
 #include "lib/graphics.h"
+#include "lib/objecttable.h"
 #include "lib/persontable.h"
 #include "lib/configuration.h"
 #include "lib/class.h"
@@ -27,53 +28,64 @@ long timeInMicrosecond()
 int main(int argc, char **argv)
 {
     configuration defaults = configurationInit();
-    int i, iterationFrame;
-    personTable table;
+    int i;
+    objectTable table;
+    double timeElapsed = 0, timeDifference = 0, timeSinceLastIteration = 0,
+        newPersonInterval;
+    
     struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
     sleepTime.tv_sec = 0; /* Tempo entre frames eh sempre menor que 1s */
 
     argRead(argc, argv, defaults);
 
-    /* Inicializa tabela de passageiros */
-    table =
-        personTableInit(defaults->defaultSpeed, defaults->createRate,
-                        defaults->uniqueGraphic, defaults->fps);
     srand(defaults->randomSeed);
-    for (i = 0; i < PERSON_NUM_INIT; i++)
-        if (personTableAddNew(table) == ERROR_PERSON_LIMIT_EXCEEDED)
-            genError("Erro: limite de naufragos atingido!\n");
-    /* AVISO: genError sai do programa */
-
+    
     /* Incializa as classes. */
     classInitialize();
     personInitializeClass();
 
+    
+    /* Inicializa tabela de passageiros */
+    table = objectTableInit(defaults);
+    for (i = 0; i < PERSON_NUM_INIT; i++)
+        if (personAddNewToTable(table, defaults->defaultSpeed) == ERROR_PERSON_LIMIT_EXCEEDED)
+            genError("Erro: limite de naufragos atingido!\n");
+    /* AVISO: genError sai do programa */
+    newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
+    
     /* Inicializa parte grafica */
     if (defaults->graphic)
         graphicInitialize(WINDOWED_MODE);   /*pode ser FULLSCREEN_MODE */
     
-    iterationFrame = 0; /* se iterationFrame == 0 entao eh uma nova iteracao. Caso contrario,
-        armazena quantos frames se passaram desde a ultima iteracao. */
-    for (i = 0; i < defaults->repetitions;){
-    	if(!iterationFrame)
-    		printf("\n\nIteracao: %d\n\n", i + 1);
+    i = 0;
+    while ( timeElapsed < defaults->duration ){
+    	if(timeSinceLastIteration > 1)
+    		printf("Iteracao: %d\n", ++i);
         
         frameTimeStart = timeInMicrosecond();
         
-		iterationFrame = (iterationFrame+1) % defaults->fps;
-        personTableUpdate(table, (iterationFrame || defaults->keepSpeed), !iterationFrame );
+        if( (newPersonInterval -= timeDifference) < 0 ) {
+            newPersonInterval += randomizeAround(defaults->createRate, STD_DIST);
+            personAddNewToTable(table, defaults->defaultSpeed);
+            /* TODO: verificar se ja tem o numero de pessoas desejadas.
+            Atualmente ta tentando criar e ignora se teve erro. */
+        }
+        
+        objectTableUpdate(table, timeDifference, timeSinceLastIteration > 1 );
         
         if (defaults->graphic) {
             graphicUpdate(table);
             graphicDraw();
         }
         
-        if (defaults->debugMode)
-            personTableDump(table);
-        if (defaults->pause && !iterationFrame) {
+        if (defaults->debugMode && timeSinceLastIteration >= 1)
+            objectTableDump(table);
+        
+        if (defaults->pause && timeSinceLastIteration >= 1) {
             printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
+            
         } else if (!defaults->noSleep) {
             sleepTime.tv_nsec = 1.0e9 / defaults->fps;
             /* Se o frame anterior demorou menos do que deveria, espera mais.
@@ -95,15 +107,21 @@ int main(int argc, char **argv)
                     genError("Erro: nanosleep devolveu nao-zero.\n");
                 }
             }
-            /* lastFrameDuration = timeInMicrosecond() - frameTimeStart; */
-            timeToOffset += 1.0e9 / defaults->fps - (timeInMicrosecond() - frameTimeStart) * 1000;
         }
-        if(!iterationFrame)
-        	i++;
+        /* Tempo do frame atual (que acabou de terminar), em microsegundos. */
+        timeDifference = (timeInMicrosecond() - frameTimeStart);
+        timeToOffset += 1.0e9 / defaults->fps - timeDifference * 1.0e3;
+        
+        /* E agora em segundos. */
+        timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
+        timeElapsed += timeDifference;
+        
+        if( timeSinceLastIteration > 1 ) timeSinceLastIteration -= 1;
+        timeSinceLastIteration += timeDifference;
     }
     if (defaults->graphic)
         graphicFinish();
-    personTableRemove(table);
+    objectTableRemove(table);
     configurationRemove(defaults);
     classFinish();
     return 0;

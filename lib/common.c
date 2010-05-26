@@ -35,6 +35,13 @@ double vectorMulEsc(vector a, vector b)
     return ((a.x * b.x) + (a.y * b.y));
 }
 
+vector vectorMulDouble(vector v, double alfa) {
+    vector r;
+    r.x = v.x * alfa;
+    r.y = v.y * alfa;
+    return r;
+}
+
 vector vectorDiv(vector v, double div)
 {
 	return vectorCreate(v.x/div, v.y/div);

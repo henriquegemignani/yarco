@@ -7,7 +7,7 @@
 #define _GRAPHICS_H_
 
 #include "common.h"
-#include "persontable.h"
+#include "objecttable.h"
 
 
 typedef struct GraphicEngine *graphicEngine;
@@ -21,7 +21,7 @@ typedef struct GraphicEngine *graphicEngine;
 para cada pessoa desenhada.*/
 void graphicInitialize(int mode);
 /*Atualiza os buffers*/
-void graphicUpdate(personTable table);
+void graphicUpdate(objectTable table);
 /*Mostra o que tem que ser mostrado*/
 void graphicDraw();
 /*Libera a memoria da parte grafica*/

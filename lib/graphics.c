@@ -5,14 +5,12 @@
 #include "common.h"
 #include "object.h"
 #include "graphics.h"
-#include "person.h"
-#include "persontable.h"
 #include "physics.h"
 //#include <allegro.h>
 
 BITMAP *buffer;
 
-void graphicUpdatePerson(person per);
+void graphicUpdateObject(object per);
 
 void graphicInitialize(int mode)
 {
@@ -29,7 +27,7 @@ void graphicInitialize(int mode)
     buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 }
 
-void graphicUpdatePerson(person per)
+void graphicUpdateObject(object per)
 {
     BITMAP *tmp = create_bitmap(15, 15);
     point p = objectGetPos(per);
@@ -38,10 +36,10 @@ void graphicUpdatePerson(person per)
     destroy_bitmap(tmp);
 }
 
-void graphicUpdate(personTable table)
+void graphicUpdate(objectTable table)
 {
     clear(buffer);
-    personTableExecute(table, graphicUpdatePerson);
+    objectTableExecute(table, graphicUpdateObject);
 }
 
 

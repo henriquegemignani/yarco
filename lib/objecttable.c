@@ -3,16 +3,15 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "common.h"
-#include "object.h"
-#include "class.h"
 #include "objecttable.h"
+#include "common.h"
+#include "class.h"
 #include "physics.h"
 
 struct ObjectTable {
     object list[OBJECT_NUM_LIMIT];
     unsigned int curMax, lastID;
-    int fps;
+    configuration config;
 };
 
 
@@ -52,27 +51,28 @@ void quicksort(object * vet, int ini, int fim) /*essa não muda nada !!!*/
 
 /* Funcoes publicas. */   
     
-objectTable objectTableInit(int fps)
+objectTable objectTableInit(configuration config)
 {
 	objectTable table;
    AUTOMALLOC(table);
 
    table->curMax = table->lastID = 0;
-   table->fps = fps;
+   table->config = config;
 
    return table;
 }
 
-void objectTableAddObject(objectTable table, object obj)
+object objectTableAddObject(objectTable table, object obj)
 {            
     if (table->curMax == OBJECT_NUM_LIMIT) {
-        objectTableSort(table);  /*como ordenar objetos? decidir em grupo*/
+        objectTableSort(table);  /* TODO: como ordenar objetos? decidir em grupo*/
         if (table->curMax == OBJECT_NUM_LIMIT)
             return ERROR_OBJECT_LIMIT_EXCEEDED;
     }
     
-    aux->id = ++table->lastID;
+    obj->id = ++table->lastID;
     table->list[table->curMax++] = obj; /*  */
+    return obj;
 }
 
 object objectTableSearchObject(objectTable table, unsigned int id)
@@ -103,7 +103,12 @@ int objectTableRemoveObjectByID(objectTable table, unsigned int id)
    return WARNING_OBJECT_NOT_FOUND;
 }
 
-void objectTableUpdate(objectTable table)
+void objectTableSort(objectTable table)
+{
+    quicksort(table->list, 0, table->curMax - 1);
+}
+
+void objectTableUpdate(objectTable table, double timedif, int newIteraction)
 {
 	int i, j;
    point pos;
@@ -112,20 +117,20 @@ void objectTableUpdate(objectTable table)
        for (j = i + 1; j < table->curMax; j++)
 		if (quadNear(objectGetQuad(table->list[i]), objectGetQuad(table->list[j])))
 			if (objectIsColiding(table->list[i], table->list[j]))
-				/*OBJECT_COLLIDE(table->list[i], table->list[j]);*/
+				OBJECT_COLLIDE(table->list[i], table->list[j]);
     
    for (i = 0; i < table->curMax; i++)
        if (table->list[i] != NULL) {
            /* Atualiza e... */
-           updateObject(table->list[i], table->fps);
+           OBJECT_UPDATE(table->list[i], table->config->keepSpeed, timedif);
             /* Verifica se saiu do mapa. */
            pos = objectGetPos(table->list[i]);
            if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
-               /*OBJECT_BOUNDS(table->list[i]);*/
+               OBJECT_BOUNDS(table->list[i]);
            }
        }
    
-   personTableSort(table);
+   objectTableSort(table);
    for (i = table->curMax - 1; i >= 0 && table->list[i] == NULL; i--)
        table->curMax--;
 }

@@ -8,6 +8,7 @@
 #include "physics.h"
 #include "person.h"
 #include "class.h"
+#include "objecttable.h"
 
 /* Funcoes privadas. */
 
@@ -47,7 +48,6 @@ void generatePosAndVelInBorder(double speed, point *pos, velocity *vel)
                                 dir + PI / 4 * randInt(0, 4)));
 }
 
-
 /* Funcoes publicas. */
 
 void personInitializeClass()
@@ -79,11 +79,11 @@ void personRemove(person p)
     free(p);
 }
 
-void personUpdate(person p, int keepDir, int fps)
+void personUpdate(person p, int keepDir, double timedif)
 {
     if(!keepDir)
     	p->vel = newDirection(p->vel);
-    updateObject(p, fps);
+    updateObject(p, timedif);
 }
 
 void personMoveToRandomBorder(person p)
@@ -98,3 +98,25 @@ void personDump(person p)
     printf(" V");
     vectorPrint(p->vel);
 }
+
+person personAddNewToTable(objectTable table, double speed)
+{
+    person 
+        aux = personNew(TEX_CIRCLE, speed), 
+        p = objectTableAddObject(table, aux);
+    if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
+        personRemove(aux);
+    return p;
+}
+
+
+person personCreateToTable(objectTable table, point pos, velocity vel)
+{
+    person 
+        aux = personCreate(TEX_CIRCLE, pos, vel),
+        p = objectTableAddObject(table, aux);
+    if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
+        personRemove(aux);
+    return p;
+}
+

@@ -17,7 +17,7 @@ configuration configurationInit()
     config->defaultSpeed = PERSON_SPEED_DEFAULT;
     config->createRate = PERSON_CREATE_RATE_DEFAULT;
     config->debugMode = 0;
-    config->repetitions = REPETITONS_DEFAULT;
+    config->duration = DURATION_DEFAULT;
     config->pause = 0;
     config->graphic = 1;
     config->randomSeed = time(NULL);
@@ -44,7 +44,7 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
                "  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
                "  -g\t--nographic\tIgnora parte grafica\n"
-               "  -R\t--repetitions\tDefine quantas iteracoes o programa mostrara. Padrao: %d\n"
+               "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n"
                "  -f\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
@@ -52,7 +52,7 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
                "  -n\t--nosleep\t\tIgnora o sleep.\n",
                argv[0], defaults->defaultSpeed, defaults->createRate,
-               defaults->repetitions);
+               defaults->duration);
         exit(0);
     }
     argValue = argShortFlags(argc, argv, "dpgukn");
@@ -73,8 +73,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->createRate = atof(argValue);
     if ((argValue = argVal(argc, argv, "--speed", "-s")))
         defaults->defaultSpeed = atof(argValue);
-    if ((argValue = argVal(argc, argv, "--repetitions", "-R")))
-        defaults->repetitions = atoi(argValue);
+    if ((argValue = argVal(argc, argv, "--duration", "-T")))
+        defaults->duration = atof(argValue);
     if ((argValue = argVal(argc, argv, "--randomseed", "-S")))
         defaults->randomSeed = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--fps", "-f")))

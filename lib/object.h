@@ -7,7 +7,6 @@
 #define _OBJECT_H_
 
 #include "common.h"
-#include "graphics.h"
 typedef enum {
     TYPE_BOAT, TYPE_PERSON
 } objectType;
@@ -48,7 +47,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
                     velocity vel, double radius, texture tex);
 
 /*Atualiza o objeto*/
-void updateObject(object o, int fps);
+void updateObject(object o, double timedif);
 
 /*Compara dois objetos de acordo com sua posicao*/
 int objectCompare(object r, object s);

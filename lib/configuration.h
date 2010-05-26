@@ -10,7 +10,7 @@ struct Configuration {
     double defaultSpeed;
     double createRate;
     int debugMode;
-    int repetitions;
+    double duration;
     int pause;
     int graphic;
     int randomSeed;
