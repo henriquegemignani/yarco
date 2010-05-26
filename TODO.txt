@@ -56,6 +56,8 @@ Separar a tela em quadrantes?
 
 Separar a tela numa matriz que guarda quais objetos estão em cada quadrante, para melhorar a detecção de colisão? Manter a lista de objetos que temos ou fazer cada quadrante ter uma lista, caso implementemos? /Semi-Done
 
+------->Alterar modo de ordenação para implementar isso menos porcamente? **NEW**
+
 -----------
 Arrumar CFLAGS. >_>
 
@@ -75,8 +77,11 @@ Melhorar eficiencia ou ajustar FPS e controlar frequencia de atualizações de aco
 Evitar que passageiros sejam criados colidindo imediatamente?
 
 -----------
-Ver se desenhos bugando são só aqui, e corrigir se possivel e necessario.
+Ver se desenhos bugando são só aqui, e corrigir se possivel e necessario. ->Corrigido e bugado novamente. <_< **NEW**
 
 -------------------------------------------------------------------------
 
 Criar objectTable.{c/h}
+
+------------
+Desquebrar ou tirar o -n? **NEW**

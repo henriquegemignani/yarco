@@ -97,6 +97,7 @@ void personDump(person p)
     vectorPrint(p->pos);
     printf(" V");
     vectorPrint(p->vel);
+    printf("\n");
 }
 
 person personAddNewToTable(objectTable table, double speed)

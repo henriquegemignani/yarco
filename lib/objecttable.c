@@ -122,7 +122,7 @@ void objectTableUpdate(objectTable table, double timedif, int newIteraction)
    for (i = 0; i < table->curMax; i++)
        if (table->list[i] != NULL) {
            /* Atualiza e... */
-           OBJECT_UPDATE(table->list[i], table->config->keepSpeed, timedif);
+           OBJECT_UPDATE(table->list[i], table->config->keepSpeed || !newIteraction, timedif);
             /* Verifica se saiu do mapa. */
            pos = objectGetPos(table->list[i]);
            if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {

@@ -20,8 +20,8 @@
 #define DURATION_DEFAULT            50.0
 #define STD_DIST                    0.5
 #define NUM_CLASS                   1
-#define QUAD_SIZE_X                 15
-#define QUAD_SIZE_Y                 15
+#define QUAD_SIZE_X                 30
+#define QUAD_SIZE_Y                 30
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>

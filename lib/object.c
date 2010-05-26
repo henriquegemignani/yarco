@@ -93,6 +93,8 @@ void objectDump(object a)
     vectorPrint(a->pos);
     printf(" V");
     vectorPrint(a->vel);
+    /*TODO (objectDump): Aceleracao. Agora temos cosias que podem acelerar.*/
+    printf("\n");
 }
 
 void removeObject(object a)
