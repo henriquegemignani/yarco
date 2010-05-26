@@ -30,9 +30,24 @@ void graphicInitialize(int mode)
 
 void graphicUpdateObject(object per)
 {
-    BITMAP *tmp = create_bitmap(PERSON_RADIUS, PERSON_RADIUS);
+    BITMAP *tmp = create_bitmap(per->radius * 2, per->radius * 2);
     point p = objectGetPos(per);
-    rectfill(tmp, 0, 0, PERSON_RADIUS, PERSON_RADIUS, 0);  /* essa linha ainda vai perecer */
+	floodfill( tmp, 0, 0, 6000 );
+	switch( per->tex.type ){
+		case TEX_CIRCLE:
+			circlefill( tmp, per->radius, per->radius, per->radius, 0  );
+			break;
+		case TEX_SQUARE:
+			rectfill( tmp, 0, 0, per->radius*2, per->radius*2, 0 );
+			break;
+		/* a parte dos barcos vai ser punk */
+		case TEX_ISOSC_TRIANGLE:
+			/*OH CEUS  TODO: implementar o giramento de barquinhos*/
+			break;
+		default:
+			/* foto dos desenvolvedores */
+			break;
+	}
     draw_sprite(buffer, tmp, p.x, p.y);
     destroy_bitmap(tmp);
 }
