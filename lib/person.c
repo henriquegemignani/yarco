@@ -12,11 +12,11 @@
 
 /* Funcoes privadas. */
 
-void generatePosAndVelInBorder(double speed, point *pos, velocity *vel)
+void generatePosAndVelInBorder(double speed, point * pos, velocity * vel)
 {
     double dir;
     /*Dir determina a primeira direcao do passageiro de modo que ele nao saia imediatamente da tela */
-    
+
     switch (randInt(1, 4)) {
     case 1:
         pos->x = 0;
@@ -54,10 +54,8 @@ void personInitializeClass()
 {
     classAdd(TYPE_PERSON,
              personUpdate,
-             removeObject, 
-             executeCollision, 
-             personMoveToRandomBorder,
-             objectDump);
+             removeObject,
+             executeCollision, personMoveToRandomBorder, objectDump);
 }
 
 person personCreate(texture tex, point pos, velocity vel)
@@ -81,8 +79,8 @@ void personRemove(person p)
 
 void personUpdate(person p, int keepDir, double timedif)
 {
-    if(!keepDir)
-    	p->vel = newDirection(p->vel);
+    if (!keepDir)
+        p->vel = newDirection(p->vel);
     updateObject(p, timedif);
 }
 
@@ -102,8 +100,8 @@ void personDump(person p)
 
 person personAddNewToTable(objectTable table, double speed)
 {
-    person 
-      aux = personNew(createTexture(127, 127, 127, TEX_CIRCLE), speed), 
+    person
+        aux = personNew(createTexture(127, 127, 127, TEX_CIRCLE), speed),
         p = objectTableAddObject(table, aux);
     if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
         personRemove(aux);
@@ -113,11 +111,11 @@ person personAddNewToTable(objectTable table, double speed)
 
 person personCreateToTable(objectTable table, point pos, velocity vel)
 {
-    person 
-      aux = personCreate(createTexture(127, 127, 127, TEX_CIRCLE), pos, vel),
+    person
+        aux =
+        personCreate(createTexture(127, 127, 127, TEX_CIRCLE), pos, vel),
         p = objectTableAddObject(table, aux);
     if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
         personRemove(aux);
     return p;
 }
-

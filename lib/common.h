@@ -31,8 +31,8 @@ struct Vector {
     double x, y;
 };
 
-struct Quad{
-	int x, y;
+struct Quad {
+    int x, y;
 };
 /* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
 
@@ -45,16 +45,16 @@ typedef struct Vector acceleration;
 typedef struct Quad quad;
 
 typedef enum {
-  TEX_SQUARE,
-  TEX_CIRCLE,
-  /* ISOSC = Isosceles */
-  TEX_ISOSC_TRIANGLE, /* Frente: Ponto de intersecao das retas iguais  */
-  TEX_ISOSC_TRIANGLE_BACKWARD /* Frente: Lado diferente. */
+    TEX_SQUARE,
+    TEX_CIRCLE,
+    /* ISOSC = Isosceles */
+    TEX_ISOSC_TRIANGLE,         /* Frente: Ponto de intersecao das retas iguais  */
+    TEX_ISOSC_TRIANGLE_BACKWARD /* Frente: Lado diferente. */
 } texType;
 
 typedef struct Texture {
-  int red, blue, green;
-  texType type;
+    int red, blue, green;
+    texType type;
 } texture;
 
 texture createTexture(int red, int blue, int green, texType type);

@@ -23,7 +23,8 @@ int objectTableRemoveObjectByID(objectTable table, unsigned int id);
 
 void objectTableSort(objectTable table);
 
-void objectTableUpdate(objectTable table, double timedif, int newIteraction);
+void objectTableUpdate(objectTable table, double timedif,
+                       int newIteraction);
 
 void objectTableExecute(objectTable table, void (*func) (object p));
 

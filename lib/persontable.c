@@ -158,9 +158,11 @@ void personTableUpdate(personTable table, int keepDir, int newSec)
     /* Verificando colisoes. */
     for (i = 0; i < table->curMax; i++)
         for (j = i + 1; j < table->curMax; j++)
-			if (quadNear(objectGetQuad(table->list[i]), objectGetQuad(table->list[j])))
-				if (objectIsColiding(table->list[i], table->list[j]))
-					OBJECT_COLLIDE(table->list[i], table->list[j]);
+            if (quadNear
+                (objectGetQuad(table->list[i]),
+                 objectGetQuad(table->list[j])))
+                if (objectIsColiding(table->list[i], table->list[j]))
+                    OBJECT_COLLIDE(table->list[i], table->list[j]);
 
     /* Para cada pessoa... */
     for (i = 0; i < table->curMax; i++)
@@ -175,7 +177,8 @@ void personTableUpdate(personTable table, int keepDir, int newSec)
             }
         }
 
-    if (table->createRate > 0 && table->curMax < PERSON_NUM_LIMIT && newSec) {
+    if (table->createRate > 0 && table->curMax < PERSON_NUM_LIMIT
+        && newSec) {
         /* Verifica se ja esta na hora de criar mais uma pessoa. */
         table->createCounter -= 1;
         if (table->createCounter < 0) {

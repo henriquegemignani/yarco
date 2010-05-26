@@ -17,7 +17,8 @@ object objectCreate(objectType type, unsigned int id, point pos,
     o->vel = vel;
     o->tex = tex;
     o->acc = vectorCreate(0, 0);
-    o->quadrante = quadSet((int)(pos.x/QUAD_SIZE_X), (int)(pos.y/QUAD_SIZE_Y));
+    o->quadrante =
+        quadSet((int) (pos.x / QUAD_SIZE_X), (int) (pos.y / QUAD_SIZE_Y));
     return o;
 }
 
@@ -31,8 +32,9 @@ point objectGetPos(object a)
     return a->pos;
 }
 
-quad objectGetQuad(object a){
-	return a->quadrante;
+quad objectGetQuad(object a)
+{
+    return a->quadrante;
 }
 
 double objectGetSpeed(object a)
@@ -53,9 +55,11 @@ void objectSetID(object a, unsigned int id)
 void updateObject(object o, double timedif)
 {
     vector aux = vectorPolarToCartesian(o->acc);
-    o->pos = vectorSum(o->pos, vectorMulDouble(o->vel,timedif));
-    o->vel = vectorSum(o->vel, vectorMulDouble(aux,timedif));
-    o->quadrante = quadSet((int)(o->pos.x/QUAD_SIZE_X), (int)(o->pos.y/QUAD_SIZE_Y));
+    o->pos = vectorSum(o->pos, vectorMulDouble(o->vel, timedif));
+    o->vel = vectorSum(o->vel, vectorMulDouble(aux, timedif));
+    o->quadrante =
+        quadSet((int) (o->pos.x / QUAD_SIZE_X),
+                (int) (o->pos.y / QUAD_SIZE_Y));
 }
 
 int objectCompare(object r, object s)
@@ -93,7 +97,7 @@ void objectDump(object a)
     vectorPrint(a->pos);
     printf(" V");
     vectorPrint(a->vel);
-    /*TODO (objectDump): Aceleracao. Agora temos cosias que podem acelerar.*/
+    /*TODO (objectDump): Aceleracao. Agora temos cosias que podem acelerar. */
     printf("\n");
 }
 

@@ -8,12 +8,12 @@
 
 texture createTexture(int red, int blue, int green, texType type)
 {
-  texture tex;
-  tex.red = red;
-  tex.blue = blue;
-  tex.green = green;
-  tex.type = type;
-  return tex;
+    texture tex;
+    tex.red = red;
+    tex.blue = blue;
+    tex.green = green;
+    tex.type = type;
+    return tex;
 }
 
 
@@ -46,7 +46,8 @@ double vectorMulEsc(vector a, vector b)
     return ((a.x * b.x) + (a.y * b.y));
 }
 
-vector vectorMulDouble(vector v, double alfa) {
+vector vectorMulDouble(vector v, double alfa)
+{
     vector r;
     r.x = v.x * alfa;
     r.y = v.y * alfa;
@@ -55,7 +56,7 @@ vector vectorMulDouble(vector v, double alfa) {
 
 vector vectorDiv(vector v, double div)
 {
-	return vectorCreate(v.x/div, v.y/div);
+    return vectorCreate(v.x / div, v.y / div);
 }
 
 vector vectorPolarToCartesian(vector v)
@@ -120,17 +121,19 @@ int vectorPrint(vector v)
     return printf("(%8.3f,%8.3f)", v.x, v.y);
 }
 
-quad quadSet(int x, int y){
-	quad q;
-	q.x = x;
-	q.y = y;
-	return q;
+quad quadSet(int x, int y)
+{
+    quad q;
+    q.x = x;
+    q.y = y;
+    return q;
 }
 
-int quadNear(quad a, quad b){
-	if(a.x-b.x>1 || b.x-a.x>1 || a.y-b.y>1 || b.y-a.y>1)
-		return 0;
-	return 1;
+int quadNear(quad a, quad b)
+{
+    if (a.x - b.x > 1 || b.x - a.x > 1 || a.y - b.y > 1 || b.y - a.y > 1)
+        return 0;
+    return 1;
 }
 
 int randInt(int min, int max)
