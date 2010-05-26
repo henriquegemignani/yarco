@@ -30,7 +30,7 @@ void graphicInitialize(int mode)
 
 void graphicUpdateObject(object per)
 {
-    BITMAP *tmp = create_bitmap(15, 15);
+    BITMAP *tmp = create_bitmap(PERSON_RADIUS, PERSON_RADIUS);
     point p = objectGetPos(per);
     rectfill(tmp, 0, 0, PERSON_RADIUS, PERSON_RADIUS, 0);  /* essa linha ainda vai perecer */
     draw_sprite(buffer, tmp, p.x, p.y);
