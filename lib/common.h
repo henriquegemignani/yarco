@@ -44,7 +44,13 @@ typedef struct Vector acceleration;
 
 typedef struct Quad quad;
 
-typedef char texture;           /* Afinal, em modo texto graficos eh uma letra! */
+typedef enum {
+    TEX_SQUARE,
+    TEX_CIRCLE,
+    /* ISOSC = Isosceles */
+    TEX_ISOSC_TRIANGLE, /* Frente: Ponto de intersecao das retas iguais  */
+    TEX_ISOSC_TRIANGLE_BACKWARD /* Frente: Lado diferente. */
+} texture;
 
 /*Cria um vetor*/
 vector vectorCreate(double x, double y);
@@ -55,6 +61,8 @@ vector vectorSum(vector a, vector b);
 vector vectorSub(vector a, vector b);
 /*Multiplicacao escalar entre dois vetores*/
 double vectorMulEsc(vector a, vector b);
+/*Multiplicacao de um vetor por um numero real*/
+vector vectorMulDouble(vector v, double alfa);
 /*Divide um vetor pelo dividendo dado*/
 vector vectorDiv(vector v, double div);
 /*Converte de coordenadas polares para coordenadas cartesianas*/
