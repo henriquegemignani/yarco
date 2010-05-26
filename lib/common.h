@@ -44,12 +44,15 @@ typedef struct Vector acceleration;
 
 typedef struct Quad quad;
 
-typedef enum {
-    TEX_SQUARE,
-    TEX_CIRCLE,
-    /* ISOSC = Isosceles */
-    TEX_ISOSC_TRIANGLE, /* Frente: Ponto de intersecao das retas iguais  */
-    TEX_ISOSC_TRIANGLE_BACKWARD /* Frente: Lado diferente. */
+typedef struct Texture {
+    int red, blue, green;
+    enum {
+      TEX_SQUARE,
+      TEX_CIRCLE,
+      /* ISOSC = Isosceles */
+      TEX_ISOSC_TRIANGLE, /* Frente: Ponto de intersecao das retas iguais  */
+      TEX_ISOSC_TRIANGLE_BACKWARD /* Frente: Lado diferente. */
+    } type;
 } texture;
 
 /*Cria um vetor*/
