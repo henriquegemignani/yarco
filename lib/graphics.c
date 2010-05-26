@@ -8,6 +8,8 @@
 #include "physics.h"
 //#include <allegro.h>
 
+#define SEA_COLOR 0x001770
+
 BITMAP *buffer;
 
 void graphicUpdateObject(object per);
@@ -25,14 +27,14 @@ void graphicInitialize(int mode)
                      SCREEN_SIZE_Y, 0, 0);
 
     buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-	floodfill( buffer, 0, 0, 6000 );
+	floodfill( buffer, 0, 0, SEA_COLOR );
 }
 
 void graphicUpdateObject(object per)
 {
     BITMAP *tmp = create_bitmap(per->radius * 2, per->radius * 2);
     point p = objectGetPos(per);
-	floodfill( tmp, 0, 0, 6000 );
+    rectfill( tmp, 0, 0, per->radius*2, per->radius*2, 0xff00ff); /*TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a cor transparente*/
 	switch( per->tex.type ){
 		case TEX_CIRCLE:
 			circlefill( tmp, per->radius, per->radius, per->radius, 0  );
@@ -48,14 +50,14 @@ void graphicUpdateObject(object per)
 			/* foto dos desenvolvedores */
 			break;
 	}
-    draw_sprite(buffer, tmp, p.x, p.y);
+	draw_sprite(buffer, tmp, p.x, p.y);
     destroy_bitmap(tmp);
 }
 
 void graphicUpdate(objectTable table)
 {
     clear(buffer);
-	floodfill( buffer, 0, 0, 6000 );
+	floodfill( buffer, 0, 0, SEA_COLOR );
     objectTableExecute(table, graphicUpdateObject);
 }
 
