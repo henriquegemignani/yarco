@@ -25,13 +25,14 @@ void graphicInitialize(int mode)
                      SCREEN_SIZE_Y, 0, 0);
 
     buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+	floodfill( buffer, 0, 0, 6000 );
 }
 
 void graphicUpdateObject(object per)
 {
     BITMAP *tmp = create_bitmap(15, 15);
     point p = objectGetPos(per);
-    rectfill(tmp, 0, 0, PERSON_RADIUS, PERSON_RADIUS, 3000);  /* essa linha ainda vai perecer */
+    rectfill(tmp, 0, 0, PERSON_RADIUS, PERSON_RADIUS, 0);  /* essa linha ainda vai perecer */
     draw_sprite(buffer, tmp, p.x, p.y);
     destroy_bitmap(tmp);
 }
@@ -39,6 +40,7 @@ void graphicUpdateObject(object per)
 void graphicUpdate(objectTable table)
 {
     clear(buffer);
+	floodfill( buffer, 0, 0, 6000 );
     objectTableExecute(table, graphicUpdateObject);
 }
 
