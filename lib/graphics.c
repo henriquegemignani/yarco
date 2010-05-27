@@ -6,7 +6,7 @@
 #include "object.h"
 #include "graphics.h"
 #include "physics.h"
-//#include <allegro.h>
+#include <math.h>
 
 #define SEA_COLOR 0x001770
 
@@ -45,7 +45,15 @@ void graphicUpdateObject(object per)
         break;
         /* a parte dos barcos vai ser punk */
     case TEX_ISOSC_TRIANGLE:
-        triangle(tmp, per->radius-(per->radius*cos(vectorAngle(per->acc))), per->radius-(per->radius*sin(vectorAngle(per->acc))), per->radius-(per->radius*cos(vectorAngle(per->acc)+(4*PI/5))), per->radius-(per->radius*sin(vectorAngle(per->acc)+(4*PI/5))), per->radius-(per->radius*cos(vectorAngle(per->acc)-(4*PI/5))), per->radius-(per->radius*sin(vectorAngle(per->acc)-(4*PI/5))), 0x000000);
+        triangle(
+            tmp, 
+            per->radius-(per->radius*cos(vectorAngle(per->acc))), 
+            per->radius-(per->radius*sin(vectorAngle(per->acc))), 
+            per->radius-(per->radius*cos(vectorAngle(per->acc)+(4*PI/5))), 
+            per->radius-(per->radius*sin(vectorAngle(per->acc)+(4*PI/5))), 
+            per->radius-(per->radius*cos(vectorAngle(per->acc)-(4*PI/5))), 
+            per->radius-(per->radius*sin(vectorAngle(per->acc)-(4*PI/5))), 
+            0x000000);
        /* rotate_sprite(buffer, tmp, p.x, p.y, per->acc.y / (2 * PI) * 256);*/
         /*OH CEUS  TODO: implementar o giramento de barquinhos */
         /*TODO: Ver se funfa. >_> */
