@@ -87,7 +87,10 @@ double objectGetDistFrom(object o, point p)
 
 int objectIsColliding(object a, object b)
 {
-    return (distanceBetweenPoints(a->pos, b->pos) <
+    point centerOfA, centerOfB;
+	centerOfA = vectorCreate(a->pos.x+a->radius,a->pos.y+a->radius);
+	centerOfB = vectorCreate(b->pos.x+b->radius,b->pos.y+b->radius);
+	return (distanceBetweenPoints(centerOfA, centerOfB) <
             (a->radius + b->radius));
 }
 
