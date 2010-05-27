@@ -11,7 +11,8 @@ void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
               void (*collideFunc) (object, object),
-              void (*boundsFunc) (object), void (*dumpFunc) (object))
+              void (*boundsFunc) (object, objectTable), 
+			  void (*dumpFunc) (object))
 {
     int i;
     for (i = 0; i < NUM_CLASS; i++)

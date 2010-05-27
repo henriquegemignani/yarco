@@ -17,7 +17,7 @@ struct ObjectTable {
 
 /* Funcoes privadas. */
 int particao(object * vet, int ini, int fim)
-{                               /*aqui fica o critério. MUST CHANGE */
+{                               /* TODO: aqui fica o critério. MUST CHANGE */
     int i, j;
     object tmp;
 
@@ -128,7 +128,7 @@ void objectTableUpdate(objectTable table, double timedif,
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
-                OBJECT_BOUNDS(table->list[i]);
+                OBJECT_BOUNDS(table->list[i], table);
             }
         }
 

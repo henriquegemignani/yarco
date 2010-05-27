@@ -88,7 +88,7 @@ void personMoveToRandomBorder(person p, objectTable table)
 {
 	do{
 		generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
-	}while(objectTableIsObjectColliding(table, p));
+	} while( objectTableIsObjectColliding(table, p) );
 }
 
 void personDump(person p)

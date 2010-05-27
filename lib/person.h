@@ -25,7 +25,7 @@ void personRemove(person p);
 void personUpdate(person p, int keepDir, double timedif);
 
 /* Move a person dada para uma borda qualquer da tela e muda a velocidade para ficar de acordo. */
-void personMoveToRandomBorder(person p);
+void personMoveToRandomBorder(person p, objectTable table);
 
 /*Imprime posicao, velocidade e aceleracao de todos os passageiros*/
 void personDump(person p);
