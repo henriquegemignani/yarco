@@ -84,9 +84,11 @@ void personUpdate(person p, int keepDir, double timedif)
     updateObject(p, timedif);
 }
 
-void personMoveToRandomBorder(person p)
+void personMoveToRandomBorder(person p, objectTable table)
 {
-    generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
+	do{
+		generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
+	}while(objectTableIsObjectColliding(table, p));
 }
 
 void personDump(person p)
