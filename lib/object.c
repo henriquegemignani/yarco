@@ -19,6 +19,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
     o->acc = vectorCreate(0, 0);
     o->quadrante =
         quadSet((int) (pos.x / QUAD_SIZE_X), (int) (pos.y / QUAD_SIZE_Y));
+	o->extra = NULL;
     return o;
 }
 
