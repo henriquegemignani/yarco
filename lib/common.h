@@ -22,11 +22,12 @@
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
 #define PERSON_RADIUS               10
+#define SHIP_RADIUS					50
 #define MAX_X                       1023
 #define MAX_Y                       767
 #define DURATION_DEFAULT            50.0
 #define STD_DIST                    0.5
-#define NUM_CLASS                   1
+#define NUM_CLASS                   4
 #define QUAD_SIZE_X                 30
 #define QUAD_SIZE_Y                 30
 

@@ -12,6 +12,7 @@
 #include "lib/graphics.h"
 #include "lib/objecttable.h"
 #include "class/person.h"
+#include "class/ship.h"
 #include "lib/configuration.h"
 #include "lib/class.h"
 #include <time.h>
@@ -44,6 +45,7 @@ int main(int argc, char **argv)
     /* Incializa as classes. */
     classInitialize();
     personInitializeClass();
+	shipInitializeClass();
 
 
     /* Inicializa tabela de passageiros */

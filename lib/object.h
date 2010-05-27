@@ -8,7 +8,7 @@
 
 #include "common.h"
 typedef enum {
-    TYPE_BOAT, TYPE_PERSON
+    TYPE_PERSON, TYPE_SHIP, TYPE_BOAT, TYPE_CORAL
 } objectType;
 
 typedef struct Object *object;
