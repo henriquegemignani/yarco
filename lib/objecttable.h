@@ -13,7 +13,7 @@ typedef struct ObjectTable *objectTable;
 
 objectTable objectTableInit(configuration config);
 
-object objectTableAddObject(objectTable table, object obj);
+int objectTableAddObject(objectTable table, object obj);
 
 object objectTableSearchObject(objectTable table, unsigned int id);
 

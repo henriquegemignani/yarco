@@ -62,13 +62,15 @@ objectTable objectTableInit(configuration config)
     return table;
 }
 
-object objectTableAddObject(objectTable table, object obj)
+int objectTableAddObject(objectTable table, object obj)
 {
     if (objectTableFilled(table))
         return ERROR_OBJECT_LIMIT_EXCEEDED;
+    if (objectTableIsObjectColliding(table, obj))
+      return ERROR_OBJECT_IS_COLLIDING;
     obj->id = ++table->lastID;
-    table->list[table->curMax++] = obj; /*  */
-    return obj;
+    table->list[table->curMax++] = obj;
+    return 0;
 }
 
 object objectTableSearchObject(objectTable table, unsigned int id)
@@ -149,8 +151,8 @@ int objectTableIsObjectColliding(objectTable table, object o)
   for (i = 0; i < table->curMax; i++)
     if (table->list[i] != NULL)
       if( objectIsColliding(table->list[i], o) )
-	return 0;
-  return 1;
+	return 1;
+  return 0;
 }
 
 int objectTableFilled(objectTable table)

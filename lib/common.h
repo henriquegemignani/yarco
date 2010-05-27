@@ -111,10 +111,10 @@ void genError(char *msg);
 
 /* WARNING AND ERROR CODES */
 #define ERROR_MALLOC_FAILURE            101
-#define ERROR_PERSON_LIMIT_EXCEEDED     NULL
-#define ERROR_OBJECT_LIMIT_EXCEEDED		NULL
-#define WARNING_PERSON_NOT_FOUND        202
-#define WARNING_OBJECT_NOT_FOUND		303
+#define ERROR_OBJECT_LIMIT_EXCEEDED		201
+#define WARNING_OBJECT_NOT_FOUND		202
+#define ERROR_OBJECT_IS_COLLIDING               203
+
 
 /* Defines para ajudar o desenvolvimento! */
 #define AUTOMALLOC(p) p=malloc(sizeof(*(p)));if(!p)MALLOC_DIE()

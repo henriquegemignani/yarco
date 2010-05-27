@@ -49,8 +49,7 @@ int main(int argc, char **argv)
     /* Inicializa tabela de passageiros */
     table = objectTableInit(defaults);
     for (i = 0; i < PERSON_NUM_INIT; i++)
-        if (personAddNewToTable(table, defaults->defaultSpeed) ==
-            ERROR_PERSON_LIMIT_EXCEEDED)
+        if (personAddNewToTable(table, defaults->defaultSpeed) == NULL)
             genError("Erro: limite de naufragos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);

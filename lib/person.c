@@ -100,11 +100,23 @@ void personDump(person p)
 
 person personAddNewToTable(objectTable table, double speed)
 {
-  person aux, p;
-  aux = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed);
-  p = objectTableAddObject(table, aux);
-  if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
-    personRemove(aux);
+  person p = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed);
+  int err;
+  do {
+    err = objectTableAddObject(table, p);
+    if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
+      personRemove(p);
+      return NULL;
+    } else if (err == ERROR_OBJECT_IS_COLLIDING) {
+      generatePosAndVelInBorder(speed, &p->pos, &p->vel);
+    }
+    if( err != 0 ) {
+      printf("Tentando criar pessoa. Err = %d", err );
+      vectorPrint(p->pos);
+      vectorPrint(p->vel);
+      printf("\n");
+    }
+  } while( err != 0 );
   return p;
 }
 
