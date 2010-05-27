@@ -16,7 +16,7 @@ void personInitializeClass();
 person personNew(texture tex, double speed);
 
 /*Cria uma pessoa na posicao e com a velocidade especificadas, com a textura dada*/
-person personCreate(texture tex, point pos, velocity speed);
+/*person personCreate(texture tex, point pos, velocity speed);*/
 
 /*Nuka uma pessoa*/
 void personRemove(person p);
@@ -32,6 +32,6 @@ void personDump(person p);
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
 person personAddNewToTable(objectTable table, double speed);
-person personCreateToTable(objectTable table, point pos, velocity vel);
+/*person personCreateToTable(objectTable table, point pos, velocity vel);*/
 
 #endif                          /* _PERSON_H_ */

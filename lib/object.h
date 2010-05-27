@@ -56,7 +56,7 @@ int objectCompare(object r, object s);
 double objectGetDistFrom(object o, point p);
 
 /*Verifica se dois objetos estao colidindo no mundo.*/
-int objectIsColiding(object a, object b);
+int objectIsColliding(object a, object b);
 
 /*Imprime na saida padrao informacoes sobre o objeto.*/
 void objectDump(object a);

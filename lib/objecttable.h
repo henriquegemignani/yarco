@@ -28,6 +28,10 @@ void objectTableUpdate(objectTable table, double timedif,
 
 void objectTableExecute(objectTable table, void (*func) (object p));
 
+int objectTableIsObjectColliding(objectTable table, object o);
+
+int objectTableFilled(objectTable table);
+
 void objectTableDump(objectTable table);
 
 void objectTableRemove(objectTable table);

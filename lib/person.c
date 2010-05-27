@@ -12,6 +12,11 @@
 
 /* Funcoes privadas. */
 
+person personCreate(texture tex, point pos, velocity vel)
+{
+    return objectCreate(TYPE_PERSON, 0, pos, vel, PERSON_RADIUS, tex);
+}
+
 void generatePosAndVelInBorder(double speed, point * pos, velocity * vel)
 {
     double dir;
@@ -58,11 +63,6 @@ void personInitializeClass()
              executeCollision, personMoveToRandomBorder, objectDump);
 }
 
-person personCreate(texture tex, point pos, velocity vel)
-{
-    return objectCreate(TYPE_PERSON, 0, pos, vel, PERSON_RADIUS, tex);
-}
-
 person personNew(texture tex, double speed)
 {
     point pos;
@@ -100,22 +100,22 @@ void personDump(person p)
 
 person personAddNewToTable(objectTable table, double speed)
 {
-    person
-        aux = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed),
-        p = objectTableAddObject(table, aux);
-    if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
-        personRemove(aux);
-    return p;
+  person aux, p;
+  aux = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed);
+  p = objectTableAddObject(table, aux);
+  if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
+    personRemove(aux);
+  return p;
 }
 
 
-person personCreateToTable(objectTable table, point pos, velocity vel)
+/*person personCreateToTable(objectTable table, point pos, velocity vel)
 {
-    person
-        aux =
-        personCreate(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), pos, vel),
-        p = objectTableAddObject(table, aux);
-    if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
-        personRemove(aux);
-    return p;
-}
+  person aux, p;
+  aux = 
+    personCreate(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), pos, vel);
+  p = objectTableAddObject(table, aux);
+  if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
+    personRemove(aux);
+  return p;
+  }*/

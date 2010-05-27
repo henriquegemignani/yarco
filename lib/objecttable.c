@@ -64,12 +64,8 @@ objectTable objectTableInit(configuration config)
 
 object objectTableAddObject(objectTable table, object obj)
 {
-    if (table->curMax == OBJECT_NUM_LIMIT) {
-        objectTableSort(table); /* TODO: como ordenar objetos? decidir em grupo */
-        if (table->curMax == OBJECT_NUM_LIMIT)
-            return ERROR_OBJECT_LIMIT_EXCEEDED;
-    }
-
+    if (objectTableFilled(table))
+        return ERROR_OBJECT_LIMIT_EXCEEDED;
     obj->id = ++table->lastID;
     table->list[table->curMax++] = obj; /*  */
     return obj;
@@ -119,7 +115,7 @@ void objectTableUpdate(objectTable table, double timedif,
             if (quadNear
                 (objectGetQuad(table->list[i]),
                  objectGetQuad(table->list[j])))
-                if (objectIsColiding(table->list[i], table->list[j]))
+                if (objectIsColliding(table->list[i], table->list[j]))
                     OBJECT_COLLIDE(table->list[i], table->list[j]);
 
     for (i = 0; i < table->curMax; i++)
@@ -145,6 +141,26 @@ void objectTableExecute(objectTable table, void (*func) (object p))
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             func(table->list[i]);
+}
+
+int objectTableIsObjectColliding(objectTable table, object o)
+{
+  int i;
+  for (i = 0; i < table->curMax; i++)
+    if (table->list[i] != NULL)
+      if( objectIsColliding(table->list[i], o) )
+	return 0;
+  return 1;
+}
+
+int objectTableFilled(objectTable table)
+{
+   if (table->curMax == OBJECT_NUM_LIMIT) {
+        objectTableSort(table); /* TODO: como ordenar objetos? decidir em grupo */
+        if (table->curMax == OBJECT_NUM_LIMIT)
+            return 1;
+   }
+   return 0;
 }
 
 void objectTableDump(objectTable table)
