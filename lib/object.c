@@ -101,7 +101,8 @@ void objectDump(object a)
     vectorPrint(a->pos);
     printf(" V");
     vectorPrint(a->vel);
-    /*TODO (objectDump): Aceleracao. Agora temos cosias que podem acelerar. */
+    printf(" A");
+    vectorPrint(a->acc);
     printf("\n");
 }
 

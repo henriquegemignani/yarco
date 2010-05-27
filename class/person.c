@@ -60,7 +60,9 @@ void personInitializeClass()
     classAdd(TYPE_PERSON,
              personUpdate,
              removeObject,
-             executeCollision, personMoveToRandomBorder, objectDump);
+             personCollide,
+			 personMoveToRandomBorder,
+			 objectDump);
 }
 
 person personNew(texture tex, double speed)
@@ -133,3 +135,22 @@ person personAddNewToTable(objectTable table, double speed)
     personRemove(aux);
   return p;
   }*/
+
+void personCollide(person per, object other) {
+	switch( other->type ) {
+		case TYPE_PERSON:
+			if( vectorLength(other->prevSpeed) != 0 ) {
+				/* segunda colisao */
+				per->vel = other->prevSpeed;
+				other->prevSpeed = vectorLengthSet(other->prevSpeed, 0);
+			} else {
+				/* primeira colisao */
+				per->prevSpeed = per->vel;
+				per->vel = other->vel;
+			}
+			break;
+		default:
+			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");
+	}
+}
+  

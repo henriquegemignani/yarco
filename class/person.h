@@ -10,6 +10,11 @@
 #include "../lib/objecttable.h"
 typedef struct Object *person;
 
+/* Serve para a colisao de passageiro com passageiro.
+	aceleracao nao e'  utilizada com passageiros, tornando-a uma
+	variavel temporaria perfeita. */
+#define prevSpeed acc
+
 void personInitializeClass();
 
 /*Cria uma pessoa em uma das bordas, com a textura dada*/
@@ -33,5 +38,7 @@ void personDump(person p);
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
 person personAddNewToTable(objectTable table, double speed);
 /*person personCreateToTable(objectTable table, point pos, velocity vel);*/
+
+void personCollide(person per, object other);
 
 #endif                          /* _PERSON_H_ */
