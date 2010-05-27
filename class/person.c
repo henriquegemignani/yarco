@@ -3,12 +3,12 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "common.h"
-#include "object.h"
-#include "physics.h"
+#include "../lib/common.h"
+#include "../lib/object.h"
+#include "../lib/physics.h"
 #include "person.h"
-#include "class.h"
-#include "objecttable.h"
+#include "../lib/class.h"
+#include "../lib/objecttable.h"
 
 /* Funcoes privadas. */
 

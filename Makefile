@@ -1,4 +1,4 @@
-VPATH = ./lib/
+VPATH = ./lib/:./class/
 objects =   physics.o graphics.o common.o object.o person.o objecttable.o configuration.o class.o
 objectmain = main.o
 objecttest = tests.o
@@ -7,7 +7,7 @@ CFLAGS = -Wall -g #-pedantic -ansi # -std=c99
 
 
 yarco :      $(objects) $(objectmain)
-	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lm -o $@   #-lalleg  
+	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lm -o $@   
 
 
 yarco.test : $(objects) $(objecttest)
@@ -21,7 +21,6 @@ object.o :      common.h object.h object.c
 person.o :      common.h object.h person.h
 objecttable.o : common.h objecttable.h object.h class.h physics.h persontable.c
 graphics.o :    common.h persontable.h graphics.h person.h graphics.c
-#	$(CC) $(CFLAGS) -c -o $@ $(VPATH)graphics.c `allegro-config --libs` # -lalleg 
 configuration.o: common.h configuration.h configuration.c
 class.o :       common.h class.h object.h person.h class.c
 

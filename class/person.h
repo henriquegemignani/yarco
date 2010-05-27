@@ -6,8 +6,8 @@
 #ifndef _PERSON_H_
 #define _PERSON_H_
 
-#include "common.h"
-#include "objecttable.h"
+#include "../lib/common.h"
+#include "../lib/objecttable.h"
 typedef struct Object *person;
 
 void personInitializeClass();

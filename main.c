@@ -11,7 +11,7 @@
 #include "lib/common.h"
 #include "lib/graphics.h"
 #include "lib/objecttable.h"
-#include "lib/persontable.h"
+#include "class/person.h"
 #include "lib/configuration.h"
 #include "lib/class.h"
 #include <time.h>
