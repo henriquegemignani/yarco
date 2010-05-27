@@ -18,7 +18,7 @@ Possiveis objetos no mundo:
 Mais ideias ou alterar essas?
 
 -----------------------------
-Orientacao a Objetos:
+Orientacao a Objetos: <<DONE>>
 Criar uma estrutura CLASS (com class.c/h), que possui apontador para as seguintes funcoes:
 - Update (devolve void, recebe object)
 - Remove (devolve void, recebe object)
@@ -41,7 +41,6 @@ Vantagens:
 Desvantagens:
 - Mais complicado (ou nao, dependendo de como for a outra solucao para a PersonTable)
 - Se der erro, vai ser um erro catastrofico onde nada funciona
-
 
 -----------
 
@@ -81,7 +80,11 @@ Ver se desenhos bugando são só aqui, e corrigir se possivel e necessario. ->Corr
 
 -------------------------------------------------------------------------
 
-Criar objectTable.{c/h}
+Criar objectTable.{c/h} /Semi-Done
 
 ------------
 Desquebrar ou tirar o -n? **NEW**
+---> -n ta funcionando muito bem no r169
+
+-------------------------------------------------------------------------
+Arrumar bugs graficos (parte do circulo nao aparece o.o)
