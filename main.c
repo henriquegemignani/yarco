@@ -28,7 +28,7 @@ long timeInMicrosecond()
 int main(int argc, char **argv)
 {
     configuration defaults = configurationInit();
-    int i;
+    int i, numFrame = 0;
     objectTable table;
     double timeElapsed = 0, timeDifference = 0, timeSinceLastIteration = 0,
         newPersonInterval;
@@ -119,8 +119,13 @@ int main(int argc, char **argv)
         timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
         timeElapsed += timeDifference;
 
-        if (timeSinceLastIteration > 1)
+        if (timeSinceLastIteration > 1) {
             timeSinceLastIteration -= 1;
+            printf("\tNum Frames: %d\n", numFrame + 1);
+            numFrame = 0;
+        } else {
+            numFrame++;
+        }
         timeSinceLastIteration += timeDifference;
     }
     if (defaults->graphic)
