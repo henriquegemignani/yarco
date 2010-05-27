@@ -33,7 +33,8 @@ int main(int argc, char **argv)
     objectTable table;
     double timeElapsed = 0, timeDifference = 0, timeSinceLastIteration = 0,
         newPersonInterval;
-
+	ship asimov;
+		
     struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
     sleepTime.tv_sec = 0;       /* Tempo entre frames eh sempre menor que 1s */
@@ -48,14 +49,17 @@ int main(int argc, char **argv)
 	shipInitializeClass();
 
 
-    /* Inicializa tabela de passageiros */
+    /* Inicializa tabela de objetos */
     table = objectTableInit(defaults);
+	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_ISOSC_TRIANGLE ) );
+	objectTableAddObject(table, asimov);
+	
     for (i = 0; i < PERSON_NUM_INIT; i++)
         if (personAddNewToTable(table, defaults->defaultSpeed) == NULL)
             genError("Erro: limite de naufragos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
-
+	
     /* Inicializa parte grafica */
     if (defaults->graphic)
         graphicInitialize(WINDOWED_MODE);       /*pode ser FULLSCREEN_MODE */
