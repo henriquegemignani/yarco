@@ -9,9 +9,7 @@
 texture createTexture(int red, int blue, int green, texType type)
 {
     texture tex;
-    tex.red = red;
-    tex.blue = blue;
-    tex.green = green;
+    tex.color = (red << 16) + (blue << 8) + green;
     tex.type = type;
     return tex;
 }

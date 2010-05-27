@@ -53,7 +53,7 @@ typedef enum {
 } texType;
 
 typedef struct Texture {
-    int red, blue, green;
+    int color;
     texType type;
 } texture;
 
