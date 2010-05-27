@@ -40,11 +40,25 @@ void classAdd(objectType type,
 /* Devolve a classe correspondente ao tipo TYPE, ou NULL se nao existe. */
 Class getClass(objectType type);
 
-#define OBJECT_UPDATE(obj, arg1, arg2)  getClass((*obj).type)->updateFunc((obj),(arg1),(arg2))
-#define OBJECT_COLLIDE(obj, tar)        getClass((*obj).type)->collideFunc((obj),(tar))
-#define OBJECT_REMOVE(obj)              getClass((*obj).type)->removeFunc(obj)
-#define OBJECT_BOUNDS(obj, table)       getClass((*obj).type)->boundsFunc(obj, table)
-#define OBJECT_DUMP(obj)                getClass((*obj).type)->dumpFunc(obj)
+/* Devolve 1 se a classe correspondente ao tipo TYPE possui um valor NULL para a 
+	funcao func, 0 caso contrario. */
+int classMethodIsNull(objectType type, int func );
+#define CLASS_METHOD_UPDATE  1
+#define CLASS_METHOD_COLLIDE 2
+#define CLASS_METHOD_REMOVE  3
+#define CLASS_METHOD_BOUNDS  4
+#define CLASS_METHOD_DUMP    5
+
+#define OBJECT_UPDATE(obj, arg1, arg2)  do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_UPDATE) ) \
+		getClass((*obj).type)->updateFunc((obj),(arg1),(arg2)); } while(0)
+#define OBJECT_COLLIDE(obj, tar)        do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_COLLIDE) ) \
+		getClass((*obj).type)->collideFunc((obj),(tar)); } while(0)
+#define OBJECT_REMOVE(obj)              do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_REMOVE) ) \
+		getClass((*obj).type)->removeFunc(obj); } while(0)
+#define OBJECT_BOUNDS(obj, table)       do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_BOUNDS) ) \
+		getClass((*obj).type)->boundsFunc(obj, table); } while(0)
+#define OBJECT_DUMP(obj)                do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_DUMP) ) \
+		getClass((*obj).type)->dumpFunc(obj); } while(0)
 
 /* Inicializa a lista de classes. */
 void classInitialize();

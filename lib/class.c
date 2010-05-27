@@ -39,6 +39,18 @@ Class getClass(objectType type)
     return NULL;
 }
 
+int classMethodIsNull(objectType type, int func ) {
+	Class c = getClass(type);
+	switch( func ) {
+		case CLASS_METHOD_UPDATE:	return c->updateFunc == NULL;
+		case CLASS_METHOD_COLLIDE:	return c->removeFunc == NULL;
+		case CLASS_METHOD_REMOVE:	return c->collideFunc == NULL;
+		case CLASS_METHOD_BOUNDS:	return c->boundsFunc == NULL;
+		case CLASS_METHOD_DUMP:		return c->dumpFunc == NULL;
+	}
+	return 1;
+}
+
 void classInitialize()
 {
     int i;
