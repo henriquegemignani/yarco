@@ -101,7 +101,7 @@ void personDump(person p)
 person personAddNewToTable(objectTable table, double speed)
 {
     person
-        aux = personNew(createTexture(127, 127, 127, TEX_CIRCLE), speed),
+        aux = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed),
         p = objectTableAddObject(table, aux);
     if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
         personRemove(aux);
@@ -113,7 +113,7 @@ person personCreateToTable(objectTable table, point pos, velocity vel)
 {
     person
         aux =
-        personCreate(createTexture(127, 127, 127, TEX_CIRCLE), pos, vel),
+        personCreate(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), pos, vel),
         p = objectTableAddObject(table, aux);
     if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
         personRemove(aux);
