@@ -19,6 +19,7 @@ struct Object {
     point pos;
     velocity vel;
     acceleration acc;
+    double dir;
     double radius;
     quad quadrante;
     texture tex;

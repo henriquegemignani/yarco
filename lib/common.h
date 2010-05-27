@@ -6,6 +6,13 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#define DEBUG
+#ifdef DEBUG
+#define debugMsg(msg) fprintf(stderr, "%s\n", msg);
+#else
+#define debugMsg
+#endif 
+
 /* Constantes do programa */
 #define PI 3.141592654
 
@@ -30,11 +37,11 @@
 struct Vector {
     double x, y;
 };
-
+/* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
 struct Quad {
     int x, y;
 };
-/* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
+
 
 typedef struct Vector vector;
 typedef struct Vector point;
@@ -94,6 +101,9 @@ int vectorPrint(vector);
 quad quadSet(int x, int y);
 
 int quadNear(quad a, quad b);
+
+int signInt(int a);
+int signDouble(double a);
 
 /*Retorna a distancia entre dois pontos*/
 double distanceBetweenPoints(point a, point b);

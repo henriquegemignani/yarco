@@ -134,6 +134,22 @@ int quadNear(quad a, quad b)
     return 1;
 }
 
+int signInt(int a){
+  if (a < 0)
+    return -1;
+  if (a>0)
+    return 1;
+  return 0;
+}
+
+int signDouble(double a){
+  if (a < 0)
+    return -1;
+  if (a>0)
+    return 1;
+  return 0;
+}
+
 int randInt(int min, int max)
 {
     return (((max - min +
