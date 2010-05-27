@@ -34,7 +34,7 @@ void graphicInitialize(int mode)
 void graphicUpdateObject(object per)
 {
     BITMAP *tmp = create_bitmap(per->radius * 2, per->radius * 2);
-    point /*aux1, aux2, aux3, */ p = objectGetPos(per);
+    point aux1, aux2, aux3, p = objectGetPos(per);
     rectfill(tmp, 0, 0, per->radius * 2, per->radius * 2, 0xff00ff);    /*TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a cor transparente */
     switch (per->tex.type) {
     case TEX_CIRCLE:
@@ -45,7 +45,15 @@ void graphicUpdateObject(object per)
         break;
         /* a parte dos barcos vai ser punk */
     case TEX_ISOSC_TRIANGLE:
-        triangle(
+    	aux1.x=per->radius-(per->radius*cos(vectorAngle(per->acc)));
+    	aux1.y=per->radius-(per->radius*sin(vectorAngle(per->acc)));
+    	aux2.x=per->radius-(per->radius*cos(vectorAngle(per->acc)+(4*PI/5)));
+    	aux2.y=per->radius-(per->radius*sin(vectorAngle(per->acc)+(4*PI/5)));
+    	aux3.x=per->radius-(per->radius*cos(vectorAngle(per->acc)-(4*PI/5)));
+    	aux3.y=per->radius-(per->radius*sin(vectorAngle(per->acc)-(4*PI/5)));
+    	triangle(tmp, aux1.x, aux1.y, aux2.x, aux2.y, aux3.x, aux3.y, per->tex.color);
+    	/*Codigo abaixo mantido para a posteridade - DO NOT EXCLUAM*/
+        /*triangle(
             tmp, 
             per->radius-(per->radius*cos(vectorAngle(per->acc))), 
             per->radius-(per->radius*sin(vectorAngle(per->acc))), 
@@ -54,6 +62,7 @@ void graphicUpdateObject(object per)
             per->radius-(per->radius*cos(vectorAngle(per->acc)-(4*PI/5))), 
             per->radius-(per->radius*sin(vectorAngle(per->acc)-(4*PI/5))), 
             per->tex.color);
+            */
        /* rotate_sprite(buffer, tmp, p.x, p.y, per->acc.y / (2 * PI) * 256);*/
         /*OH CEUS  TODO: implementar o giramento de barquinhos */
         /*TODO: Ver se funfa. >_> */
@@ -62,7 +71,7 @@ void graphicUpdateObject(object per)
         /* foto dos desenvolvedores */
         break;
     }
-    draw_sprite(buffer, tmp, p.x, p.y);
+    draw_sprite(buffer, tmp, p.x - per->radius, p.y - per->radius);
     destroy_bitmap(tmp);
 }
 
