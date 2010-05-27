@@ -33,9 +33,9 @@ void graphicInitialize(int mode)
 
 void graphicUpdateObject(object per)
 {
-    BITMAP *tmp = create_bitmap(per->radius * 2, per->radius * 2);
+    BITMAP *tmp = create_bitmap(per->radius * 3, per->radius * 3);
     point aux1, aux2, aux3, p = objectGetPos(per);
-    rectfill(tmp, 0, 0, per->radius * 2, per->radius * 2, 0xff00ff);    /*TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a cor transparente */
+    rectfill(tmp, 0, 0, per->radius * 3, per->radius * 3, 0xff00ff);    /*TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a cor transparente */
     switch (per->tex.type) {
     case TEX_CIRCLE:
         circlefill(tmp, per->radius, per->radius, per->radius, per->tex.color);
