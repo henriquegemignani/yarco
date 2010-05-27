@@ -149,7 +149,7 @@ int objectTableIsObjectColliding(objectTable table, object o)
 {
   int i;
   for (i = 0; i < table->curMax; i++)
-    if (table->list[i] != NULL)
+    if (table->list[i] != NULL && table->list[i] != o )
       if( objectIsColliding(table->list[i], o) )
 	     return 1;
   return 0;
