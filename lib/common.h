@@ -57,7 +57,9 @@ typedef enum {
     TEX_CIRCLE,
     /* ISOSC = Isosceles */
     TEX_ISOSC_TRIANGLE,         /* Frente: Ponto de intersecao das retas iguais  */
-    TEX_ISOSC_TRIANGLE_BACKWARD /* Frente: Lado diferente. */
+    TEX_ISOSC_TRIANGLE_BACKWARD, /* Frente: Lado diferente. */
+	TEX_HORIZONTAL_RETANGLE,
+	TEX_VERTICAL_RETANGLE
 } texType;
 
 typedef struct Texture {

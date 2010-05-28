@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
     /* Inicializa tabela de objetos */
     table = objectTableInit(defaults);
-	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_ISOSC_TRIANGLE ) );
+	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_HORIZONTAL_RETANGLE ) );
 	objectTableAddObject(table, asimov);
 	
     for (i = 0; i < PERSON_NUM_INIT; i++)

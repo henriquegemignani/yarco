@@ -67,6 +67,11 @@ void graphicUpdateObject(object per)
         /*OH CEUS  TODO: implementar o giramento de barquinhos */
         /*TODO: Ver se funfa. >_> */
         break;
+	case TEX_HORIZONTAL_RETANGLE:
+		aux1.x=p.x+(2*per->radius);
+		aux1.y=p.y+per->radius;
+		rectfill(tmp, 0, 0, aux1.x, aux1.y, per->tex.color);
+		break;
     default:
         /* foto dos desenvolvedores */
         break;
