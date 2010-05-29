@@ -83,14 +83,14 @@ void graphicUpdateObject(object per)
 void graphicUpdate(objectTable table)
 {
     clear(buffer);
-    floodfill(buffer, 0, 0, SEA_COLOR);
+    rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
     objectTableExecute(table, graphicUpdateObject);
 }
 
 
 void graphicDraw()
 {
-    draw_sprite(screen, buffer, 0, 0);
+    blit(buffer, screen, 0, 0, 0, 0, MAX_X, MAX_Y);
 }
 
 void graphicFinish()

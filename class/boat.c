@@ -14,6 +14,11 @@ struct boatExtra {
   int life;
 };
 
+void boatCreate(texture tex, point pos){
+	boat b;
+	b= objectCreate(TYPE_BOAT, 0,)
+}
+
 void boatUpdate(boat b, int keepDir, double timedif){
   /*Var*/
   if(!keepDir){
@@ -34,8 +39,12 @@ void boatRemove(boat b){
 }
 
 void boatCollide(boat b, object o){
-  if (o->objectType == TYPE_SHIP || TYPE_CORAL){
-    /*TODO (boatCollide) : Finish this piece of shit*/
+  switch(o->type){
+  case TYPE_BOAT: /*TODO (boatCollide): Colisao barco-barco*/; break;
+  case TYPE_CORAL: b->extra->life--;
+  case TYPE_SHIP: /*TODO: Colisao barco-navio e etc*/; break;
+  case TYPE_PERSON: break;
+  default: debugMsg("Colisao de barco com tipo desconhecido!\n")
   }
 }
 
