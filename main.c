@@ -9,12 +9,13 @@
 /*******************************************************************/
 
 #include "lib/common.h"
+#include "lib/configuration.h"
 #include "lib/graphics.h"
 #include "lib/objecttable.h"
+#include "lib/class.h"
 #include "class/person.h"
 #include "class/ship.h"
-#include "lib/configuration.h"
-#include "lib/class.h"
+#include "class/coral.h"
 #include <time.h>
 #include <sys/time.h>
 
@@ -47,6 +48,7 @@ int main(int argc, char **argv)
     classInitialize();
     personInitializeClass();
 	shipInitializeClass();
+	coralInitializeClass();
 
 
     /* Inicializa tabela de objetos */
@@ -56,10 +58,14 @@ int main(int argc, char **argv)
 	
     for (i = 0; i < PERSON_NUM_INIT; i++)
         if (personAddNewToTable(table, defaults->defaultSpeed) == NULL)
-            genError("Erro: limite de naufragos atingido!\n");
+            genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
-	
+
+    for (i = 0; i < CORAL_NUM_INIT; i++)
+        if (coralAddNewToTable(table) == NULL)
+            genError("Erro: limite de objetos atingido!\n");
+
     /* Inicializa parte grafica */
     if (defaults->graphic)
         graphicInitialize(WINDOWED_MODE);       /*pode ser FULLSCREEN_MODE */

@@ -1,5 +1,5 @@
 VPATH = ./lib/:./class/
-objects =   physics.o graphics.o common.o object.o person.o objecttable.o configuration.o class.o ship.o
+objects =   physics.o graphics.o common.o object.o person.o objecttable.o configuration.o class.o ship.o coral.o
 objectmain = main.o
 objecttest = tests.o
 CC = gcc
@@ -13,17 +13,18 @@ yarco :      $(objects) $(objectmain)
 yarco.test : $(objects) $(objecttest)
 	$(CC) $(CFLAGS) $(objects) $(objecttest) -lm -o $@
 
-main.o :        common.h
+main.o :        common.h coral.h ship.h class.h configuration.h graphics.h objecttable.h main.c
 tests.o :       common.h
 common.o :      common.h common.c
 physics.o :     common.h physics.h object.h physics.c
 object.o :      common.h object.h object.c
-person.o :      common.h object.h person.h
-objecttable.o : common.h objecttable.h object.h class.h physics.h persontable.c
-graphics.o :    common.h persontable.h graphics.h person.h graphics.c
+person.o :      common.h object.h person.h person.c
+objecttable.o : common.h object.h objecttable.h class.h physics.h objecttable.c
+graphics.o :    common.h object.h objecttable.h graphics.h graphics.c
 configuration.o: common.h configuration.h configuration.c
-class.o :       common.h class.h object.h person.h class.c
-ship.o:			common.h object.h ship.h
+class.o :       common.h object.h class.h objecttable.h class.c
+ship.o :		common.h object.h class.h objecttable.h ship.h ship.c
+coral.o :		common.h object.h class.h objecttable.h coral.h coral.c
 
 .PHONY : believe
 believe : 

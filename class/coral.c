@@ -10,4 +10,47 @@
 #include "../lib/objecttable.h"
 
 /* Funcoes privadas. */
+point coralGeneratePosition()
+{
+    return vectorCreate( randDouble(0,MAX_X), randDouble(0,MAX_Y) );
+}
 
+coral coralCreate(texture tex, point pos)
+{
+    return objectCreate(TYPE_CORAL, 0, pos, vectorCreate(0,0), CORAL_RADIUS, tex);
+}
+
+/* Funcoes publicas. */
+void coralInitializeClass() {
+    classAdd(TYPE_CORAL, NULL, coralRemove, coralCollide, NULL, objectDump);
+}
+
+void coralRemove(coral c) {
+	free(c);
+}
+
+void coralCollide(coral c, object other){}
+
+/* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
+coral coralAddNewToTable(objectTable table)
+{
+    coral c = coralCreate(
+        createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_SQUARE), 
+        coralGeneratePosition() );
+	int err;
+	do {
+		err = objectTableAddObject(table, c);
+		if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
+			coralRemove(c);
+			return NULL;
+		} else if (err == ERROR_OBJECT_IS_COLLIDING) {
+			c->pos = coralGeneratePosition();
+		}
+		if( err != 0 ) {
+			printf("Tentando criar coral. Err = %d ", err );
+			vectorPrint(c->pos);
+			printf("\n");
+		}
+	} while( err != 0 );
+	return c;
+}

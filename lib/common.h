@@ -18,11 +18,13 @@
 
 #define PERSON_NUM_LIMIT            100
 #define PERSON_NUM_INIT             30
+#define CORAL_NUM_INIT				12
 #define OBJECT_NUM_LIMIT			150
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
 #define PERSON_RADIUS               10
 #define SHIP_RADIUS					50
+#define CORAL_RADIUS                10
 #define MAX_X                       1023
 #define MAX_Y                       767
 #define DURATION_DEFAULT            50.0
