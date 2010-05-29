@@ -14,9 +14,11 @@ struct boatExtra {
   int life;
 };
 
-void boatCreate(texture tex, point pos){
+boat boatCreate(texture tex, point pos){
 	boat b;
-	b= objectCreate(TYPE_BOAT, 0,)
+	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vectorCreate(0,0), BOAT_RADIUS, tex);
+	b->extra = AUTOMALLOC(boatExtra);
+	return b;
 }
 
 void boatUpdate(boat b, int keepDir, double timedif){

@@ -8,12 +8,15 @@
 #include "class.h"
 #include "physics.h"
 
-struct ObjectTable {
+/*
+    struct ObjectTable {
     object list[OBJECT_NUM_LIMIT];
     unsigned int curMax, lastID;
     configuration config;
 };
+*/
 
+/*Algum motivo para a estrutura acime estar aqui e nao no .h? Eu mudei para usar no person.c ~Miojo*/
 
 /* Funcoes privadas. */
 int particao(object * vet, int ini, int fim)

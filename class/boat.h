@@ -9,4 +9,4 @@ typedef struct Object *boat;
 
 void boatInitializeClass();
 
-boat boatNew(texture tex, double speed);
+boat boatCreate(texture tex, double speed);

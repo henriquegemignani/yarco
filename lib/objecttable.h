@@ -11,6 +11,12 @@
 
 typedef struct ObjectTable *objectTable;
 
+struct ObjectTable {
+    object list[OBJECT_NUM_LIMIT];
+    unsigned int curMax, lastID;
+    configuration config;
+}; /*Existe algum motivo para isso antes estar no .c e nao o .h? Eu coloquei aqui pra poder usar uma coisa no person.c ~Miojo*/
+
 objectTable objectTableInit(configuration config);
 
 int objectTableAddObject(objectTable table, object obj);
