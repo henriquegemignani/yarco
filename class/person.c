@@ -150,6 +150,12 @@ void personCollide(person per, object other) {
 				per->vel = other->vel;
 			}
 			break;
+		case TYPE_SHIP:
+			if((per->pos.x+per->radius) > (other->pos.x-other->radius) && per->pos.x < (other->pos.x+(3*other->radius)) )
+				per->pos.x*=-1;
+			if( (per->pos.y+per->radius) > (other->pos.y-other->radius) && per->pos.y < (other->pos.y+other->pos.y) )
+				per->pos.y*=-1;
+			break;
 		default:
 			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");
 	}
