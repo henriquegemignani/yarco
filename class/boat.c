@@ -44,7 +44,12 @@ void boatCollide(boat b, object o){
   switch(o->type){
   case TYPE_BOAT: /*TODO (boatCollide): Colisao barco-barco*/; break;
   case TYPE_CORAL: b->extra->life--;
-  case TYPE_SHIP: /*TODO: Colisao barco-navio e etc*/; break;
+  case TYPE_SHIP:
+	  if((b->pos.x+b->radius) > (o->pos.x-o->radius) && b->pos.x < (o->pos.x+(3*o->radius)) )
+	  	b->pos.x*=-1;
+	  if( (b->pos.y+b->radius) > (o->pos.y-o->radius) && b->pos.y < (o->pos.y+o->pos.y) )
+	  	b->pos.y*=-1;
+	  ; break;
   case TYPE_PERSON: break;
   default: debugMsg("Colisao de barco com tipo desconhecido!\n")
   }

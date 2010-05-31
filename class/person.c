@@ -91,6 +91,7 @@ void personMoveToRandomBorder(person p, objectTable table)
 	do{
 		//generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
 		generatePosAndVelInBorder(table->config->defaultSpeed, &p->pos, &p->vel);
+		p->quadrante = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
 	} while( objectTableIsObjectColliding(table, p) );
 }
 
@@ -152,9 +153,15 @@ void personCollide(person per, object other) {
 			break;
 		case TYPE_SHIP:
 			if((per->pos.x+per->radius) > (other->pos.x-other->radius) && per->pos.x < (other->pos.x+(3*other->radius)) )
-				per->pos.x*=-1;
+				per->vel.x*=-1;
 			if( (per->pos.y+per->radius) > (other->pos.y-other->radius) && per->pos.y < (other->pos.y+other->pos.y) )
-				per->pos.y*=-1;
+				per->vel.y*=-1;
+			break;
+		case TYPE_CORAL:
+			if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))
+				per->vel.x *= -1;
+			if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
+				per->vel.y *= -1;
 			break;
 		default:
 			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");

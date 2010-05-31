@@ -16,6 +16,12 @@
 /* Constantes do programa */
 #define PI 3.141592654
 
+/*Constante abaixo precalculada para economizar processamento. Serve para deixar o
+ *circulo de colisao e o quadrado desenhado com a mesma area, para tentar reduzir a diferenca
+ *entre o circulo de colisao e o desenho do quadrado*/
+#define SQRT_PI 1.772453851
+
+
 #define PERSON_NUM_LIMIT            100
 #define PERSON_NUM_INIT             30
 #define CORAL_NUM_INIT				12
@@ -58,8 +64,9 @@ typedef enum {
     TEX_SQUARE,
     TEX_CIRCLE,
     /* ISOSC = Isosceles */
-    TEX_ISOSC_TRIANGLE,         /* Frente: Ponto de intersecao das retas iguais  */
-    TEX_ISOSC_TRIANGLE_BACKWARD, /* Frente: Lado diferente. */
+    TEX_TRIANGLE,
+    //TEX_ISOSC_TRIANGLE,         /* Frente: Ponto de intersecao das retas iguais  */
+    //TEX_ISOSC_TRIANGLE_BACKWARD, /* Frente: Lado diferente. *//*...why the hell temos isso?*/
 	TEX_HORIZONTAL_RETANGLE,
 	TEX_VERTICAL_RETANGLE
 } texType;

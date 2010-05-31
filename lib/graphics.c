@@ -28,7 +28,7 @@ void graphicInitialize(int mode)
                      SCREEN_SIZE_Y, 0, 0);
 
     buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-    floodfill(buffer, 0, 0, SEA_COLOR);
+    //floodfill(buffer, 0, 0, SEA_COLOR);
 }
 
 void graphicUpdateObject(object per)
@@ -41,10 +41,10 @@ void graphicUpdateObject(object per)
         circlefill(tmp, per->radius, per->radius, per->radius, per->tex.color);
         break;
     case TEX_SQUARE:
-        rectfill(tmp, 0, 0, per->radius * 2, per->radius * 2, per->tex.color);
+        rectfill(tmp, 0, 0, per->radius * SQRT_PI, per->radius * SQRT_PI, per->tex.color);
         break;
         /* a parte dos barcos vai ser punk */
-    case TEX_ISOSC_TRIANGLE:
+    case /*TEX_ISOSC_TRIANGLE*/TEX_TRIANGLE:
     	aux1.x=per->radius-(per->radius*cos(vectorAngle(per->acc)));
     	aux1.y=per->radius-(per->radius*sin(vectorAngle(per->acc)));
     	aux2.x=per->radius-(per->radius*cos(vectorAngle(per->acc)+(4*PI/5)));

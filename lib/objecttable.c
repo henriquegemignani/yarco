@@ -67,6 +67,7 @@ objectTable objectTableInit(configuration config)
 
 int objectTableAddObject(objectTable table, object obj)
 {
+	obj->quadrante = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
     if (objectTableFilled(table))
         return ERROR_OBJECT_LIMIT_EXCEEDED;
     if (objectTableIsObjectColliding(table, obj))
@@ -155,8 +156,9 @@ int objectTableIsObjectColliding(objectTable table, object o)
   int i;
   for (i = 0; i < table->curMax; i++)
     if (table->list[i] != NULL && table->list[i] != o )
-      if( objectIsColliding(table->list[i], o) )
-	     return 1;
+    	if(quadNear(objectGetQuad(o), objectGetQuad(table->list[i])))
+    		if( objectIsColliding(table->list[i], o) )
+    			return 1;
   return 0;
 }
 
