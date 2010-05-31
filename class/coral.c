@@ -22,14 +22,12 @@ coral coralCreate(texture tex, point pos)
 
 /* Funcoes publicas. */
 void coralInitializeClass() {
-    classAdd(TYPE_CORAL, NULL, coralRemove, coralCollide, NULL, objectDump);
+    classAdd(TYPE_CORAL, NULL, coralRemove, NULL, NULL, objectDump);
 }
 
 void coralRemove(coral c) {
 	free(c);
 }
-
-void coralCollide(coral c, object other){}
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
 coral coralAddNewToTable(objectTable table)
