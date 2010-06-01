@@ -16,6 +16,7 @@
 #include "class/person.h"
 #include "class/ship.h"
 #include "class/coral.h"
+#include "class/boat.h"
 #include <time.h>
 #include <sys/time.h>
 
@@ -49,6 +50,7 @@ int main(int argc, char **argv)
     personInitializeClass();
 	shipInitializeClass();
 	coralInitializeClass();
+	boatInitializeClass();
 
 
     /* Inicializa tabela de objetos */

@@ -139,16 +139,23 @@ person personAddNewToTable(objectTable table, double speed)
   }*/
 
 void personCollide(person per, object other) {
+	double angOfCol;
 	switch( other->type ) {
 		case TYPE_PERSON:
+			angOfCol=vectorAngle(vectorSub(per->pos, other->pos));
 			if( vectorLength(other->prevSpeed) != 0 ) {
 				/* segunda colisao */
-				per->vel = other->prevSpeed;
-				other->prevSpeed = vectorLengthSet(other->prevSpeed, 0);
+				per->vel = /*vectorRotate(*/other->prevSpeed/*,angOfCol)*/;
+				//per->vel.x = (per->vel.x + other->prevSpeed.x)*sin(angOfCol);///2;
+				//per->vel.y = (per->vel.y + other->prevSpeed.y)*cos(angOfCol);///2;
+				//other->prevSpeed = vectorLengthSet(other->prevSpeed, 0);
+				other->prevSpeed = vectorCreate(0,0);
 			} else {
 				/* primeira colisao */
 				per->prevSpeed = per->vel;
-				per->vel = other->vel;
+				per->vel = /*VectorRotate(*/other->vel/*, angOfCol)*/;
+				//per->vel.x = (per->vel.x + other->vel.x)*sin(angOfCol);///2;
+				//r->vel.y = (per->vel.y + other->vel.y)*cos(angOfCol);///2;
 			}
 			break;
 		case TYPE_SHIP:
@@ -158,9 +165,11 @@ void personCollide(person per, object other) {
 				per->vel.y*=-1;
 			break;
 		case TYPE_CORAL:
-			if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))
+			if((per->pos.x + per->radius >= other->pos.x - (other->radius*SQRT_2/2)) ^ (per->pos.x - per->radius <= other->pos.x + (other->radius*SQRT_2/2)))
+			//if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))
 				per->vel.x *= -1;
-			if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
+			if((per->pos.y + per->radius >= other->pos.y - (other->radius*SQRT_2/2)) ^ (per->pos.y - per->radius <= other->pos.y + (other->radius*SQRT_2/2)))
+			//if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
 				per->vel.y *= -1;
 			break;
 		default:

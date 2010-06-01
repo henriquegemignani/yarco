@@ -12,6 +12,7 @@ typedef enum {
 } objectType;
 
 typedef struct Object *object;
+typedef struct Extra *extraInfo;
 
 struct Object {
     objectType type;
@@ -23,7 +24,7 @@ struct Object {
     double radius;
     quad quadrante;
     texture tex;
-	void* extra;
+	extraInfo extra;
 };
 /*Posicao e velocidade sao dados por coordenadas cartesianas, enquanto a aceleracao e dada por coordenadas polares*/
 

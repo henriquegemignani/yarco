@@ -4,20 +4,32 @@
 /*******************************************************************/
 
 #include "boat.h"
+#include "../lib/object.h"
 #define MAXTURN PI
 #define MAXSPEED 50.0
 #define IDLEACCEL 5
 
-struct boatExtra {
+struct Extra {
   int isAccel;
   double maxSpeed;
   int life;
-};
+} Extra;
+
+
+void boatInitializeClass()
+{
+    classAdd(TYPE_PERSON,
+             boatUpdate,
+             boatRemove,
+             boatCollide,
+			 boatOB,
+			 objectDump);
+}
 
 boat boatCreate(texture tex, point pos){
 	boat b;
 	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vectorCreate(0,0), BOAT_RADIUS, tex);
-	b->extra = AUTOMALLOC(boatExtra);
+	AUTOMALLOC(b->extra);
 	return b;
 }
 
@@ -28,7 +40,7 @@ void boatUpdate(boat b, int keepDir, double timedif){
     b->extra->isAccel = randInt(-1, 1);
   }
   if(b->extra->isAccel)
-    b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b))*isAccel, b->dir);
+    b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir));
   else
     b->acc = vectorPolarToCartesian(vectorCreate(-objectGetSpeed(b)*IDLEACCEL, b->dir));
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
@@ -46,9 +58,9 @@ void boatCollide(boat b, object o){
   case TYPE_CORAL: b->extra->life--;
   case TYPE_SHIP:
 	  if((b->pos.x+b->radius) > (o->pos.x-o->radius) && b->pos.x < (o->pos.x+(3*o->radius)) )
-	  	b->pos.x*=-1;
+	  	b->vel.x*=-1;
 	  if( (b->pos.y+b->radius) > (o->pos.y-o->radius) && b->pos.y < (o->pos.y+o->pos.y) )
-	  	b->pos.y*=-1;
+	  	b->vel.y*=-1;
 	  ; break;
   case TYPE_PERSON: break;
   default: debugMsg("Colisao de barco com tipo desconhecido!\n")
@@ -59,7 +71,7 @@ void boatOB(boat b, objectTable table){
   if(b->pos.x< 0 || b->pos.x > MAX_X)
     b->vel.x = -b->vel.x;
   if(b->pos.y<0 || b->pos.y> MAX_Y)
-    b->vel.v = -b->vel.y;
+    b->vel.y = -b->vel.y;
 }
   
      

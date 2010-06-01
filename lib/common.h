@@ -19,7 +19,10 @@
 /*Constante abaixo precalculada para economizar processamento. Serve para deixar o
  *circulo de colisao e o quadrado desenhado com a mesma area, para tentar reduzir a diferenca
  *entre o circulo de colisao e o desenho do quadrado*/
-#define SQRT_PI 1.772453851
+//#define SQRT_PI 1.772453851
+
+
+#define SQRT_2 1.414213562
 
 
 #define PERSON_NUM_LIMIT            100
@@ -30,18 +33,20 @@
 #define PERSON_SPEED_DEFAULT        10
 #define PERSON_RADIUS               10
 #define SHIP_RADIUS					50
-#define CORAL_RADIUS                10
+#define CORAL_RADIUS                20
+#define BOAT_RADIUS					20
 #define MAX_X                       1023
 #define MAX_Y                       767
 #define DURATION_DEFAULT            50.0
 #define STD_DIST                    0.5
 #define NUM_CLASS                   4
-#define QUAD_SIZE_X                 30
-#define QUAD_SIZE_Y                 30
+#define QUAD_SIZE_X                 100
+#define QUAD_SIZE_Y                 100
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
 #include <allegro.h>
+#include <math.h>
 
 struct Vector {
     double x, y;

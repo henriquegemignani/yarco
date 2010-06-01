@@ -41,7 +41,7 @@ void graphicUpdateObject(object per)
         circlefill(tmp, per->radius, per->radius, per->radius, per->tex.color);
         break;
     case TEX_SQUARE:
-        rectfill(tmp, 0, 0, per->radius * SQRT_PI, per->radius * SQRT_PI, per->tex.color);
+        rectfill(tmp, 0, 0, per->radius * SQRT_2, per->radius * SQRT_2, per->tex.color);
         break;
         /* a parte dos barcos vai ser punk */
     case /*TEX_ISOSC_TRIANGLE*/TEX_TRIANGLE:
