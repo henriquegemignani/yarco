@@ -17,7 +17,8 @@ point coralGeneratePosition()
 
 coral coralCreate(texture tex, point pos)
 {
-    return objectCreate(TYPE_CORAL, 0, pos, vectorCreate(0,0), CORAL_RADIUS, tex);
+    return objectCreate(TYPE_CORAL, 0, pos, vectorCreate(0,0), 
+		randomizeAround(CORAL_RADIUS, STD_DIST), tex);
 }
 
 /* Funcoes publicas. */
