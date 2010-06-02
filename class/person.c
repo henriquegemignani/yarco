@@ -138,11 +138,12 @@ person personAddNewToTable(objectTable table, double speed)
   return p;
   }*/
 
-void personCollide(person per, object other) {
-	double angOfCol;
+void personCollide(person per, object other, double timedif) {
+	vector distance, nextPos;
+	double distanceAngle, velAngle;
 	switch( other->type ) {
 		case TYPE_PERSON:
-			angOfCol=vectorAngle(vectorSub(per->pos, other->pos));
+			//angOfCol=vectorAngle(vectorSub(per->pos, other->pos));
 			if( vectorLength(other->prevSpeed) != 0 ) {
 				/* segunda colisao */
 				per->vel = /*vectorRotate(*/other->prevSpeed/*,angOfCol)*/;
@@ -165,12 +166,16 @@ void personCollide(person per, object other) {
 				per->vel.y*=-1;
 			break;
 		case TYPE_CORAL:
-			if((per->pos.x + per->radius >= other->pos.x - (other->radius*SQRT_2/2)) ^ (per->pos.x - per->radius <= other->pos.x + (other->radius*SQRT_2/2)))
-			//if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))
-				per->vel.x *= -1;
-			if((per->pos.y + per->radius >= other->pos.y - (other->radius*SQRT_2/2)) ^ (per->pos.y - per->radius <= other->pos.y + (other->radius*SQRT_2/2)))
-			//if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
-				per->vel.y *= -1;
+			per->vel.x *= -1;
+			per->vel.y *= -1;
+				
+			/*
+				if((per->pos.x + per->radius >= other->pos.x - (other->radius*SQRT_2/2)) ^ (per->pos.x - per->radius <= other->pos.x + (other->radius*SQRT_2/2)))
+				//if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))
+					per->vel.x *= -1;
+				if((per->pos.y + per->radius >= other->pos.y - (other->radius*SQRT_2/2)) ^ (per->pos.y - per->radius <= other->pos.y + (other->radius*SQRT_2/2)))
+				//if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
+					per->vel.y *= -1; */
 			break;
 		default:
 			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");

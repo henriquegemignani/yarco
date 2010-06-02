@@ -10,7 +10,7 @@ static Class classList[NUM_CLASS];
 void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
-              void (*collideFunc) (object, object),
+              void (*collideFunc) (object, object, double timedif),
               void (*boundsFunc) (object, objectTable), 
 			  void (*dumpFunc) (object))
 {

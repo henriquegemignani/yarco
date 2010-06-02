@@ -122,8 +122,8 @@ void objectTableUpdate(objectTable table, double timedif,
                 (objectGetQuad(table->list[i]),
                  objectGetQuad(table->list[j])))
                 if (objectIsColliding(table->list[i], table->list[j])) {
-                    OBJECT_COLLIDE(table->list[i], table->list[j]);
-					OBJECT_COLLIDE(table->list[j], table->list[i]);
+                    OBJECT_COLLIDE(table->list[i], table->list[j], timedif);
+					OBJECT_COLLIDE(table->list[j], table->list[i], timedif);
 				}
 
     for (i = 0; i < table->curMax; i++)

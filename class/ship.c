@@ -24,7 +24,7 @@ void shipInitializeClass()
     classAdd(TYPE_SHIP,
              NULL,
              removeObject,
-             executeCollision, NULL, objectDump);
+             NULL, NULL, objectDump);
 }
 
 ship shipNew(texture tex)

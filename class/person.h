@@ -39,6 +39,6 @@ void personDump(person p);
 person personAddNewToTable(objectTable table, double speed);
 /*person personCreateToTable(objectTable table, point pos, velocity vel);*/
 
-void personCollide(person per, object other);
+void personCollide(person per, object other, double timedif);
 
 #endif                          /* _PERSON_H_ */

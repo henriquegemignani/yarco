@@ -20,7 +20,7 @@ struct ClassStruct {
     void (*removeFunc) (object);
 
     /* Funcao de colisao do objeto. */
-    void (*collideFunc) (object, object);
+    void (*collideFunc) (object, object, double timedif);
 
     /* Funcao chamada quando o objeto esta fora da tela. */
     void (*boundsFunc) (object, objectTable);
@@ -33,7 +33,7 @@ struct ClassStruct {
 void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
-              void (*collideFunc) (object, object),
+              void (*collideFunc) (object, object, double timedif),
               void (*boundsFunc) (object, objectTable),
 			  void (*dumpFunc) (object));
 
@@ -51,8 +51,8 @@ int classMethodIsNull(objectType type, int func );
 
 #define OBJECT_UPDATE(obj, arg1, arg2)  do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_UPDATE) ) \
 		getClass((*obj).type)->updateFunc((obj),(arg1),(arg2)); } while(0)
-#define OBJECT_COLLIDE(obj, tar)        do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_COLLIDE) ) \
-		getClass((*obj).type)->collideFunc((obj),(tar)); } while(0)
+#define OBJECT_COLLIDE(obj, tar, dif)        do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_COLLIDE) ) \
+		getClass((*obj).type)->collideFunc((obj),(tar),(dif)); } while(0)
 #define OBJECT_REMOVE(obj)              do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_REMOVE) ) \
 		getClass((*obj).type)->removeFunc(obj); } while(0)
 #define OBJECT_BOUNDS(obj, table)       do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_BOUNDS) ) \

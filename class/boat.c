@@ -52,7 +52,7 @@ void boatRemove(boat b){
   free(b);
 }
 
-void boatCollide(boat b, object o){
+void boatCollide(boat b, object o, double timedif){
   switch(o->type){
   case TYPE_BOAT: /*TODO (boatCollide): Colisao barco-barco*/; break;
   case TYPE_CORAL: b->extra->life--;

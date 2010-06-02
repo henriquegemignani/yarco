@@ -15,5 +15,5 @@ boat boatCreate(texture tex, point pos);
 void boatUpdate(boat b, int keepDir, double timedif);
 void boatRemove(boat b);
 void boatOB(boat b, objectTable table);
-void boatCollide(boat b, object o);
+void boatCollide(boat b, object o, double timedif);
 #endif
