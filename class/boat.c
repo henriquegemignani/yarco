@@ -8,7 +8,7 @@
 #include "../lib/vector.h"
 
 #define MAXTURN (PI/2)
-#define MAXSPEED 50
+#define MAXSPEED 100
 #define IDLEACCEL 0.5
 
 struct Extra {
@@ -71,22 +71,27 @@ void boatUpdate(boat b, int keepDir, double timedif){
   }
 	b->tex.color = 0x808080 + b->extra->isAccel* 0x303030;
   if(b->extra->isAccel){
-	/* b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir)); */
+	/* b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir));*/
 	  b->acc = vectorPolarToCartesian(
 		vectorCreate(
 			(abs(b->extra->maxSpeed) - abs(vectorLength(b->vel) )) * b->extra->isAccel,
 			b->dir)
 		);
+
+
           debugDouble("Velocidade do barco acelerando: ",vectorLength(b->vel));
   		  debugDouble("Aceleracao do barco acelerando: ",vectorLength(b->acc));
   }
   else
-	  if(vectorLength(b->vel)>0){
+	  if(vectorLength(b->vel)>0){/*
 		  b->acc = vectorPolarToCartesian(
 			vectorCreate(
 				-abs((vectorLength(b->vel) * b->extra->idleAccel)),
 				vectorAngle(b->vel))
 				);
+				*/
+		  b->acc.x = b->extra->idleAccel * b->vel.x * -1;
+		  b->acc.y = b->extra->idleAccel * b->vel.y * -1;
 		  debugDouble("Velocidade do barco nao acelerando: ",vectorLength(b->vel));
 		  debugDouble("Aceleracao do barco nao acelerando: ",vectorLength(b->acc));
 	  }
