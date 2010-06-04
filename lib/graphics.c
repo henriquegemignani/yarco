@@ -6,6 +6,7 @@
 #include "object.h"
 #include "graphics.h"
 #include "physics.h"
+#include "objecttable.h"
 #include <math.h>
 
 #define SEA_COLOR 0x001770
@@ -80,11 +81,11 @@ void graphicUpdateObject(object per)
     destroy_bitmap(tmp);
 }
 
-void graphicUpdate(objectTable table)
+void graphicUpdate()
 {
     clear(buffer);
     rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
-    objectTableExecute(table, graphicUpdateObject);
+    objectTableExecute(graphicUpdateObject);
 }
 
 

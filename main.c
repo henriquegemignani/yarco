@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
 
     /* Inicializa tabela de objetos */
-    table = objectTableInit();
+    table = objectTableGet();
 	
 	players[0] = boatAddNewToTable(table, 0xFF0000);
 	players[1] = boatAddNewToTable(table, 0x0000FF);
@@ -98,8 +98,7 @@ int main(int argc, char **argv)
 				ate atingir o limite de objetos. */
         }
 
-        objectTableUpdate(table, timeDifference,
-                          timeSinceLastIteration > 1);
+        objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
 
         if (defaults->graphic) {
             graphicUpdate(table);

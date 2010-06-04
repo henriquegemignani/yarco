@@ -14,14 +14,10 @@ typedef struct ObjectTable *objectTable;
 struct ObjectTable {
     object list[OBJECT_NUM_LIMIT];
     unsigned int curMax, lastID;
-    configuration config;
 };
 
 /* Devolve a instancia de objectTable, criando-a se necessario. */
 objectTable objectTableGet();
-
-/*Inicializa tabela de objetos*/
-objectTable objectTableInit();
 
 /*Tenta adicionar o objeto OBJ na tabela, devolvendo 0 em caso de sucesso ou algum erro:
 	ERROR_OBJECT_LIMIT_EXCEEDED
@@ -29,24 +25,24 @@ objectTable objectTableInit();
 int objectTableAddObject(objectTable table, object obj);
 
 /* Devolve o objeto com o id dado, ou NULL caso nao exista. */
-object objectTableSearchObject(objectTable table, unsigned int id);
+object objectTableSearchObject(unsigned int id);
 
 /* Remove o objeto dado da tabela. Devolve 0 em sucesso e 
 	WARNING_OBJECT_NOT_FOUND se o objeto nao existe na tabela. */
-int objectTableRemoveObjectByObject(objectTable table, object obj);
+int objectTableRemoveObject(object obj);
 
 /* Remove o objeto com o ID dado da tabela. Devolve 0 em sucesso e 
 	WARNING_OBJECT_NOT_FOUND se o objeto nao existe na tabela. */
-int objectTableRemoveObjectByID(objectTable table, unsigned int id);
+int objectTableRemoveObjectByID(unsigned int id);
 
 /* Ordena a tabela. */
-void objectTableSort(objectTable table);
+void objectTableSort();
 
 /* Realiza colisoes, chama o OBJECT_UPDATE de cada objeto e OBJECT_BOUNDS caso esteja fora da tela. */
-void objectTableUpdate(objectTable table, double timedif, int newIteraction);
+void objectTableUpdate(double timedif, int newIteraction);
 
 /* Chama FUNC para cada objeto da tabela, passando tal objeto como parametro. */
-void objectTableExecute(objectTable table, void (*func) (object p));
+void objectTableExecute(void (*func) (object p));
 
 /* Devolve 1 caso OBJ esteja colidindo com algum objeto da tabela, 0 caso contrario. 
 	OBJ nao precisa estar na tabela. */

@@ -94,7 +94,7 @@ void personMoveToRandomBorder(person p, objectTable table)
 {
 	do{
 		//generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
-		personGeneratePosAndVelInBorder(table->config->defaultSpeed, &p->pos, &p->vel);
+		personGeneratePosAndVelInBorder(configurationGet()->defaultSpeed, &p->pos, &p->vel);
 		p->quadrante = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
 	} while( objectTableIsObjectColliding(table, p) );
 }
@@ -143,8 +143,8 @@ person personAddNewToTable(objectTable table, double speed)
   }*/
 
 void personCollide(person per, object other, double timedif) {
-	vector distance, nextPos;
-	double distanceAngle, velAngle, halfCoralSize;
+	//vector distance, nextPos;
+	double /*distanceAngle, velAngle, */halfCoralSize;
 	switch( other->type ) {
 		case TYPE_PERSON:
 			//angOfCol=vectorAngle(vectorSub(per->pos, other->pos));
@@ -179,21 +179,10 @@ void personCollide(person per, object other, double timedif) {
 				per->vel.x *=-1;
 				per->vel.y *= -1;
 			}
-
-			/*
-			per->vel.x *= -1;
-			per->vel.y *= -1;
-				*/
-			/*
-				if((per->pos.x + per->radius >= other->pos.x - (other->radius*SQRT_2/2)) ^ (per->pos.x - per->radius <= other->pos.x + (other->radius*SQRT_2/2)))
-				//if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))
-					per->vel.x *= -1;
-				if((per->pos.y + per->radius >= other->pos.y - (other->radius*SQRT_2/2)) ^ (per->pos.y - per->radius <= other->pos.y + (other->radius*SQRT_2/2)))
-				//if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
-					per->vel.y *= -1; */
 			break;
 		case TYPE_BOAT:
 			/* TODO(personCollide): mandar objectTable remover essa pessoa. Problema: consiguir a table. */
+			break;
 		default:
 			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");
 	}

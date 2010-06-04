@@ -7,7 +7,7 @@
 #include "objecttable.h"
 #include "class.h"
 
-static objectTable mainTable = NULL;
+static objectTable table = NULL;
 
 /* Funcoes privadas. */
 int particao(object * vet, int ini, int fim)
@@ -42,24 +42,21 @@ void quicksort(object * vet, int ini, int fim)
     }
 }
 
-
-/* Funcoes publicas. */
-
-objectTable objectTableGet() {
-	if( mainTable == NULL )
-		mainTable = objectTableInit(); 
-	return mainTable;
-}
-
 objectTable objectTableInit()
 {
     objectTable table;
     AUTOMALLOC(table);
-
     table->curMax = table->lastID = 0;
-    table->config = configurationGet();
-
     return table;
+}
+
+
+/* Funcoes publicas. */
+
+objectTable objectTableGet() {
+	if( table == NULL )
+		table = objectTableInit(); 
+	return table;
 }
 
 int objectTableAddObject(objectTable table, object obj)
@@ -74,7 +71,7 @@ int objectTableAddObject(objectTable table, object obj)
     return 0;
 }
 
-object objectTableSearchObject(objectTable table, unsigned int id)
+object objectTableSearchObject(unsigned int id)
 {
     int i;
     for (i = 0; i < table->curMax; i++)
@@ -83,12 +80,12 @@ object objectTableSearchObject(objectTable table, unsigned int id)
     return NULL;
 }
 
-int objectTableRemoveObjectByObject(objectTable table, object obj)
+int objectTableRemoveObject(object obj)
 {
-    return objectTableRemoveObjectByID(table, objectGetID(obj));
+    return objectTableRemoveObjectByID(objectGetID(obj));
 }
 
-int objectTableRemoveObjectByID(objectTable table, unsigned int id)
+int objectTableRemoveObjectByID(unsigned int id)
 {
     int i;
     object pAux;
@@ -102,13 +99,12 @@ int objectTableRemoveObjectByID(objectTable table, unsigned int id)
     return WARNING_OBJECT_NOT_FOUND;
 }
 
-void objectTableSort(objectTable table)
+void objectTableSort()
 {
     quicksort(table->list, 0, table->curMax - 1);
 }
 
-void objectTableUpdate(objectTable table, double timedif,
-                       int newIteraction)
+void objectTableUpdate(double timedif, int newIteraction)
 {
     int i, j;
     point pos;
@@ -126,7 +122,7 @@ void objectTableUpdate(objectTable table, double timedif,
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
-            OBJECT_UPDATE(table->list[i], table->config->keepSpeed
+            OBJECT_UPDATE(table->list[i], configurationGet()->keepSpeed
                           || !newIteraction, timedif);
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);
@@ -135,12 +131,12 @@ void objectTableUpdate(objectTable table, double timedif,
             }
         }
 
-    objectTableSort(table);
+    objectTableSort();
     for (i = table->curMax - 1; i >= 0 && table->list[i] == NULL; i--)
         table->curMax--;
 }
 
-void objectTableExecute(objectTable table, void (*func) (object p))
+void objectTableExecute(void (*func) (object p))
 {
     int i;
     for (i = 0; i < table->curMax; i++)
@@ -162,7 +158,7 @@ int objectTableIsObjectColliding(objectTable table, object o)
 int objectTableFilled(objectTable table)
 {
    if (table->curMax == OBJECT_NUM_LIMIT) {
-        objectTableSort(table); /* TODO: como ordenar objetos? decidir em grupo */
+        objectTableSort(); /* TODO: como ordenar objetos? decidir em grupo */
         if (table->curMax == OBJECT_NUM_LIMIT)
             return 1;
    }
