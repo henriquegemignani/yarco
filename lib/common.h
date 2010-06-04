@@ -132,6 +132,8 @@ double randDouble(double min, double max);
 /*Aleatoriza o valor dado em no maximo value * +-distance*/
 double randomizeAround(double value, double distance);
 
+void generatePosInBorder(point *pos, double *dir);
+
 /*Imprime mensagem de erro, sai do programa*/
 void genError(char *msg);
 

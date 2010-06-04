@@ -11,7 +11,7 @@ typedef struct Object *boat;
 
 void boatInitializeClass();
 
-boat boatCreate(texture tex, point pos);
+boat boatCreate(texture tex, point pos, velocity vel);
 void boatUpdate(boat b, int keepDir, double timedif);
 void boatRemove(boat b);
 void boatOB(boat b, objectTable table);

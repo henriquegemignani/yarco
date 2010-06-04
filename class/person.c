@@ -17,11 +17,14 @@ person personCreate(texture tex, point pos, velocity vel)
     return objectCreate(TYPE_PERSON, 0, pos, vel, PERSON_RADIUS, tex);
 }
 
-void generatePosAndVelInBorder(double speed, point * pos, velocity * vel)
+void personGeneratePosAndVelInBorder(double speed, point * pos, velocity * vel)
 {
     double dir;
-    /*Dir determina a primeira direcao do passageiro de modo que ele nao saia imediatamente da tela */
+    //point aux;
 
+    generatePosInBorder(pos, &dir);
+    /*Dir determina a primeira direcao do passageiro de modo que ele nao saia imediatamente da tela */
+/*
     switch (randInt(1, 4)) {
     case 1:
         pos->x = 0;
@@ -45,8 +48,9 @@ void generatePosAndVelInBorder(double speed, point * pos, velocity * vel)
         break;
     default:
         genError
-            ("Erro em personNew: numero aleatorio nao esta entre 1 e 4\n");
+            ("Erro em generatePosInBorder: numero aleatorio nao esta entre 1 e 4\n");
     }
+    */
     *vel =
         vectorPolarToCartesian(vectorCreate
                                (randomizeAround(speed, STD_DIST),
@@ -69,7 +73,7 @@ person personNew(texture tex, double speed)
 {
     point pos;
     velocity vel;
-    generatePosAndVelInBorder(speed, &pos, &vel);
+    personGeneratePosAndVelInBorder(speed, &pos, &vel);
     return personCreate(tex, pos, vel);
 }
 
@@ -90,7 +94,7 @@ void personMoveToRandomBorder(person p, objectTable table)
 {
 	do{
 		//generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
-		generatePosAndVelInBorder(table->config->defaultSpeed, &p->pos, &p->vel);
+		personGeneratePosAndVelInBorder(table->config->defaultSpeed, &p->pos, &p->vel);
 		p->quadrante = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
 	} while( objectTableIsObjectColliding(table, p) );
 }
@@ -114,7 +118,7 @@ person personAddNewToTable(objectTable table, double speed)
       personRemove(p);
       return NULL;
     } else if (err == ERROR_OBJECT_IS_COLLIDING) {
-      generatePosAndVelInBorder(speed, &p->pos, &p->vel);
+      personGeneratePosAndVelInBorder(speed, &p->pos, &p->vel);
     }
     if( err != 0 ) {
       printf("Tentando criar pessoa. Err = %d", err );

@@ -12,6 +12,8 @@
 struct Extra {
   int isAccel;
   double maxSpeed;
+  double idleAccel;
+  double isTurning;
   int life;
 } Extra;
 
@@ -26,17 +28,42 @@ void boatInitializeClass()
 			 objectDump);
 }
 
-boat boatCreate(texture tex, point pos){
+boat boatCreate(texture tex, point pos, velocity vel){
 	boat b;
-	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vectorCreate(0,0), BOAT_RADIUS, tex);
+	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vel, BOAT_RADIUS, tex);
 	AUTOMALLOC(b->extra);
+	b->extra->isAccel=randInt(-1,1);
+	b->extra->maxSpeed = MAXSPEED;
+	b->extra->life = 3;
+	b->extra->idleAccel = IDLEACCEL;
+	b->extra->isTurning=randInt(-1,1);
 	return b;
 }
+
+void boatGeneratePosAndVelInBorder(double speed, point * pos, velocity * vel){
+	double dir;
+	generatePosInBorder(pos, &dir);
+	*vel =
+	        vectorPolarToCartesian(vectorCreate
+	                               (randDouble(0, speed),
+	                                dir + PI / 4 * randInt(0, 4)));
+}
+
+boat boatNew(texture tex, double speed)
+{
+    point pos;
+    velocity vel;
+    boat b;
+    boatGeneratePosAndVelInBorder(speed, &pos, &vel);
+    b = boatCreate(tex, pos, vel);
+    b->dir = vectorAngle(b->vel);
+}
+
 
 void boatUpdate(boat b, int keepDir, double timedif){
   /*Var*/
   if(!keepDir){
-    b->acc.y = randDouble(-MAXTURN, MAXTURN);
+    b->extra->isTurning = randInt(-1, 1);
     b->extra->isAccel = randInt(-1, 1);
   }
   if(b->extra->isAccel)
@@ -45,6 +72,7 @@ void boatUpdate(boat b, int keepDir, double timedif){
     b->acc = vectorPolarToCartesian(vectorCreate(-objectGetSpeed(b)*IDLEACCEL, b->dir));
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
+  b->dir += b->extra->isTurning * MAXTURN * timedif;
 }
 
 void boatRemove(boat b){
@@ -68,19 +96,23 @@ void boatCollide(boat b, object o, double timedif){
 }
 
 void boatOB(boat b, objectTable table){
-  if(b->pos.x< 0 || b->pos.x > MAX_X)
+  if(b->pos.x< 0 || b->pos.x > MAX_X){
     b->vel.x = -b->vel.x;
-  if(b->pos.y<0 || b->pos.y> MAX_Y)
+    b->pos.x = (b->pos.x <0? 0: MAX_X);
+  }
+  if(b->pos.y<0 || b->pos.y> MAX_Y){
     b->vel.y = -b->vel.y;
+    b->pos.y = (b->pos.y <0? 0:MAX_Y);
+  }
 }
 boat boatAddNewToTable(objectTable table, int color) {
 	texture tex;
-	point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y));
+	//point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y));
 	boat b;
 	int err;
 	tex.color = color;
 	tex.type = TEX_TRIANGLE;
-	b = boatCreate(tex, p);
+	b = boatNew(tex, randDouble(0, MAXSPEED));
 	err = objectTableAddObject(table, b);
 	if(err == ERROR_OBJECT_LIMIT_EXCEEDED) {
 		boatRemove(b);

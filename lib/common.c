@@ -168,6 +168,34 @@ double randomizeAround(double value, double distance)
     return (value + randDouble(-(value * distance), (value * distance)));
 }
 
+void generatePosInBorder(point *pos, double *dir){
+	switch (randInt(1, 4)) {
+	    case 1:
+	        pos->x = 0;
+	        pos->y = randDouble(0, MAX_Y);
+	        *dir = -PI / 2;
+	        break;
+	    case 2:
+	        pos->x = MAX_X;
+	        pos->y = randDouble(0, MAX_Y);
+	        *dir = PI / 2;
+	        break;
+	    case 3:
+	        pos->x = randDouble(0, MAX_X);
+	        pos->y = 0;
+	        *dir = 0;
+	        break;
+	    case 4:
+	        pos->x = randDouble(0, MAX_X);
+	        pos->y = MAX_Y;
+	        *dir = PI;
+	        break;
+	    default:
+	        genError
+	            ("Erro em generatePosInBorder: numero aleatorio nao esta entre 1 e 4\n");
+	    }
+}
+
 void genError(char *msg)
 {
     fprintf(stderr, "%s", msg);
