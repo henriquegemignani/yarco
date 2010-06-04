@@ -21,37 +21,7 @@ person personCreate(texture tex, point pos, velocity vel)
 void personGeneratePosAndVelInBorder(double speed, point * pos, velocity * vel)
 {
     double dir;
-    //point aux;
-
     generatePosInBorder(pos, &dir);
-    /*Dir determina a primeira direcao do passageiro de modo que ele nao saia imediatamente da tela */
-/*
-    switch (randInt(1, 4)) {
-    case 1:
-        pos->x = 0;
-        pos->y = randDouble(0, MAX_Y);
-        dir = -PI / 2;
-        break;
-    case 2:
-        pos->x = MAX_X;
-        pos->y = randDouble(0, MAX_Y);
-        dir = PI / 2;
-        break;
-    case 3:
-        pos->x = randDouble(0, MAX_X);
-        pos->y = 0;
-        dir = 0;
-        break;
-    case 4:
-        pos->x = randDouble(0, MAX_X);
-        pos->y = MAX_Y;
-        dir = PI;
-        break;
-    default:
-        genError
-            ("Erro em generatePosInBorder: numero aleatorio nao esta entre 1 e 4\n");
-    }
-    */
     *vel =
         vectorPolarToCartesian(vectorCreate
                                (randomizeAround(speed, STD_DIST),
@@ -94,7 +64,6 @@ void personUpdate(person p, int keepDir, double timedif)
 void personMoveToRandomBorder(person p, objectTable table)
 {
 	do{
-		//generatePosAndVelInBorder(vectorLength(p->vel), &p->pos, &p->vel);
 		personGeneratePosAndVelInBorder(configurationGet()->defaultSpeed, &p->pos, &p->vel);
 		p->quadrante = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
 	} while( objectTableIsObjectColliding(table, p) );
@@ -144,24 +113,19 @@ person personAddNewToTable(objectTable table, double speed)
   }*/
 
 void personCollide(person per, object other, double timedif) {
-	//vector distance, nextPos;
+	/* vector distance, nextPos; */
 	double /*distanceAngle, velAngle, */halfCoralSize;
 	switch( other->type ) {
 		case TYPE_PERSON:
-			//angOfCol=vectorAngle(vectorSub(per->pos, other->pos));
+			/* angOfCol=vectorAngle(vectorSub(per->pos, other->pos)); */
 			if( vectorLength(other->prevSpeed) != 0 ) {
 				/* segunda colisao */
-				per->vel = /*vectorRotate(*/other->prevSpeed/*,angOfCol)*/;
-				//per->vel.x = (per->vel.x + other->prevSpeed.x)*sin(angOfCol);///2;
-				//per->vel.y = (per->vel.y + other->prevSpeed.y)*cos(angOfCol);///2;
-				//other->prevSpeed = vectorLengthSet(other->prevSpeed, 0);
+				per->vel = other->prevSpeed;
 				other->prevSpeed = vectorCreate(0,0);
 			} else {
 				/* primeira colisao */
 				per->prevSpeed = per->vel;
-				per->vel = /*VectorRotate(*/other->vel/*, angOfCol)*/;
-				//per->vel.x = (per->vel.x + other->vel.x)*sin(angOfCol);///2;
-				//r->vel.y = (per->vel.y + other->vel.y)*cos(angOfCol);///2;
+				per->vel = other->vel;
 			}
 			break;
 		case TYPE_SHIP:

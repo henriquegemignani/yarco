@@ -47,8 +47,7 @@ coral coralAddNewToTable(objectTable table)
 		}
 		if( err != 0 ) {
 			printf("Tentando criar coral. Err = %d ", err );
-			vectorPrint(c->pos);
-			printf("\n");
+			objectDump(c);
 		}
 	} while( err != 0 );
 	return c;

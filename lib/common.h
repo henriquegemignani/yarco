@@ -9,7 +9,7 @@
 #define DEBUG
 #ifdef DEBUG
 #define debugMsg(msg) fprintf(stderr, "%s\n", msg);
-#define debugDouble(msg,par) fprintf(stderr, "%s: %lf\n", msg, (par));
+#define debugDouble(msg,par) fprintf(stderr, "%s: %f\n", msg, (par));
 #else
 #define debugMsg
 #define debugDouble(msg,par)
@@ -21,7 +21,7 @@
 /*Constante abaixo precalculada para economizar processamento. Serve para deixar o
  *circulo de colisao e o quadrado desenhado com a mesma area, para tentar reduzir a diferenca
  *entre o circulo de colisao e o desenho do quadrado*/
-//#define SQRT_PI 1.772453851
+/*#define SQRT_PI 1.772453851 */
 
 
 #define SQRT_2 1.414213562
@@ -47,7 +47,6 @@
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
-#include <math.h>
 
 struct Vector {
     double x, y;
@@ -69,10 +68,7 @@ typedef struct Quad quad;
 typedef enum {
     TEX_SQUARE,
     TEX_CIRCLE,
-    /* ISOSC = Isosceles */
     TEX_TRIANGLE,
-    //TEX_ISOSC_TRIANGLE,         /* Frente: Ponto de intersecao das retas iguais  */
-    //TEX_ISOSC_TRIANGLE_BACKWARD, /* Frente: Lado diferente. *//*...why the hell temos isso?*/
 	TEX_HORIZONTAL_RETANGLE,
 	TEX_VERTICAL_RETANGLE
 } texType;

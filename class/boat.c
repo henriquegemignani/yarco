@@ -70,7 +70,7 @@ void boatUpdate(boat b, int keepDir, double timedif){
     b->extra->isAccel = randInt(-1, 1);
   }
   if(b->extra->isAccel)
-  //  b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir));
+	/* b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir)); */
 	  b->acc = vectorPolarToCartesian(
 		vectorCreate(
 			(b->extra->maxSpeed - vectorLength(b->vel) ) * b->extra->isAccel,
@@ -123,7 +123,7 @@ void boatOB(boat b, objectTable table){
 }
 boat boatAddNewToTable(objectTable table, int color) {
 	texture tex;
-	//point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y));
+	/* point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y)); */
 	boat b;
 	int err;
 	tex.color = color;

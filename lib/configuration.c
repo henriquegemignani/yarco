@@ -46,22 +46,24 @@ void argRead(int argc, char **argv, configuration defaults)
 {
     char *argValue;
     if (argFind(argc, argv, "--help", "-h")) {
-        printf("Usage: %s [OPTIONS]\n\n"
-               "Opcoes:\n"
-               "  -h\t--help\t\tImprime isso e sai\n"
-               "  -s\t--speed\t\tDetermina a velocidade media dos passageiros. Padrao: %3.2f\n"
-               "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
-               "  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
+        printf("Usage: %s [OPTIONS]\n\n", argv[0]);
+        printf("Opcoes:\n"
+               "  -h\t--help\t\tImprime isso e sai\n");
+        printf("  -s\t--speed\t\tDetermina a velocidade media dos passageiros. Padrao: %3.2f\n"
+               "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n",
+				defaults->defaultSpeed, defaults->createRate);
+        printf("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
                "  -g\t--nographic\tIgnora parte grafica\n"
-               "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n"
-               "  -f\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
+               "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
+			   defaults->duration);
+        printf("  -f\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
                "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
                "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
-               "  -n\t--nosleep\t\tIgnora o sleep.\n",
-               argv[0], defaults->defaultSpeed, defaults->createRate,
-               defaults->duration);
+               "  -n\t--nosleep\t\tIgnora o sleep.\n");
+        /* Separado em diversos printf pq -pedantic reclamou do tamanho da string:
+./lib/configuration.c:62: warning: string length ‘791’ is greater than the length ‘509’ ISO C90 compilers are required to support */
         exit(0);
     }
     argValue = argShortFlags(argc, argv, "dpgukn");

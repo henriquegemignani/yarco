@@ -2,11 +2,12 @@
 /** MAC0211 - Laboratorio de Programacao I                        **/
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
+
+#include "graphics.h"
 #include "common.h"
 #include "object.h"
-#include "graphics.h"
-#include "physics.h"
 #include "objecttable.h"
+
 #include <math.h>
 #include <allegro.h>
 
@@ -30,14 +31,16 @@ void graphicInitialize(int mode)
                      SCREEN_SIZE_Y, 0, 0);
 
     buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-    //floodfill(buffer, 0, 0, SEA_COLOR);
+    /* floodfill(buffer, 0, 0, SEA_COLOR); */
 }
 
 void graphicUpdateObject(object per)
 {
     BITMAP *tmp = create_bitmap(per->radius * 3, per->radius * 3);
     point aux1, aux2, aux3, p = objectGetPos(per);
-    rectfill(tmp, 0, 0, per->radius * 3, per->radius * 3, 0xff00ff);    /*TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a cor transparente */
+    rectfill(tmp, 0, 0, per->radius * 3, per->radius * 3, 0xff00ff);    
+	/* TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a 
+		cor transparente */
     switch (per->tex.type) {
     case TEX_CIRCLE:
         circlefill(tmp, per->radius, per->radius, per->radius, per->tex.color);
