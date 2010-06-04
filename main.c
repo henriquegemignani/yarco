@@ -20,6 +20,8 @@
 #include <time.h>
 #include <sys/time.h>
 
+#define NUM_PLAYERS 1
+
 /* Devolve o tempo atual em microsegundos.*/
 long timeInMicrosecond()
 {
@@ -39,7 +41,7 @@ int main(int argc, char **argv)
 		timeSinceLastIteration = 0,
         newPersonInterval;
 	ship asimov;
-	boat players[2];
+	boat players[NUM_PLAYERS];
 		
     struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
@@ -61,7 +63,7 @@ int main(int argc, char **argv)
     table = objectTableGet();
 	
 	players[0] = boatAddNewToTable(table, 0xFF0000);
-	players[1] = boatAddNewToTable(table, 0x0000FF);
+	//players[1] = boatAddNewToTable(table, 0x0000FF);
 	
 	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
 		TEX_HORIZONTAL_RETANGLE ) );

@@ -69,26 +69,34 @@ void boatUpdate(boat b, int keepDir, double timedif){
     b->extra->isTurning = randInt(-1, 1);
     b->extra->isAccel = randInt(-1, 1);
   }
-  if(b->extra->isAccel)
+	b->tex.color = 0x808080 + b->extra->isAccel* 0x303030;
+  if(b->extra->isAccel){
 	/* b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir)); */
 	  b->acc = vectorPolarToCartesian(
 		vectorCreate(
-			(b->extra->maxSpeed - vectorLength(b->vel) ) * b->extra->isAccel,
+			(abs(b->extra->maxSpeed) - abs(vectorLength(b->vel) )) * b->extra->isAccel,
 			b->dir)
 		);
+          debugDouble("Velocidade do barco acelerando: ",vectorLength(b->vel));
+  		  debugDouble("Aceleracao do barco acelerando: ",vectorLength(b->acc));
+  }
   else
 	  if(vectorLength(b->vel)>0){
 		  b->acc = vectorPolarToCartesian(
 			vectorCreate(
-				-(vectorLength(b->vel) * b->extra->idleAccel),
+				-abs((vectorLength(b->vel) * b->extra->idleAccel)),
 				vectorAngle(b->vel))
 				);
-		  debugDouble("Velocidade do barco: ",vectorLength(b->vel))
-		  debugDouble("Aceleracao do barco: ",vectorLength(b->acc))
+		  debugDouble("Velocidade do barco nao acelerando: ",vectorLength(b->vel));
+		  debugDouble("Aceleracao do barco nao acelerando: ",vectorLength(b->acc));
 	  }
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
   b->dir += b->extra->isTurning * MAXTURN * timedif;
+  if(vectorLength(b->vel)>b->extra->maxSpeed){
+  genWarning("Aviso: Velocidade do barco superior a velocidade maxima\n");
+  }
+
 }
 
 void boatRemove(boat b){
@@ -99,7 +107,7 @@ void boatRemove(boat b){
 void boatCollide(boat b, object o, double timedif){
   switch(o->type){
   case TYPE_BOAT: /*TODO (boatCollide): Colisao barco-barco*/; break;
-  case TYPE_CORAL: b->extra->life--;
+  case TYPE_CORAL: b->extra->life--; break;
   case TYPE_SHIP:
 	  if((b->pos.x+b->radius) > (o->pos.x-o->radius) && b->pos.x < (o->pos.x+(3*o->radius)) )
 	  	b->vel.x*=-1;

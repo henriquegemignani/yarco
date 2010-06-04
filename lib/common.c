@@ -104,6 +104,10 @@ void genError(char *msg)
     exit(EXIT_FAILURE);
 }
 
+void genWarning(char *msg){
+	fprintf(stderr, "%s", msg);
+}
+
 void MALLOC_DIE()
 {
     fprintf(stderr, "Erro de alocacao de memoria\n");

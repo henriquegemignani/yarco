@@ -106,6 +106,7 @@ void generatePosInBorder(point *pos, double *dir);
 
 /*Imprime mensagem de erro, sai do programa*/
 void genError(char *msg);
+void genWarning(char *msg);
 
 
 /* WARNING AND ERROR CODES */
