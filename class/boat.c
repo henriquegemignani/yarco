@@ -66,8 +66,8 @@ boat boatNew(texture tex, double speed)
 void boatUpdate(boat b, int keepDir, double timedif){
   /*Var*/
   if(!keepDir){
-    b->extra->isTurning = randInt(-1, 1);
-    b->extra->isAccel = randInt(-1, 1);
+    b->extra->isTurning = randInt(0, 2)-1;
+    b->extra->isAccel = randInt(0, 2)-1;
   }
 	b->tex.color = 0x808080 + b->extra->isAccel* 0x303030;
   if(b->extra->isAccel){
