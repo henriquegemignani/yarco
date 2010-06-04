@@ -18,7 +18,7 @@ struct Extra {
 
 void boatInitializeClass()
 {
-    classAdd(TYPE_PERSON,
+    classAdd(TYPE_BOAT,
              boatUpdate,
              boatRemove,
              boatCollide,
@@ -74,4 +74,18 @@ void boatOB(boat b, objectTable table){
     b->vel.y = -b->vel.y;
 }
   
-     
+boat boatAddNewToTable(objectTable table, int color) {
+	texture tex;
+	point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y));
+	boat b;
+	int err;
+	tex.color = color;
+	tex.type = TEX_TRIANGLE;
+	b = boatCreate(tex, p);
+	err = objectTableAddObject(table, b);
+	if(err == ERROR_OBJECT_LIMIT_EXCEEDED) {
+		boatRemove(b);
+		return NULL;
+	}
+	return b;
+}

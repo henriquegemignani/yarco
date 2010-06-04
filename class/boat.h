@@ -16,4 +16,5 @@ void boatUpdate(boat b, int keepDir, double timedif);
 void boatRemove(boat b);
 void boatOB(boat b, objectTable table);
 void boatCollide(boat b, object o, double timedif);
+boat boatAddNewToTable(objectTable table, int color);
 #endif

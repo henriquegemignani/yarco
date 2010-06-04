@@ -41,6 +41,7 @@ Class getClass(objectType type)
 
 int classMethodIsNull(objectType type, int func ) {
 	Class c = getClass(type);
+	if(c == NULL) genError("classMethodIsNull chamado para classe inexistente.\n");
 	switch( func ) {
 		case CLASS_METHOD_UPDATE:	return c->updateFunc == NULL;
 		case CLASS_METHOD_COLLIDE:	return c->collideFunc == NULL;

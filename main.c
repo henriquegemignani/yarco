@@ -36,6 +36,7 @@ int main(int argc, char **argv)
     double timeElapsed = 0, timeDifference = 0, timeSinceLastIteration = 0,
         newPersonInterval;
 	ship asimov;
+	boat players[2];
 		
     struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
@@ -55,7 +56,12 @@ int main(int argc, char **argv)
 
     /* Inicializa tabela de objetos */
     table = objectTableInit(defaults);
-	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_HORIZONTAL_RETANGLE ) );
+	
+	players[0] = boatAddNewToTable(table, 0xFF0000);
+	players[1] = boatAddNewToTable(table, 0x0000FF);
+	
+	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
+		TEX_HORIZONTAL_RETANGLE ) );
 	objectTableAddObject(table, asimov);
 	
     for (i = 0; i < PERSON_NUM_INIT; i++)
@@ -83,8 +89,10 @@ int main(int argc, char **argv)
             newPersonInterval +=
                 randomizeAround(defaults->createRate, STD_DIST);
             personAddNewToTable(table, defaults->defaultSpeed);
-            /* TODO: verificar se ja tem o numero de pessoas desejadas.
-               Atualmente ta tentando criar e ignora se teve erro. */
+			/* TODO(newPersonInterval): verificar se ja tem o numero de pessoas desejadas.
+				Atualmente ta tentando criar e ignora se teve erro. */
+			/* TODO(newPersonInterval): implementar limite de pessoas. Atualmente tem mais pessoas
+				ate atingir o limite de objetos. */
         }
 
         objectTableUpdate(table, timeDifference,

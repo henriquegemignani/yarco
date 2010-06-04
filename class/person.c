@@ -177,6 +177,8 @@ void personCollide(person per, object other, double timedif) {
 				//if(abs(per->pos.y - other->pos.y) >= abs(per->pos.x - other->pos.x))
 					per->vel.y *= -1; */
 			break;
+		case TYPE_BOAT:
+			/* TODO(personCollide): mandar objectTable remover essa pessoa. Problema: consiguir a table. */
 		default:
 			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");
 	}
