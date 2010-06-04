@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     table = objectTableGet();
 	
 	players[0] = boatAddNewToTable(table, 0xFF0000);
-	//players[1] = boatAddNewToTable(table, 0x0000FF);
+	/* players[1] = boatAddNewToTable(table, 0x0000FF); */
 	
 	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
 		TEX_HORIZONTAL_RETANGLE ) );
@@ -110,39 +110,42 @@ int main(int argc, char **argv)
         if (defaults->debugMode && timeSinceLastIteration >= 1)
             objectTableDump(table);
 
-        if (defaults->pause && timeSinceLastIteration >= 1) {
-            printf("Aperte Enter para continuar...\n");
+        if( (defaults->pause && timeSinceLastIteration >= 1) ) {
+			printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
+			
+		} else if (!defaults->noSleep) {
+			sleepTime.tv_nsec = 1.0e9 / defaults->fps;
+			/* Se o frame anterior demorou menos do que deveria, espera mais.
+			   E se demorou mais do que devia, espera menos no atual. Somente se
+			   nao for o primeiro frame. */
+			   
+			if (sleepTime.tv_nsec < -timeToOffset) {
+				timeToOffset += sleepTime.tv_nsec;
+				sleepTime.tv_nsec = 0;
+			} else {
+				sleepTime.tv_nsec += timeToOffset;
+			}
+			if (sleepTime.tv_nsec > 0) {
+				if (nanosleep(&sleepTime, &sleepErrorRemaining)) {
+					/* Ocorreu algum erro no nanoSleep. */
+					/* TODO: tratar erros no nanosleep */
+					printf("sleepTime:\n\tsec: %ld\nnsec: %ld\n",
+						   sleepTime.tv_sec, sleepTime.tv_nsec);
+					genError("Erro: nanosleep devolveu nao-zero.\n");
+				}
+			}
+		}
+		
+		/* Tempo do frame atual (que acabou de terminar), em microsegundos. */
+		if( !(defaults->pause && timeSinceLastIteration >= 1) ) {
+			timeDifference = (timeInMicrosecond() - frameTimeStart);
+			timeToOffset += 1.0e9 / defaults->fps - timeDifference * 1.0e3;
 
-        } else if (!defaults->noSleep) {
-            sleepTime.tv_nsec = 1.0e9 / defaults->fps;
-            /* Se o frame anterior demorou menos do que deveria, espera mais.
-               E se demorou mais do que devia, espera menos no atual. Somente se
-               nao for o primeiro frame. */
-
-            if (sleepTime.tv_nsec < -timeToOffset) {
-                timeToOffset += sleepTime.tv_nsec;
-                sleepTime.tv_nsec = 0;
-            } else {
-                sleepTime.tv_nsec += timeToOffset;
-            }
-            if (sleepTime.tv_nsec > 0) {
-                if (nanosleep(&sleepTime, &sleepErrorRemaining)) {
-                    /* Ocorreu algum erro no nanoSleep. */
-                    /* TODO: tratar erros no nanosleep */
-                    printf("sleepTime:\n\tsec: %ld\nnsec: %ld\n",
-                           sleepTime.tv_sec, sleepTime.tv_nsec);
-                    genError("Erro: nanosleep devolveu nao-zero.\n");
-                }
-            }
-        }
-        /* Tempo do frame atual (que acabou de terminar), em microsegundos. */
-        timeDifference = (timeInMicrosecond() - frameTimeStart);
-        timeToOffset += 1.0e9 / defaults->fps - timeDifference * 1.0e3;
-
-        /* E agora em segundos. */
-        timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
-        timeElapsed += timeDifference;
+			/* E agora em segundos. */
+			timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
+		}
+		timeElapsed += timeDifference;
 
         if (timeSinceLastIteration > 1) {
             timeSinceLastIteration -= 1;
