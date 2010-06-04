@@ -140,7 +140,7 @@ person personAddNewToTable(objectTable table, double speed)
 
 void personCollide(person per, object other, double timedif) {
 	vector distance, nextPos;
-	double distanceAngle, velAngle;
+	double distanceAngle, velAngle, halfCoralSize;
 	switch( other->type ) {
 		case TYPE_PERSON:
 			//angOfCol=vectorAngle(vectorSub(per->pos, other->pos));
@@ -166,9 +166,20 @@ void personCollide(person per, object other, double timedif) {
 				per->vel.y*=-1;
 			break;
 		case TYPE_CORAL:
+			halfCoralSize = other->radius * SQRT_2/2;
+			if(abs(per->pos.x - other->pos.x)<= halfCoralSize && abs(per->pos.y - other->pos.y)<=(halfCoralSize + per->radius))
+				per->vel.y *=-1;
+			else if(abs(per->pos.y - other->pos.y)<= halfCoralSize && abs(per->pos.x - other->pos.x)<=(halfCoralSize + per->radius))
+				per->vel.x *= -1;
+			else if(abs(per->pos.x - other->pos.x)>=halfCoralSize && abs(per->pos.y - other->pos.y) >= halfCoralSize){
+				per->vel.x *=-1;
+				per->vel.y *= -1;
+			}
+
+			/*
 			per->vel.x *= -1;
 			per->vel.y *= -1;
-				
+				*/
 			/*
 				if((per->pos.x + per->radius >= other->pos.x - (other->radius*SQRT_2/2)) ^ (per->pos.x - per->radius <= other->pos.x + (other->radius*SQRT_2/2)))
 				//if(abs(per->pos.x - other->pos.x) >= abs(per->pos.y - other->pos.y))

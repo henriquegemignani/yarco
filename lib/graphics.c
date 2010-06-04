@@ -45,12 +45,12 @@ void graphicUpdateObject(object per)
         break;
         /* a parte dos barcos vai ser punk */
     case /*TEX_ISOSC_TRIANGLE*/TEX_TRIANGLE:
-    	aux1.x=per->radius-(per->radius*cos(vectorAngle(per->acc)));
-    	aux1.y=per->radius-(per->radius*sin(vectorAngle(per->acc)));
-    	aux2.x=per->radius-(per->radius*cos(vectorAngle(per->acc)+(4*PI/5)));
-    	aux2.y=per->radius-(per->radius*sin(vectorAngle(per->acc)+(4*PI/5)));
-    	aux3.x=per->radius-(per->radius*cos(vectorAngle(per->acc)-(4*PI/5)));
-    	aux3.y=per->radius-(per->radius*sin(vectorAngle(per->acc)-(4*PI/5)));
+    	aux1.x=per->radius-(per->radius*cos(/*vectorAngle*/(per->dir)));
+    	aux1.y=per->radius-(per->radius*sin(/*vectorAngle*/(per->dir)));
+    	aux2.x=per->radius-(per->radius*cos(/*vectorAngle*/(per->dir)+(4*PI/5)));
+    	aux2.y=per->radius-(per->radius*sin(/*vectorAngle*/(per->dir)+(4*PI/5)));
+    	aux3.x=per->radius-(per->radius*cos(/*vectorAngle*/(per->dir)-(4*PI/5)));
+    	aux3.y=per->radius-(per->radius*sin(/*vectorAngle*/(per->dir)-(4*PI/5)));
     	triangle(tmp, aux1.x, aux1.y, aux2.x, aux2.y, aux3.x, aux3.y, per->tex.color);
     	/*Codigo abaixo mantido para a posteridade - DO NOT EXCLUAM*/
         /*triangle(

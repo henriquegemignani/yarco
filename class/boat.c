@@ -73,7 +73,6 @@ void boatOB(boat b, objectTable table){
   if(b->pos.y<0 || b->pos.y> MAX_Y)
     b->vel.y = -b->vel.y;
 }
-  
 boat boatAddNewToTable(objectTable table, int color) {
 	texture tex;
 	point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y));

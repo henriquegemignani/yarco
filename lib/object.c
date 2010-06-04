@@ -89,8 +89,8 @@ double objectGetDistFrom(object o, point p)
 int objectIsColliding(object a, object b)
 {
     //point centerOfA, centerOfB;
-	//centerOfA = a->pos;//vectorCreate(a->pos.x/*+a->radius*/,a->pos.y/*+a->radius*/);
-	//centerOfB = b->pos;//vectorCreate(b->pos.x/*+b->radius*/,b->pos.y/*+b->radius*/);
+	//centerOfA = /*a->pos;*/vectorCreate(a->pos.x+a->radius,a->pos.y+a->radius);
+	//centerOfB = /*b->pos;*/vectorCreate(b->pos.x+b->radius,b->pos.y+b->radius);
 	//return (distanceBetweenPoints(centerOfA, centerOfB) <
     //        (a->radius + b->radius));
 	/*Serio, wtf? o que estava acima podia estar errado de tantos jeitos diferentes que eu nem vou comentar. Se nao estava quebrado, e porque tudo tinha o mesmo raio*/
