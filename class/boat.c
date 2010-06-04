@@ -5,8 +5,8 @@
 
 #include "boat.h"
 #include "../lib/object.h"
-#define MAXTURN PI
-#define MAXSPEED 50.0
+#define MAXTURN (PI/2)
+#define MAXSPEED 50
 #define IDLEACCEL 5
 
 struct Extra {
@@ -67,9 +67,13 @@ void boatUpdate(boat b, int keepDir, double timedif){
     b->extra->isAccel = randInt(-1, 1);
   }
   if(b->extra->isAccel)
-    b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir));
+  //  b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir));
+	  b->acc = vectorPolarToCartesian(vectorCreate((b->extra->maxSpeed - vectorLength(b->vel))*b->extra->isAccel, b->dir));
   else
-    b->acc = vectorPolarToCartesian(vectorCreate(-objectGetSpeed(b)*IDLEACCEL, b->dir));
+	  if(vectorLength(b->vel)>0){
+		  b->acc = vectorPolarToCartesian(vectorCreate(-(vectorLength(b->vel)*b->extra->idleAccel), vectorAngle(b->vel)));
+		  debugDouble("Velocidade do barco: ",vectorLength(b->vel))
+	  }
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
   b->dir += b->extra->isTurning * MAXTURN * timedif;

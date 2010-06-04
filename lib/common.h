@@ -9,8 +9,10 @@
 #define DEBUG
 #ifdef DEBUG
 #define debugMsg(msg) fprintf(stderr, "%s\n", msg);
+#define debugDouble(msg,par) fprintf(stderr, "%s: %lf\n", msg, (par));
 #else
 #define debugMsg
+#define debugDouble(msg,par)
 #endif 
 
 /* Constantes do programa */
