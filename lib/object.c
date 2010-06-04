@@ -4,6 +4,7 @@
 /*******************************************************************/
 
 #include "object.h"
+#include "vector.h"
 
 object objectCreate(objectType type, unsigned int id, point pos,
                     velocity vel, double radius, texture tex)

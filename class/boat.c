@@ -5,6 +5,8 @@
 
 #include "boat.h"
 #include "../lib/object.h"
+#include "../lib/vector.h"
+
 #define MAXTURN (PI/2)
 #define MAXSPEED 50
 #define IDLEACCEL 0.5

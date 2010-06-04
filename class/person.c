@@ -5,6 +5,7 @@
 
 #include "../lib/common.h"
 #include "../lib/object.h"
+#include "../lib/vector.h"
 #include "../lib/physics.h"
 #include "person.h"
 #include "../lib/class.h"

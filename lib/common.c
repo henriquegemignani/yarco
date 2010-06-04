@@ -4,7 +4,6 @@
 /*******************************************************************/
 
 #include "common.h"
-#include <math.h>
 
 texture createTexture(int red, int blue, int green, texType type)
 {
@@ -14,109 +13,12 @@ texture createTexture(int red, int blue, int green, texType type)
     return tex;
 }
 
-
 vector vectorCreate(double x, double y)
 {
     vector v;
     v.x = x;
     v.y = y;
     return v;
-}
-
-vector vectorSum(vector a, vector b)
-{
-    vector v;
-    v.x = a.x + b.x;
-    v.y = a.y + b.y;
-    return v;
-}
-
-vector vectorSub(vector a, vector b)
-{
-    vector v;
-    v.x = a.x - b.x;
-    v.y = a.y - b.y;
-    return v;
-}
-
-double vectorMulEsc(vector a, vector b)
-{
-    return ((a.x * b.x) + (a.y * b.y));
-}
-
-vector vectorMulDouble(vector v, double alfa)
-{
-    vector r;
-    r.x = v.x * alfa;
-    r.y = v.y * alfa;
-    return r;
-}
-
-vector vectorDiv(vector v, double div)
-{
-    return vectorCreate(v.x / div, v.y / div);
-}
-
-vector vectorPolarToCartesian(vector v)
-{
-    double vAng = v.y, vLength = v.x;
-    v.x = vLength * cos(vAng);
-    v.y = vLength * sin(vAng);
-    return v;
-}
-
-vector vectorCartesianToPolar(vector v)
-{
-    double vAng = vectorAngle(v), vLength = vectorLength(v);
-    v.x = vLength;
-    v.y = vAng;
-    return v;
-}
-
-vector vectorRotate(vector v, double ang)
-{
-    double vAng;
-    vAng = vectorAngle(v);
-    return vectorAngleSet(v, ang + vAng);
-}
-
-double vectorAngle(vector v)
-{
-    return atan2(v.x, v.y);
-}
-
-vector vectorAngleSet(vector v, double ang)
-{
-    double vLength;
-    vLength = vectorLength(v);
-    v.x = cos(ang) * vLength;
-    v.y = sin(ang) * vLength;
-    return v;
-}
-
-vector vectorLengthSet(vector v, double length)
-{
-    double vAng;
-    vAng = vectorAngle(v);
-    v.x = length * cos(vAng);
-    v.y = length * sin(vAng);
-    return v;
-}
-
-double distanceBetweenPoints(point a, point b)
-{
-    double x = a.x - b.x, y = a.y - b.y;
-    return sqrt(x * x + y * y);
-}
-
-double vectorLength(vector v)
-{
-    return sqrt(v.x * v.x + v.y * v.y);
-}
-
-int vectorPrint(vector v)
-{
-    return printf("(%8.3f,%8.3f)", v.x, v.y);
 }
 
 quad quadSet(int x, int y)

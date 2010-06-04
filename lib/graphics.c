@@ -8,6 +8,7 @@
 #include "physics.h"
 #include "objecttable.h"
 #include <math.h>
+#include <allegro.h>
 
 #define SEA_COLOR 0x001770
 

@@ -5,6 +5,7 @@
 
 #include "physics.h"
 #include "object.h"
+#include "vector.h"
 
 vector newDirection(vector v)
 {
