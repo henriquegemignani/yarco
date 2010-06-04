@@ -57,6 +57,7 @@ boat boatNew(texture tex, double speed)
     boatGeneratePosAndVelInBorder(speed, &pos, &vel);
     b = boatCreate(tex, pos, vel);
     b->dir = vectorAngle(b->vel);
+	return b;
 }
 
 

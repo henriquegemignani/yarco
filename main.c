@@ -30,10 +30,13 @@ long timeInMicrosecond()
 
 int main(int argc, char **argv)
 {
-    configuration defaults = configurationInit();
+    configuration defaults = configurationGet();
     int i, numFrame = 0;
     objectTable table;
-    double timeElapsed = 0, timeDifference = 0, timeSinceLastIteration = 0,
+    double 
+		timeElapsed = 0,
+		timeDifference = 0,
+		timeSinceLastIteration = 0,
         newPersonInterval;
 	ship asimov;
 	boat players[2];
@@ -55,7 +58,7 @@ int main(int argc, char **argv)
 
 
     /* Inicializa tabela de objetos */
-    table = objectTableInit(defaults);
+    table = objectTableInit();
 	
 	players[0] = boatAddNewToTable(table, 0xFF0000);
 	players[1] = boatAddNewToTable(table, 0x0000FF);
@@ -152,7 +155,7 @@ int main(int argc, char **argv)
     if (defaults->graphic)
         graphicFinish();
     objectTableRemove(table);
-    configurationRemove(defaults);
+    configurationFinish();
     classFinish();
     return 0;
 }

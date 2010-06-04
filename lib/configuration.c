@@ -8,6 +8,8 @@
 #include <time.h>
 #include <string.h>
 
+static configuration config = NULL;
+
 configuration configurationInit()
 {
     configuration config;
@@ -28,9 +30,16 @@ configuration configurationInit()
     return config;
 }
 
-void configurationRemove(configuration config)
+configuration configurationGet() {
+	if( config == NULL )
+		config = configurationInit();
+	return config;
+}
+
+void configurationFinish()
 {
     free(config);
+	config = NULL;
 }
 
 void argRead(int argc, char **argv, configuration defaults)

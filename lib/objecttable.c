@@ -3,20 +3,11 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "objecttable.h"
 #include "common.h"
+#include "objecttable.h"
 #include "class.h"
-#include "physics.h"
 
-/*
-    struct ObjectTable {
-    object list[OBJECT_NUM_LIMIT];
-    unsigned int curMax, lastID;
-    configuration config;
-};
-*/
-
-/*Algum motivo para a estrutura acime estar aqui e nao no .h? Eu mudei para usar no person.c ~Miojo*/
+static objectTable mainTable = NULL;
 
 /* Funcoes privadas. */
 int particao(object * vet, int ini, int fim)
@@ -54,24 +45,30 @@ void quicksort(object * vet, int ini, int fim)
 
 /* Funcoes publicas. */
 
-objectTable objectTableInit(configuration config)
+objectTable objectTableGet() {
+	if( mainTable == NULL )
+		mainTable = objectTableInit(); 
+	return mainTable;
+}
+
+objectTable objectTableInit()
 {
     objectTable table;
     AUTOMALLOC(table);
 
     table->curMax = table->lastID = 0;
-    table->config = config;
+    table->config = configurationGet();
 
     return table;
 }
 
 int objectTableAddObject(objectTable table, object obj)
 {
-	obj->quadrante = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
-    if (objectTableFilled(table))
+	if (objectTableFilled(table))
         return ERROR_OBJECT_LIMIT_EXCEEDED;
     if (objectTableIsObjectColliding(table, obj))
-      return ERROR_OBJECT_IS_COLLIDING;
+		return ERROR_OBJECT_IS_COLLIDING;
+	obj->quadrante = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
     obj->id = ++table->lastID;
     table->list[table->curMax++] = obj;
     return 0;
@@ -185,6 +182,6 @@ void objectTableRemove(objectTable table)
     int i;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
-            removeObject(table->list[i]);
+            OBJECT_REMOVE(table->list[i]);
     free(table);
 }
