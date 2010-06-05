@@ -111,9 +111,22 @@ void boatRemove(boat b){
 }
 
 void boatCollide(boat b, object o, double timedif){
+	vector tmp;
   switch(o->type){
-  case TYPE_BOAT: /*TODO (boatCollide): Colisao barco-barco*/; break;
-  case TYPE_CORAL: b->extra->life--; break;
+  case TYPE_BOAT:  
+		tmp=o->vel;
+		o->vel=b->vel;
+		b->vel=o->vel;		
+	break;
+  case TYPE_CORAL:
+   	b->extra->life--;
+   if(b->extra->life <= 0){
+		b->extra->life=3;
+		b->vel.x=0;
+		b->vel.y=0;
+		/*adicoes bem-vindas*/
+   }	   
+	break;
   case TYPE_SHIP:
 	  if((b->pos.x+b->radius) > (o->pos.x-o->radius) && b->pos.x < (o->pos.x+(3*o->radius)) )
 	  	b->vel.x*=-1;
