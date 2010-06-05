@@ -103,10 +103,17 @@ void boatRemove(boat b){
 void boatCollide(boat b, object o, double timedif){
 	vector tmp;
   switch(o->type){
-  case TYPE_BOAT:  
-		tmp=o->vel;
-		o->vel=b->vel;
-		b->vel=o->vel;		
+  case TYPE_BOAT: 
+	 	if(vectorLength(o->extra->prevVel) != 0)
+		{
+			b->vel=o->extra->prevVel;
+			o->extra->prevVel = vectorCreate(0, 0);
+		}	
+		else
+		{
+			b->extra->prevVel = b->vel;
+			b->vel=o->vel;
+		}	
 	break;
   case TYPE_CORAL:
    	b->extra->life--;
