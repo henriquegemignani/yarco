@@ -3,16 +3,22 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "../lib/common.h"
-#include "../lib/object.h"
-#include "../lib/objecttable.h"
-#include "../lib/vector.h"
-#include "../lib/physics.h"
 #include "person.h"
-#include "../lib/class.h"
+#include "../lib/common.h"
+#include "../lib/vector.h"
 #include "../lib/objecttable.h"
+#include "../lib/class.h"
+#include "../lib/configuration.h"
 
 /* Funcoes privadas. */
+
+vector newDirection(vector v)
+{
+    int randNum;
+    if ((randNum = randInt(1, 20)) > 13)        /*13/20 = 0.65 de chance de nao mudar, 1/20 = 0.05 para cada outra direcao */
+        v = vectorRotate(v, PI / 4 * (randNum - 13));
+    return v;
+}
 
 person personCreate(texture tex, point pos, velocity vel)
 {
@@ -136,6 +142,10 @@ void personCollide(person per, object other, double timedif) {
 			break;
 		case TYPE_BOAT:
 			/* TODO(personCollide): mandar objectTable remover essa pessoa. Problema: consiguir a table. */
+			/* personAddNewToTable(vectorLength(per->vel)); */
+			objectTableRemoveObject(per);
+			debugMsg("OH NEOS PERSON COLIDIU COM BARCO!!");
+			
 			break;
 		default:
 			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");

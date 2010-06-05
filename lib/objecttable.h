@@ -7,14 +7,8 @@
 #define _OBJECTTABLE_H_
 
 #include "object.h"
-#include "configuration.h"
 
 typedef struct ObjectTable *objectTable;
-
-struct ObjectTable {
-    object list[OBJECT_NUM_LIMIT];
-    unsigned int curMax, lastID;
-};
 
 /* Devolve a instancia de objectTable, criando-a se necessario. */
 objectTable objectTableGet();

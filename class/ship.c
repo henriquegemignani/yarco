@@ -3,10 +3,8 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "../lib/common.h"
-#include "../lib/object.h"
-#include "../lib/physics.h"
 #include "ship.h"
+#include "../lib/common.h"
 #include "../lib/class.h"
 #include "../lib/objecttable.h"
 

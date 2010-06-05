@@ -6,15 +6,13 @@
 #ifndef _SHIP_H_
 #define _SHIP_H_
 
-#include "../lib/common.h"
-#include "../lib/objecttable.h"
+#include "../lib/object.h"
 typedef struct Object *ship;
 
 void shipInitializeClass();
 
 /*Cria um Navio */
 ship shipNew( texture tex );
-
 
 /*Nuka um navio*/
 void shipRemove(ship s);

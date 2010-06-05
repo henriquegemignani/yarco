@@ -3,10 +3,17 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "common.h"
 #include "objecttable.h"
+#include "common.h"
 #include "class.h"
+#include "configuration.h"
+#include "stack.h"
 
+struct ObjectTable {
+    object list[OBJECT_NUM_LIMIT];
+    unsigned int curMax, lastID;
+	stack removeList;
+};
 static objectTable table = NULL;
 
 /* Funcoes privadas. */
@@ -47,9 +54,21 @@ objectTable objectTableInit()
     objectTable table;
     AUTOMALLOC(table);
     table->curMax = table->lastID = 0;
+	table->removeList = stackInit();
     return table;
 }
 
+void objectTableRemovePending() {
+	object obj;
+	int i;
+	while( !stackIsEmpty(table->removeList) ) {
+		obj = (object) stackPop(table->removeList);
+		for(i = 0; i < table->curMax; i++)
+			if(table->list[i] == obj)
+				table->list[i] = NULL;
+		OBJECT_REMOVE(obj);
+	}
+}
 
 /* Funcoes publicas. */
 
@@ -88,12 +107,9 @@ int objectTableRemoveObject(object obj)
 int objectTableRemoveObjectByID(unsigned int id)
 {
     int i;
-    object pAux;
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id) {
-            pAux = table->list[i];
-            table->list[i] = NULL;
-            removeObject(pAux);
+			stackPush(table->list[i], table->removeList);
             return 0;
         }
     return WARNING_OBJECT_NOT_FOUND;
@@ -118,7 +134,9 @@ void objectTableUpdate(double timedif, int newIteraction)
                     OBJECT_COLLIDE(table->list[i], table->list[j], timedif);
 					OBJECT_COLLIDE(table->list[j], table->list[i], timedif);
 				}
-
+				
+	objectTableRemovePending();
+	
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
@@ -130,6 +148,8 @@ void objectTableUpdate(double timedif, int newIteraction)
                 OBJECT_BOUNDS(table->list[i]);
             }
         }
+		
+	objectTableRemovePending();
 
     objectTableSort();
     for (i = table->curMax - 1; i >= 0 && table->list[i] == NULL; i--)
@@ -179,5 +199,6 @@ void objectTableFinish()
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             OBJECT_REMOVE(table->list[i]);
+	stackFinish(table->removeList);
     free(table);
 }

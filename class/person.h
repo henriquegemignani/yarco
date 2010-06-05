@@ -6,7 +6,7 @@
 #ifndef _PERSON_H_
 #define _PERSON_H_
 
-#include "../lib/common.h"
+#include "../lib/object.h"
 typedef struct Object *person;
 
 /* Serve para a colisao de passageiro com passageiro.
