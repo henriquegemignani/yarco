@@ -22,7 +22,7 @@ vector vectorMulDouble(vector v, double alfa);
 /*Divide um vetor pelo dividendo dado*/
 vector vectorDiv(vector v, double div);
 /*Converte de coordenadas polares para coordenadas cartesianas*/
-vector vectorPolarToCartesian(vector v);
+vector vectorPolarToCartesian(double length, double ang);
 /*Converte de coordenadas cartesianas para coordenadas polares*/
 vector vectorCartesianToPolar(vector v);
 

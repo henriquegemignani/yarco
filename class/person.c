@@ -24,9 +24,9 @@ void personGeneratePosAndVelInBorder(double speed, point * pos, velocity * vel)
     double dir;
     generatePosInBorder(pos, &dir);
     *vel =
-        vectorPolarToCartesian(vectorCreate
-                               (randomizeAround(speed, STD_DIST),
-                                dir + PI / 4 * randInt(0, 4)));
+        vectorPolarToCartesian(
+                               randomizeAround(speed, STD_DIST),
+                                dir + PI / 4 * randInt(0, 4));
 }
 
 /* Funcoes publicas. */

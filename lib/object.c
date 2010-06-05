@@ -56,9 +56,9 @@ void objectSetID(object a, unsigned int id)
 
 void updateObject(object o, double timedif)
 {
-    vector aux = vectorPolarToCartesian(o->acc);
+    /*vector aux = vectorPolarToCartesian(o->acc);*/
     o->pos = vectorSum(o->pos, vectorMulDouble(o->vel, timedif));
-    o->vel = vectorSum(o->vel, vectorMulDouble(aux, timedif));
+    /*o->vel = vectorSum(o->vel, vectorMulDouble(aux, timedif));*/
     o->quadrante =
         quadSet((int) (o->pos.x / QUAD_SIZE_X),
                 (int) (o->pos.y / QUAD_SIZE_Y));

@@ -10,9 +10,11 @@
 #ifdef DEBUG
 #define debugMsg(msg) fprintf(stderr, "%s\n", msg);
 #define debugDouble(msg,par) fprintf(stderr, "%s: %f\n", msg, (par));
+#define debugOp(op) (op);
 #else
 #define debugMsg
 #define debugDouble(msg,par)
+#define debugOp(op)
 #endif 
 
 /* Constantes do programa */
@@ -33,10 +35,10 @@
 #define OBJECT_NUM_LIMIT			150
 #define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
-#define PERSON_RADIUS               10
+#define PERSON_RADIUS               5
 #define SHIP_RADIUS					50
-#define CORAL_RADIUS                20
-#define BOAT_RADIUS					20
+#define CORAL_RADIUS                10
+#define BOAT_RADIUS					10
 #define MAX_X                       1023
 #define MAX_Y                       767
 #define DURATION_DEFAULT            50.0
@@ -44,6 +46,8 @@
 #define NUM_CLASS                   4
 #define QUAD_SIZE_X                 100
 #define QUAD_SIZE_Y                 100
+#define DEFAULT_FPS 				30
+#define VERY_SMALL					0.0001
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>

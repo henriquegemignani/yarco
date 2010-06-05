@@ -41,11 +41,11 @@ vector vectorDiv(vector v, double div)
     return vectorCreate(v.x / div, v.y / div);
 }
 
-vector vectorPolarToCartesian(vector v)
+vector vectorPolarToCartesian(double length, double ang)
 {
-    double vAng = v.y, vLength = v.x;
-    v.x = vLength * cos(vAng);
-    v.y = vLength * sin(vAng);
+    vector v;
+    v.x = length * cos(ang);
+    v.y = length * sin(ang);
     return v;
 }
 

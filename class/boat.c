@@ -7,16 +7,20 @@
 #include "../lib/object.h"
 #include "../lib/objecttable.h"
 #include "../lib/vector.h"
+#include <math.h>
 
 #define MAXTURN (PI/2)
-#define MAXSPEED 100
-#define IDLEACCEL 0.5
+#define ACCEL 5
+#define MAXSPEED 5
+#define IDLEACCEL 5
+#define FRICTION 10
 
 struct Extra {
   int isAccel;
-  double maxSpeed;
-  double idleAccel;
+  double accel;
+  double friction;
   double isTurning;
+  velocity prevVel;
   int life;
 } Extra;
 
@@ -36,9 +40,9 @@ boat boatCreate(texture tex, point pos, velocity vel){
 	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vel, BOAT_RADIUS, tex);
 	AUTOMALLOC(b->extra);
 	b->extra->isAccel=randInt(-1,1);
-	b->extra->maxSpeed = MAXSPEED;
+	b->extra->accel = ACCEL;
 	b->extra->life = 3;
-	b->extra->idleAccel = IDLEACCEL;
+	b->extra->friction = FRICTION;
 	b->extra->isTurning=randInt(-1,1);
 	return b;
 }
@@ -47,9 +51,9 @@ void boatGeneratePosAndVelInBorder(double speed, point * pos, velocity * vel){
 	double dir;
 	generatePosInBorder(pos, &dir);
 	*vel =
-	        vectorPolarToCartesian(vectorCreate
-	                               (randDouble(0, speed),
-	                                dir + PI / 4 * randInt(0, 4)));
+	        vectorPolarToCartesian(
+	                               randDouble(0, speed),
+	                                dir + PI / 4 * randInt(0, 4));
 }
 
 boat boatNew(texture tex, double speed)
@@ -66,42 +70,28 @@ boat boatNew(texture tex, double speed)
 
 void boatUpdate(boat b, int keepDir, double timedif){
   /*Var*/
+	vector aux;
   if(!keepDir){
     b->extra->isTurning = randInt(0, 2)-1;
+    //b->extra->isTurning = 0;
     b->extra->isAccel = randInt(0, 2)-1;
+    //b->extra->isAccel = 0;
   }
-	b->tex.color = 0x808080 + b->extra->isAccel* 0x303030;
-  if(b->extra->isAccel){
-	/* b->acc = vectorPolarToCartesian(vectorCreate(b->extra->maxSpeed - objectGetSpeed(b)*b->extra->isAccel, b->dir));*/
-	  b->acc = vectorPolarToCartesian(
-		vectorCreate(
-			(abs(b->extra->maxSpeed) - abs(vectorLength(b->vel) )) * b->extra->isAccel,
-			b->dir)
-		);
-
-
-          debugDouble("Velocidade do barco acelerando: ",vectorLength(b->vel));
-  		  debugDouble("Aceleracao do barco acelerando: ",vectorLength(b->acc));
-  }
+	debugOp(b->tex.color = 0x808080 + b->extra->isAccel* 0x303030);
+  if(b->extra->isAccel)
+	  b->acc = vectorPolarToCartesian(b->extra->accel * b->extra->isAccel, b->dir);
   else
-	  if(vectorLength(b->vel)>0){/*
-		  b->acc = vectorPolarToCartesian(
-			vectorCreate(
-				-abs((vectorLength(b->vel) * b->extra->idleAccel)),
-				vectorAngle(b->vel))
-				);
-				*/
-		  b->acc.x = b->extra->idleAccel * b->vel.x * -1;
-		  b->acc.y = b->extra->idleAccel * b->vel.y * -1;
-		  debugDouble("Velocidade do barco nao acelerando: ",vectorLength(b->vel));
-		  debugDouble("Aceleracao do barco nao acelerando: ",vectorLength(b->acc));
-	  }
+	  b->acc = vectorCreate(0,0);
+  if(vectorLength(b->vel) > VERY_SMALL )
+	  b->acc = vectorSub(b->acc, vectorPolarToCartesian(vectorLength(b->vel)*b->extra->friction, vectorAngle(b->vel)));
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
   b->dir += b->extra->isTurning * MAXTURN * timedif;
+  /*
   if(vectorLength(b->vel)>b->extra->maxSpeed){
   genWarning("Aviso: Velocidade do barco superior a velocidade maxima\n");
-  }
+  */
+
 
 }
 

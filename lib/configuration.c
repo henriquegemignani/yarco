@@ -25,7 +25,7 @@ configuration configurationInit()
     config->randomSeed = time(NULL);
     config->uniqueGraphic = 0;
     config->keepSpeed = 0;
-    config->fps = 10;
+    config->fps = DEFAULT_FPS;
 
     return config;
 }
@@ -63,7 +63,7 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
                "  -n\t--nosleep\t\tIgnora o sleep.\n");
         /* Separado em diversos printf pq -pedantic reclamou do tamanho da string:
-./lib/configuration.c:62: warning: string length ‘791’ is greater than the length ‘509’ ISO C90 compilers are required to support */
+./lib/configuration.c:62: warning: string length ï¿½791ï¿½ is greater than the length ï¿½509ï¿½ ISO C90 compilers are required to support */
         exit(0);
     }
     argValue = argShortFlags(argc, argv, "dpgukn");
