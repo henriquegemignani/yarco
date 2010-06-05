@@ -6,7 +6,6 @@
 #define _BOAT_H_
 #include "../lib/common.h"
 #include "../lib/class.h"
-#include "../lib/objecttable.h"
 typedef struct Object *boat;
 
 void boatInitializeClass();
@@ -14,7 +13,7 @@ void boatInitializeClass();
 boat boatCreate(texture tex, point pos, velocity vel);
 void boatUpdate(boat b, int keepDir, double timedif);
 void boatRemove(boat b);
-void boatOB(boat b, objectTable table);
+void boatOB(boat b);
 void boatCollide(boat b, object o, double timedif);
-boat boatAddNewToTable(objectTable table, int color);
+boat boatAddNewToTable(int color);
 #endif

@@ -6,8 +6,7 @@
 #ifndef _CORAL_H_
 #define _CORAL_H_
 
-#include "../lib/common.h"
-#include "../lib/objecttable.h"
+#include "../lib/object.h"
 typedef struct Object *coral;
 
 void coralInitializeClass();
@@ -18,6 +17,6 @@ void coralRemove(coral c);
 void coralCollide(coral c, object other);
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
-coral coralAddNewToTable(objectTable table);
+coral coralAddNewToTable();
 
 #endif                          /* _CORAL_H_ */

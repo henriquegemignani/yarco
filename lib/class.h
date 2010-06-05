@@ -8,7 +8,6 @@
 
 #include "common.h"
 #include "object.h"
-#include "objecttable.h"
 typedef struct ClassStruct *Class;
 struct ClassStruct {
     objectType type;
@@ -23,7 +22,7 @@ struct ClassStruct {
     void (*collideFunc) (object, object, double timedif);
 
     /* Funcao chamada quando o objeto esta fora da tela. */
-    void (*boundsFunc) (object, objectTable);
+    void (*boundsFunc) (object);
 
     /* Funcao para imprimir na saida padrao informacoes sobre o objeto. */
     void (*dumpFunc) (object);
@@ -34,7 +33,7 @@ void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
               void (*collideFunc) (object, object, double timedif),
-              void (*boundsFunc) (object, objectTable),
+              void (*boundsFunc) (object),
 			  void (*dumpFunc) (object));
 
 /* Devolve a classe correspondente ao tipo TYPE, ou NULL se nao existe. */
@@ -55,8 +54,8 @@ int classMethodIsNull(objectType type, int func );
 		getClass((*obj).type)->collideFunc((obj),(tar),(dif)); } while(0)
 #define OBJECT_REMOVE(obj)              do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_REMOVE) ) \
 		getClass((*obj).type)->removeFunc(obj); } while(0)
-#define OBJECT_BOUNDS(obj, table)       do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_BOUNDS) ) \
-		getClass((*obj).type)->boundsFunc(obj, table); } while(0)
+#define OBJECT_BOUNDS(obj)       do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_BOUNDS) ) \
+		getClass((*obj).type)->boundsFunc(obj); } while(0)
 #define OBJECT_DUMP(obj)                do { if( !classMethodIsNull((*obj).type, CLASS_METHOD_DUMP) ) \
 		getClass((*obj).type)->dumpFunc(obj); } while(0)
 

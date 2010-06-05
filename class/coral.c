@@ -3,9 +3,10 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
+#include "coral.h"
 #include "../lib/common.h"
 #include "../lib/object.h"
-#include "coral.h"
+#include "../lib/objecttable.h"
 #include "../lib/class.h"
 #include "../lib/objecttable.h"
 
@@ -31,14 +32,14 @@ void coralRemove(coral c) {
 }
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
-coral coralAddNewToTable(objectTable table)
+coral coralAddNewToTable()
 {
     coral c = coralCreate(
         createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_SQUARE), 
         coralGeneratePosition() );
 	int err;
 	do {
-		err = objectTableAddObject(table, c);
+		err = objectTableAddObject(c);
 		if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
 			coralRemove(c);
 			return NULL;

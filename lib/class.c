@@ -11,7 +11,7 @@ void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
               void (*collideFunc) (object, object, double timedif),
-              void (*boundsFunc) (object, objectTable), 
+              void (*boundsFunc) (object), 
 			  void (*dumpFunc) (object))
 {
     int i;

@@ -59,11 +59,11 @@ objectTable objectTableGet() {
 	return table;
 }
 
-int objectTableAddObject(objectTable table, object obj)
+int objectTableAddObject(object obj)
 {
-	if (objectTableFilled(table))
+	if (objectTableFilled())
         return ERROR_OBJECT_LIMIT_EXCEEDED;
-    if (objectTableIsObjectColliding(table, obj))
+    if (objectTableIsObjectColliding(obj))
 		return ERROR_OBJECT_IS_COLLIDING;
 	obj->quadrante = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
     obj->id = ++table->lastID;
@@ -127,7 +127,7 @@ void objectTableUpdate(double timedif, int newIteraction)
             /* Verifica se saiu do mapa. */
             pos = objectGetPos(table->list[i]);
             if (pos.x > MAX_X || pos.y > MAX_Y || pos.x < 0 || pos.y < 0) {
-                OBJECT_BOUNDS(table->list[i], table);
+                OBJECT_BOUNDS(table->list[i]);
             }
         }
 
@@ -144,7 +144,7 @@ void objectTableExecute(void (*func) (object p))
             func(table->list[i]);
 }
 
-int objectTableIsObjectColliding(objectTable table, object o)
+int objectTableIsObjectColliding(object o)
 {
   int i;
   for (i = 0; i < table->curMax; i++)
@@ -155,7 +155,7 @@ int objectTableIsObjectColliding(objectTable table, object o)
   return 0;
 }
 
-int objectTableFilled(objectTable table)
+int objectTableFilled()
 {
    if (table->curMax == OBJECT_NUM_LIMIT) {
         objectTableSort(); /* TODO: como ordenar objetos? decidir em grupo */
@@ -165,7 +165,7 @@ int objectTableFilled(objectTable table)
    return 0;
 }
 
-void objectTableDump(objectTable table)
+void objectTableDump()
 {
     int i;
     for (i = 0; i < table->curMax; i++)
@@ -173,7 +173,7 @@ void objectTableDump(objectTable table)
             objectDump(table->list[i]);
 }
 
-void objectTableRemove(objectTable table)
+void objectTableFinish()
 {
     int i;
     for (i = 0; i < table->curMax; i++)

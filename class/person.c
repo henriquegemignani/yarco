@@ -5,6 +5,7 @@
 
 #include "../lib/common.h"
 #include "../lib/object.h"
+#include "../lib/objecttable.h"
 #include "../lib/vector.h"
 #include "../lib/physics.h"
 #include "person.h"
@@ -61,12 +62,12 @@ void personUpdate(person p, int keepDir, double timedif)
     updateObject(p, timedif);
 }
 
-void personMoveToRandomBorder(person p, objectTable table)
+void personMoveToRandomBorder(person p)
 {
 	do{
 		personGeneratePosAndVelInBorder(configurationGet()->defaultSpeed, &p->pos, &p->vel);
 		p->quadrante = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
-	} while( objectTableIsObjectColliding(table, p) );
+	} while( objectTableIsObjectColliding(p) );
 }
 
 void personDump(person p)
@@ -78,12 +79,12 @@ void personDump(person p)
     printf("\n");
 }
 
-person personAddNewToTable(objectTable table, double speed)
+person personAddNewToTable(double speed)
 {
   person p = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed);
   int err;
   do {
-    err = objectTableAddObject(table, p);
+    err = objectTableAddObject(p);
     if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
       personRemove(p);
       return NULL;
@@ -99,18 +100,6 @@ person personAddNewToTable(objectTable table, double speed)
   } while( err != 0 );
   return p;
 }
-
-
-/*person personCreateToTable(objectTable table, point pos, velocity vel)
-{
-  person aux, p;
-  aux = 
-    personCreate(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), pos, vel);
-  p = objectTableAddObject(table, aux);
-  if (p == ERROR_OBJECT_LIMIT_EXCEEDED)
-    personRemove(aux);
-  return p;
-  }*/
 
 void personCollide(person per, object other, double timedif) {
 	/* vector distance, nextPos; */

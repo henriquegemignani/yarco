@@ -5,6 +5,7 @@
 
 #include "boat.h"
 #include "../lib/object.h"
+#include "../lib/objecttable.h"
 #include "../lib/vector.h"
 
 #define MAXTURN (PI/2)
@@ -124,7 +125,7 @@ void boatCollide(boat b, object o, double timedif){
   }
 }
 
-void boatOB(boat b, objectTable table){
+void boatOB(boat b){
   if(b->pos.x< 0 || b->pos.x > MAX_X){
     b->vel.x = -b->vel.x;
     b->pos.x = (b->pos.x <0? 0: MAX_X);
@@ -134,7 +135,7 @@ void boatOB(boat b, objectTable table){
     b->pos.y = (b->pos.y <0? 0:MAX_Y);
   }
 }
-boat boatAddNewToTable(objectTable table, int color) {
+boat boatAddNewToTable(int color) {
 	texture tex;
 	/* point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y)); */
 	boat b;
@@ -142,7 +143,7 @@ boat boatAddNewToTable(objectTable table, int color) {
 	tex.color = color;
 	tex.type = TEX_TRIANGLE;
 	b = boatNew(tex, randDouble(0, MAXSPEED));
-	err = objectTableAddObject(table, b);
+	err = objectTableAddObject(b);
 	if(err == ERROR_OBJECT_LIMIT_EXCEEDED) {
 		boatRemove(b);
 		return NULL;

@@ -22,7 +22,7 @@ objectTable objectTableGet();
 /*Tenta adicionar o objeto OBJ na tabela, devolvendo 0 em caso de sucesso ou algum erro:
 	ERROR_OBJECT_LIMIT_EXCEEDED
 	ERROR_OBJECT_IS_COLLIDING */
-int objectTableAddObject(objectTable table, object obj);
+int objectTableAddObject(object obj);
 
 /* Devolve o objeto com o id dado, ou NULL caso nao exista. */
 object objectTableSearchObject(unsigned int id);
@@ -46,15 +46,15 @@ void objectTableExecute(void (*func) (object p));
 
 /* Devolve 1 caso OBJ esteja colidindo com algum objeto da tabela, 0 caso contrario. 
 	OBJ nao precisa estar na tabela. */
-int objectTableIsObjectColliding(objectTable table, object obj);
+int objectTableIsObjectColliding(object obj);
 
 /* Devolve 1 caso a tabela tenha atingido o limite de objetos, 0 caso contrario. */
-int objectTableFilled(objectTable table);
+int objectTableFilled();
 
 /* Imprime na saida padrao informacoes de todos os objetos na tabela. */
-void objectTableDump(objectTable table);
+void objectTableDump();
 
 /* Chama OBJECT_REMOVE para cada objeto da tabela, e depois destroi a tabela. */
-void objectTableRemove(objectTable table);
+void objectTableFinish();
 
 #endif                          /* _OBJECTTABLE_H_ */

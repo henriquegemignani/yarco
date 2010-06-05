@@ -62,21 +62,21 @@ int main(int argc, char **argv)
     /* Inicializa tabela de objetos */
     table = objectTableGet();
 	
-	players[0] = boatAddNewToTable(table, 0xFF0000);
-	/* players[1] = boatAddNewToTable(table, 0x0000FF); */
+	players[0] = boatAddNewToTable(0xFF0000);
+	/* players[1] = boatAddNewToTable(0x0000FF); */
 	
 	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
 		TEX_HORIZONTAL_RETANGLE ) );
-	objectTableAddObject(table, asimov);
+	objectTableAddObject(asimov);
 	
     for (i = 0; i < PERSON_NUM_INIT; i++)
-        if (personAddNewToTable(table, defaults->defaultSpeed) == NULL)
+        if (personAddNewToTable(defaults->defaultSpeed) == NULL)
             genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
 
     for (i = 0; i < CORAL_NUM_INIT; i++)
-        if (coralAddNewToTable(table) == NULL)
+        if (coralAddNewToTable() == NULL)
             genError("Erro: limite de objetos atingido!\n");
 
     /* Inicializa parte grafica */
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
         if ((newPersonInterval -= timeDifference) < 0) {
             newPersonInterval +=
                 randomizeAround(defaults->createRate, STD_DIST);
-            personAddNewToTable(table, defaults->defaultSpeed);
+            personAddNewToTable(defaults->defaultSpeed);
 			/* TODO(newPersonInterval): verificar se ja tem o numero de pessoas desejadas.
 				Atualmente ta tentando criar e ignora se teve erro. */
 			/* TODO(newPersonInterval): implementar limite de pessoas. Atualmente tem mais pessoas
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
         }
 
         if (defaults->debugMode && timeSinceLastIteration >= 1)
-            objectTableDump(table);
+            objectTableDump();
 
         if( (defaults->pause && timeSinceLastIteration >= 1) ) {
 			printf("Aperte Enter para continuar...\n");
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
     }
     if (defaults->graphic)
         graphicFinish();
-    objectTableRemove(table);
+    objectTableFinish();
     configurationFinish();
     classFinish();
     return 0;
