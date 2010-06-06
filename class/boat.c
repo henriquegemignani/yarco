@@ -158,9 +158,9 @@ void boatCollide(boat b, object o, double timediff){
    }	   
 	break;
   case TYPE_SHIP:
-	  if((b->pos.x+b->radius) > (o->pos.x-o->radius) && b->pos.x < (o->pos.x+(3*o->radius)) )
+	  if((b->pos.x+b->radius) > (o->pos.x-(2*(o->radius/sqrt(5)))) && b->pos.x < (o->pos.x+(2*(o->radius/sqrt(5))) ) )
 	  	b->vel.x*=-1;
-	  if( (b->pos.y+b->radius) > (o->pos.y-o->radius) && b->pos.y < (o->pos.y+o->pos.y) )
+	  if( (b->pos.y+b->radius) > (o->pos.y-(o->radius/sqrt(5))) && b->pos.y < (o->pos.y+(o->pos.y/sqrt(5)))) 
 	  	b->vel.y*=-1;
 	  ; break;
   case TYPE_PERSON: break;

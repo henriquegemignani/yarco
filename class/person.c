@@ -3,6 +3,7 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
+#include <math.h>
 #include "person.h"
 #include "../lib/common.h"
 #include "../lib/vector.h"
@@ -122,9 +123,9 @@ void personCollide(person per, object other, double timedif) {
 			}
 			break;
 		case TYPE_SHIP:
-			if((per->pos.x+per->radius) > (other->pos.x-other->radius) && per->pos.x < (other->pos.x+(3*other->radius)) )
+			if((per->pos.x+per->radius) > (other->pos.x-(2*(other->radius/sqrt(5)))) && per->pos.x < (other->pos.x+(2*(other->radius/sqrt(5)))) )
 				per->vel.x*=-1;
-			if( (per->pos.y+per->radius) > (other->pos.y-other->radius) && per->pos.y < (other->pos.y+other->pos.y) )
+			if( (per->pos.y+per->radius) > (other->pos.y-(other->radius/sqrt(5))) && per->pos.y < (other->pos.y+(other->pos.y/sqrt(5))) )
 				per->vel.y*=-1;
 			break;
 		case TYPE_CORAL:
