@@ -75,8 +75,6 @@ boat boatNew(texture tex, double speed)
 
 
 void boatUpdate(boat b, int keepDir, double timedif){
-  /*Var*/
-	vector aux;
 	if(b->extra->life <= 0){
 		b->extra->timeStuckLeft -= timedif;
 		if(b->extra->timeStuckLeft <=0){
@@ -115,17 +113,10 @@ void boatUpdate(boat b, int keepDir, double timedif){
   debugDouble("b->acc.x", b->acc.x);
   debugDouble("b->acc.y", b->acc.y);
 
-  //if(vectorLength(b->vel) > VERY_SMALL )
-//  b->acc = vectorSum(b->acc, vectorPolarToCartesian(vectorLength(b->vel)*b->extra->friction, PI+vectorAngle(b->vel)));
-  b->acc.x =  b->acc.x - b->vel.x*b->extra->friction/**cos(vectorAngle(b->vel))*/;
-  b->acc.y =  b->acc.y - b->vel.y*b->extra->friction/**sin(vectorAngle(b->vel))*/;
-  /*
-  debugDouble("aceleracao pos atrito", vectorLength(b->acc));
-  debugDouble("b->vel.x pos atrito", b->vel.x);
-    debugDouble("b->vel.y", b->vel.y);
-    debugDouble("b->acc.x", b->acc.x);
-    debugDouble("b->acc.y", b->acc.y);
-    */
+  
+  b->acc.x =  b->acc.x - b->vel.x*b->extra->friction;
+  b->acc.y =  b->acc.y - b->vel.y*b->extra->friction;
+  
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
   b->dir += b->extra->isTurning * MAXTURN * timedif;
@@ -142,8 +133,7 @@ void boatRemove(boat b){
   free(b);
 }
 
-void boatCollide(boat b, object o, double timedif){
-	vector tmp;
+void boatCollide(boat b, object o, double timediff){
   switch(o->type){
   case TYPE_BOAT: 
 	 	if(vectorLength(o->extra->prevVel) != 0)
@@ -159,7 +149,7 @@ void boatCollide(boat b, object o, double timedif){
 	break;
   case TYPE_CORAL:
    	b->extra->life--;
-   if(b->extra->life = 0){
+   if(b->extra->life == 0){
 		b->extra->life=-1;
 		b->vel.x=0;
 		b->vel.y=0;

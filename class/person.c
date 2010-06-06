@@ -108,11 +108,9 @@ person personAddNewToTable(double speed)
 }
 
 void personCollide(person per, object other, double timedif) {
-	/* vector distance, nextPos; */
-	double /*distanceAngle, velAngle, */halfCoralSize;
+	double halfCoralSize;
 	switch( other->type ) {
 		case TYPE_PERSON:
-			/* angOfCol=vectorAngle(vectorSub(per->pos, other->pos)); */
 			if( vectorLength(other->prevSpeed) != 0 ) {
 				/* segunda colisao */
 				per->vel = other->prevSpeed;
