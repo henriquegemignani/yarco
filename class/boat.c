@@ -10,10 +10,12 @@
 #include <math.h>
 
 #define MAXTURN (PI/2)
-#define ACCEL 5
-#define MAXSPEED 5
+#define ACCEL 5000
+#define MAXSPEED 50
 #define IDLEACCEL 5
 #define FRICTION 10
+#define DEFAULT_TIME_STUCK 5
+#define DEFAULT_LIVES 3
 
 struct Extra {
   int isAccel;
@@ -22,6 +24,9 @@ struct Extra {
   double isTurning;
   velocity prevVel;
   int life;
+  int defaultLives;
+  double timeStuckLeft;
+  double defaultTimeStuck;
 } Extra;
 
 
@@ -41,9 +46,10 @@ boat boatCreate(texture tex, point pos, velocity vel){
 	AUTOMALLOC(b->extra);
 	b->extra->isAccel=randInt(-1,1);
 	b->extra->accel = ACCEL;
-	b->extra->life = 3;
+	b->extra->life = b->extra->defaultLives = DEFAULT_LIVES;
 	b->extra->friction = FRICTION;
 	b->extra->isTurning=randInt(-1,1);
+	b->extra->defaultTimeStuck = DEFAULT_TIME_STUCK;
 	return b;
 }
 
@@ -71,19 +77,55 @@ boat boatNew(texture tex, double speed)
 void boatUpdate(boat b, int keepDir, double timedif){
   /*Var*/
 	vector aux;
+	if(b->extra->life <= 0){
+		b->extra->timeStuckLeft -= timedif;
+		if(b->extra->timeStuckLeft <=0){
+			b->extra->life = b->extra->defaultLives;
+			boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
+		}
+	}
   if(!keepDir){
     b->extra->isTurning = randInt(0, 2)-1;
-    //b->extra->isTurning = 0;
+    /*b->extra->isTurning = 0;*/
     b->extra->isAccel = randInt(0, 2)-1;
-    //b->extra->isAccel = 0;
+    /*b->extra->isAccel = 1;*/
   }
-	debugOp(b->tex.color = 0x808080 + b->extra->isAccel* 0x303030);
-  if(b->extra->isAccel)
+  debugOp(b->tex.color = 0x808080 + b->extra->isAccel* 0x303030);
+  if(b->extra->isAccel){
+	  /*
 	  b->acc = vectorPolarToCartesian(b->extra->accel * b->extra->isAccel, b->dir);
+	  */
+	  b->acc.x = -cos(b->dir)*b->extra->accel*b->extra->isAccel;
+	  b->acc.y = -sin(b->dir)*b->extra->accel*b->extra->isAccel;
+	  debugMsg("preatrito");
+	  debugDouble("b->acc.x", b->acc.x);
+	  debugDouble("b->acc.y", b->acc.y);
+  }
   else
 	  b->acc = vectorCreate(0,0);
-  if(vectorLength(b->vel) > VERY_SMALL )
-	  b->acc = vectorSub(b->acc, vectorPolarToCartesian(vectorLength(b->vel)*b->extra->friction, vectorAngle(b->vel)));
+  /*
+  debugDouble("aceleracao", vectorLength(b->acc));
+  debugDouble("vectorLength(b->vel)*b->extra->friction", vectorLength(b->vel)*b->extra->friction)
+  debugDouble("vectorLength(b->vel)",vectorLength(b->vel))
+  */
+  debugMsg("posatrito");
+  debugDouble("b->vel.x", b->vel.x);
+  debugDouble("b->vel.y", b->vel.y);
+
+  debugDouble("b->acc.x", b->acc.x);
+  debugDouble("b->acc.y", b->acc.y);
+
+  //if(vectorLength(b->vel) > VERY_SMALL )
+//  b->acc = vectorSum(b->acc, vectorPolarToCartesian(vectorLength(b->vel)*b->extra->friction, PI+vectorAngle(b->vel)));
+  b->acc.x =  b->acc.x - b->vel.x*b->extra->friction/**cos(vectorAngle(b->vel))*/;
+  b->acc.y =  b->acc.y - b->vel.y*b->extra->friction/**sin(vectorAngle(b->vel))*/;
+  /*
+  debugDouble("aceleracao pos atrito", vectorLength(b->acc));
+  debugDouble("b->vel.x pos atrito", b->vel.x);
+    debugDouble("b->vel.y", b->vel.y);
+    debugDouble("b->acc.x", b->acc.x);
+    debugDouble("b->acc.y", b->acc.y);
+    */
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
   b->dir += b->extra->isTurning * MAXTURN * timedif;
@@ -117,11 +159,12 @@ void boatCollide(boat b, object o, double timedif){
 	break;
   case TYPE_CORAL:
    	b->extra->life--;
-   if(b->extra->life <= 0){
-		b->extra->life=3;
+   if(b->extra->life = 0){
+		b->extra->life=-1;
 		b->vel.x=0;
 		b->vel.y=0;
 		/*adicoes bem-vindas*/
+		b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
    }	   
 	break;
   case TYPE_SHIP:
