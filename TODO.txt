@@ -17,32 +17,7 @@ Possiveis objetos no mundo:
 
 Mais ideias ou alterar essas?
 
------------------------------
-Orientacao a Objetos: <<DONE>>
-Criar uma estrutura CLASS (com class.c/h), que possui apontador para as seguintes funcoes:
-- Update (devolve void, recebe object)
-- Remove (devolve void, recebe object)
-- Compare (devolve int, recebe 2 object)
-- Collide (devolve void, recebe 2 object)
-- Dump (devolve void, recebe object)
-Teriamos uma "instancia" de CLASS para cada "classe" que tivermos, como PERSON, BOAT, ITEM.
-Tais instancias seriam armazenadas de alguma forma (vetor? LL?), possivelmetne no prorio class.c/h.
-
-Dado um OBJECT, seria só acessar ao campo CLASS (atualmente type), e entao `a instancia adequada
-de CLASS, e conseguir funcao desejada. Pode-se ter um define para simplificar esse processo.
-
-Com isso, o tipo "object" passaria a ser um "struct Object *".
-
-Vantagens:
-- Possivel ter um vetor de OBJECTs, onde se mistura PERSON, BOAT, ITEM, etc. sem perder a funcionalidade.
-- PersonTable se tornaria ObjectTable e solucionaria o futuro problema de organizar mais de um tipo de object.
-- Implementar novas "classes" se torna um processo bem simples.
-
-Desvantagens:
-- Mais complicado (ou nao, dependendo de como for a outra solucao para a PersonTable)
-- Se der erro, vai ser um erro catastrofico onde nada funciona
-
------------
+------------
 
 Separar MAX de ScreenSize?
 
@@ -50,41 +25,14 @@ Deixando ambos valores independentes não usa a tela inteira. Talvez devessemos f
 
 
 -----------
-
-Separar a tela em quadrantes?
-
-Separar a tela numa matriz que guarda quais objetos estão em cada quadrante, para melhorar a detecção de colisão? Manter a lista de objetos que temos ou fazer cada quadrante ter uma lista, caso implementemos? /Semi-Done
-
-------->Alterar modo de ordenação para implementar isso menos porcamente? **NEW**
-
------------
 Arrumar CFLAGS. >_>
+---------------------->Seguir algum padrão ANSI(Vide PACA)***NEWEST!!!***
 
 -----------
 Limpar TODO. <_<
 
 -----------
-Desenhar direito as coisas, fazer coisas alem de pessoinhas
+Main de testes, mesmo que a atual ja seja extremamente configuravel? ***NEWEST!***
 
 -----------
-Suavizar animações. acho que para isso, basta lidar com frequencia de atualizações e atualização de velocidades. /Done
-
------------
-Melhorar eficiencia ou ajustar FPS e controlar frequencia de atualizações de acordo. /Semi-done
-
------------
-Evitar que passageiros sejam criados colidindo imediatamente?
-
------------
-Ver se desenhos bugando são só aqui, e corrigir se possivel e necessario. ->Corrigido e bugado novamente. <_< **NEW**
-
--------------------------------------------------------------------------
-
-Criar objectTable.{c/h} /Semi-Done
-
-------------
-Desquebrar ou tirar o -n? **NEW**
----> -n ta funcionando muito bem no r169
-
--------------------------------------------------------------------------
-Arrumar bugs graficos (parte do circulo nao aparece o.o)
+Arrumar Objecttabledum pra usar as funções de cada classe? ***NEWEST!!!***
