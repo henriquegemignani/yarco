@@ -7,12 +7,10 @@
 #include "common.h"
 #include "class.h"
 #include "configuration.h"
-#include "stack.h"
 
 struct ObjectTable {
     object list[OBJECT_NUM_LIMIT];
     unsigned int curMax, lastID;
-    stack removeList;
 };
 static objectTable table = NULL;
 
@@ -54,21 +52,17 @@ objectTable objectTableInit()
     objectTable table;
     AUTOMALLOC(table);
     table->curMax = table->lastID = 0;
-    table->removeList = stackInit();
     return table;
 }
 
 void objectTableRemovePending()
 {
-    object obj;
     int i;
-    while (!stackIsEmpty(table->removeList)) {
-        obj = (object) stackPop(table->removeList);
-        for (i = 0; i < table->curMax; i++)
-            if (table->list[i] == obj)
-                table->list[i] = NULL;
-        OBJECT_REMOVE(obj);
-    }
+	for (i = 0; i < table->curMax; i++)
+		if (table->list[i] != NULL && table->list[i]->toBeRemoved == 1) {
+			OBJECT_REMOVE(table->list[i]);
+			table->list[i] = NULL;
+		}
 }
 
 /* Funcoes publicas. */
@@ -112,7 +106,7 @@ int objectTableRemoveObjectByID(unsigned int id)
     int i;
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id) {
-            stackPush(table->list[i], table->removeList);
+            table->list[i]->toBeRemoved = 1;
             return 0;
         }
     return WARNING_OBJECT_NOT_FOUND;
@@ -132,7 +126,9 @@ void objectTableUpdate(double timedif, int newIteraction)
         for (j = i + 1; j < table->curMax; j++)
             if (quadNear
                 (objectGetQuad(table->list[i]),
-                 objectGetQuad(table->list[j])))
+                 objectGetQuad(table->list[j]))
+				 && table->list[i]->toBeRemoved == 0
+				 && table->list[j]->toBeRemoved == 0)
                 if (objectIsColliding(table->list[i], table->list[j])) {
                     OBJECT_COLLIDE(table->list[i], table->list[j],
                                    timedif);
@@ -204,6 +200,5 @@ void objectTableFinish()
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             OBJECT_REMOVE(table->list[i]);
-    stackFinish(table->removeList);
     free(table);
 }

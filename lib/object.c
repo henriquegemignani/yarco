@@ -21,6 +21,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
     o->quad =
         quadSet((int) (pos.x / QUAD_SIZE_X), (int) (pos.y / QUAD_SIZE_Y));
     o->extra = NULL;
+	o->toBeRemoved = 0;
     return o;
 }
 
