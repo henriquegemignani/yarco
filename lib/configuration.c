@@ -59,14 +59,14 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -h\t--help\t\tImprime isso e sai\n");
         printf("  -s\t--speed\t\tDetermina a velocidade media dos passageiros. Padrao: %3.2f\n"
                "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
-        	   "  -c\t--corals\t\tDetermina o numero de corais. Padrao: %d\n"
-        	   "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
-				defaults->defaultSpeed, defaults->createRate, defaults->numCorals, defaults->numPeople);
+	       "  -c\t--corals\t\tDetermina o numero de corais. Padrao: %d\n"
+	       "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
+	       defaults->defaultSpeed, defaults->createRate, defaults->numCorals, defaults->numPeople);
         printf("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
-        	   "  -v\t--verbose\t\tFala mais coisas"
+	       "  -v\t--verbose\t\tFala mais coisas"
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
-			   defaults->duration);
+	       defaults->duration);
         printf("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
                "  -P\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
@@ -75,11 +75,11 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -n\t--nosleep\t\tIgnora o sleep, rodando o maximo de frames por segundo possivel.\n"
         	   );
         printf("  -a\t--acceleration\t\tDetermina a aceleracao dos botes. Padrao: %3.2f\n"
-        	   "  -t\t--turnrate\t\tDetermina, em radianos, quantos graus o bote pode virar por segundo\n"
-        	   "  -f\t\t--friction\t\tDetermina a desalereacao dos botes pelo atrito. Padrao: %3.2f\n"
-        	   "  -l\t\t--lives\t\tDetermina quantas vezes o bote pode bater num coral antes de encalhar. Padrao: %d\n"
-        	   "  -b\t\t--timestuck\t\tDetermina quanto tempo o bote fica encalhado antes de reaparecer. Padrao: %3.2f\n",
-        		defaults->accel, defaults->friction, defaults->lives, defaults->timeStuck);
+	       "  -t\t--turnrate\t\tDetermina, em radianos, quantos graus o bote pode virar por segundo\n"
+	       "  -f\t--friction\t\tDetermina a desaleracao dos botes pelo atrito. Padrao: %3.2f\n"
+	       "  -l\t--lives\t\tDetermina quantas vezes o bote pode bater num coral antes de encalhar. Padrao: %d\n"
+	       "  -b\t--timestuck\t\tDetermina quanto tempo o bote fica encalhado antes de reaparecer. Padrao: %3.2f\n",
+	       defaults->accel, defaults->friction, defaults->lives, defaults->timeStuck);
         /* Separado em diversos printf pq -pedantic reclamou do tamanho da string:
 ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
