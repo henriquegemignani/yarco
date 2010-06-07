@@ -25,10 +25,10 @@ typedef struct Cell **stack;
 	o tipo 'card' praticamente só é usado no arquivo 'STACKLL.c'
 */
 
-stack	stackInit(); /* retorna uma pilha vazia */
-int		stackIsEmpty( stack top ); /* retorna 1 se a pilha estiver vazio, 0 se não estiver */
-void	stackPush( void *c, stack top ); /* insere 'c' na pilha */
-void*	stackPop( stack top ); /* retorna o o topo da pilha */
-void    stackFinish( stack top );
+stack stackInit();              /* retorna uma pilha vazia */
+int stackIsEmpty(stack top);    /* retorna 1 se a pilha estiver vazio, 0 se não estiver */
+void stackPush(void *c, stack top);     /* insere 'c' na pilha */
+void *stackPop(stack top);      /* retorna o o topo da pilha */
+void stackFinish(stack top);
 
-#endif /* _STACK_H_ */
+#endif                          /* _STACK_H_ */

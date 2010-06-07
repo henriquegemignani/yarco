@@ -15,7 +15,7 @@
 #define debugMsg
 #define debugDouble(msg,par)
 #define debugOp(op)
-#endif 
+#endif
 
 /* Constantes do programa */
 #define PI 3.141592654
@@ -78,8 +78,8 @@ typedef enum {
     TEX_SQUARE,
     TEX_CIRCLE,
     TEX_TRIANGLE,
-	TEX_HORIZONTAL_RETANGLE,
-	TEX_VERTICAL_RETANGLE
+    TEX_HORIZONTAL_RETANGLE,
+    TEX_VERTICAL_RETANGLE
 } texType;
 
 typedef struct Texture {
@@ -111,7 +111,7 @@ double randDouble(double min, double max);
 /*Aleatoriza o valor dado em no maximo value * +-distance*/
 double randomizeAround(double value, double distance);
 
-void generatePosInBorder(point *pos, double *dir);
+void generatePosInBorder(point * pos, double *dir);
 
 /*Imprime mensagem de erro, sai do programa*/
 void genError(char *msg);

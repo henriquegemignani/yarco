@@ -22,7 +22,8 @@
 
 #define NUM_PLAYERS 2
 
-void boatGetDefaults(double turnRate, double accel, double friction , int lives, double timeStuck);
+void boatGetDefaults(double turnRate, double accel, double friction,
+                     int lives, double timeStuck);
 
 /* Devolve o tempo atual em microsegundos.*/
 long timeInMicrosecond()
@@ -37,15 +38,13 @@ int main(int argc, char **argv)
     configuration defaults = configurationGet();
     int i, numFrame = 0;
     objectTable table;
-    double 
-		timeElapsed = 0,
-		timeDifference = 0,
-		timeSinceLastIteration = 0,
-        newPersonInterval;
-	ship asimov;
-	boat players[NUM_PLAYERS];
-		
-	struct timespec sleepTime, sleepErrorRemaining;
+    double
+        timeElapsed = 0,
+        timeDifference = 0, timeSinceLastIteration = 0, newPersonInterval;
+    ship asimov;
+    boat players[NUM_PLAYERS];
+
+    struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
     sleepTime.tv_sec = 0;       /* Tempo entre frames eh sempre menor que 1s */
 
@@ -56,24 +55,26 @@ int main(int argc, char **argv)
     /* Incializa as classes. */
     classInitialize();
     personInitializeClass();
-	shipInitializeClass();
-	coralInitializeClass();
-	boatInitializeClass();
+    shipInitializeClass();
+    coralInitializeClass();
+    boatInitializeClass();
 
-	boatGetDefaults(defaults->turnRate, defaults->accel, defaults->friction, defaults->lives, defaults->timeStuck);
+    boatGetDefaults(defaults->turnRate, defaults->accel,
+                    defaults->friction, defaults->lives,
+                    defaults->timeStuck);
 
     /* Inicializa tabela de objetos */
     table = objectTableGet();
-	
-	players[0] = boatAddNewToTable(0xFE0000);
-	players[1] = boatAddNewToTable(0x00FEFF);
-	
-	asimov = shipNew( createTexture(80, 80, 80,
-					TEX_HORIZONTAL_RETANGLE ) );
-	objectTableAddObject(asimov);
-	
+
+    players[0] = boatAddNewToTable(0xFE0000);
+    players[1] = boatAddNewToTable(0x00FEFF);
+
+    asimov = shipNew(createTexture(80, 80, 80, TEX_HORIZONTAL_RETANGLE));
+    objectTableAddObject(asimov);
+
     for (i = 0; i < defaults->numPeople; i++)
-        if (personAddNewToTable(defaults->defaultSpeed, defaults->verbose) == NULL)
+        if (personAddNewToTable(defaults->defaultSpeed, defaults->verbose)
+            == NULL)
             genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
@@ -93,14 +94,14 @@ int main(int argc, char **argv)
 
         frameTimeStart = timeInMicrosecond();
 
-        if ((newPersonInterval -= timeDifference) < 0) {
+        if ((newPersonInterval -= timeDifference) < 0 && defaults->createRate>0) {
             newPersonInterval +=
                 randomizeAround(defaults->createRate, STD_DIST);
             personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
-			/* TODO(newPersonInterval): verificar se ja tem o numero de pessoas desejadas.
-				Atualmente ta tentando criar e ignora se teve erro. */
-			/* TODO(newPersonInterval): implementar limite de pessoas. Atualmente tem mais pessoas
-				ate atingir o limite de objetos. */
+            /* TODO(newPersonInterval): verificar se ja tem o numero de pessoas desejadas.
+               Atualmente ta tentando criar e ignora se teve erro. */
+            /* TODO(newPersonInterval): implementar limite de pessoas. Atualmente tem mais pessoas
+               ate atingir o limite de objetos. */
         }
 
         objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
@@ -113,47 +114,48 @@ int main(int argc, char **argv)
         if (defaults->debugMode && timeSinceLastIteration >= 1)
             objectTableDump();
 
-        if( (defaults->pause && timeSinceLastIteration >= 1) ) {
-			printf("Aperte Enter para continuar...\n");
+        if ((defaults->pause && timeSinceLastIteration >= 1)) {
+            printf("Aperte Enter para continuar...\n");
             while (getchar() != '\n');
-			
-		} else if (!defaults->noSleep) {
-			sleepTime.tv_nsec = 1.0e9 / defaults->fps;
-			/* Se o frame anterior demorou menos do que deveria, espera mais.
-			   E se demorou mais do que devia, espera menos no atual. Somente se
-			   nao for o primeiro frame. */
-			   
-			if (sleepTime.tv_nsec < -timeToOffset) {
-				timeToOffset += sleepTime.tv_nsec;
-				sleepTime.tv_nsec = 0;
-			} else {
-				sleepTime.tv_nsec += timeToOffset;
-			}
-			if (sleepTime.tv_nsec > 0) {
-				if (nanosleep(&sleepTime, &sleepErrorRemaining)) {
-					/* Ocorreu algum erro no nanoSleep. */
-					/* TODO: tratar erros no nanosleep */
-					printf("sleepTime:\n\tsec: %ld\nnsec: %ld\n",
-						   sleepTime.tv_sec, sleepTime.tv_nsec);
-					genError("Erro: nanosleep devolveu nao-zero.\n");
-				}
-			}
-		}
-		
-		/* Tempo do frame atual (que acabou de terminar), em microsegundos. */
-		if( !(defaults->pause && timeSinceLastIteration >= 1) ) {
-			timeDifference = (timeInMicrosecond() - frameTimeStart);
-			timeToOffset += 1.0e9 / defaults->fps - timeDifference * 1.0e3;
 
-			/* E agora em segundos. */
-			timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
-		}
-		timeElapsed += timeDifference;
+        } else if (!defaults->noSleep) {
+            sleepTime.tv_nsec = 1.0e9 / defaults->fps;
+            /* Se o frame anterior demorou menos do que deveria, espera mais.
+               E se demorou mais do que devia, espera menos no atual. Somente se
+               nao for o primeiro frame. */
+
+            if (sleepTime.tv_nsec < -timeToOffset) {
+                timeToOffset += sleepTime.tv_nsec;
+                sleepTime.tv_nsec = 0;
+            } else {
+                sleepTime.tv_nsec += timeToOffset;
+            }
+            if (sleepTime.tv_nsec > 0) {
+                if (nanosleep(&sleepTime, &sleepErrorRemaining)) {
+                    /* Ocorreu algum erro no nanoSleep. */
+                    /* TODO: tratar erros no nanosleep */
+                    printf("sleepTime:\n\tsec: %ld\nnsec: %ld\n",
+                           sleepTime.tv_sec, sleepTime.tv_nsec);
+                    genError("Erro: nanosleep devolveu nao-zero.\n");
+                }
+            }
+        }
+
+        /* Tempo do frame atual (que acabou de terminar), em microsegundos. */
+        if (!(defaults->pause && timeSinceLastIteration >= 1)) {
+            timeDifference = (timeInMicrosecond() - frameTimeStart);
+            timeToOffset += 1.0e9 / defaults->fps - timeDifference * 1.0e3;
+
+            /* E agora em segundos. */
+            timeDifference =
+                (timeInMicrosecond() - frameTimeStart) / 1.0e6;
+        }
+        timeElapsed += timeDifference;
 
         if (timeSinceLastIteration > 1) {
             timeSinceLastIteration -= 1;
-            if(defaults->verbose)
-            	printf("\tNum Frames: %d\n", numFrame + 1);
+            if (defaults->verbose)
+                printf("\tNum Frames: %d\n", numFrame + 1);
             numFrame = 0;
         } else {
             numFrame++;

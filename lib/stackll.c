@@ -20,9 +20,9 @@ STACKLL.c - implementação das funções de pilha usando listas ligadas
 #include <stdio.h>
 #include "stack.h"
 
-struct Cell { 
-  void* card_value;
-  struct Cell *next; 
+struct Cell {
+    void *card_value;
+    struct Cell *next;
 };
 
 /*
@@ -35,39 +35,39 @@ struct Cell {
 /* inicia uma pilha vazia */
 stack stackInit()
 {
-	stack s = malloc( sizeof( card ) );
-	*s = NULL;
-	return s;
+    stack s = malloc(sizeof(card));
+    *s = NULL;
+    return s;
 }
 
 /* retorna 1 se a pilha estiver vazia, senão retorna 0 */
-int stackIsEmpty( stack top )
+int stackIsEmpty(stack top)
 {
-	if( (*top) == NULL ) return 1;
-	return 0;
+    if ((*top) == NULL)
+        return 1;
+    return 0;
 }
 
 /* recebe um valor inteiro e o coloca no topo da pilha */
-void stackPush( void *c, stack top )
+void stackPush(void *c, stack top)
 {
-	card temp = malloc( sizeof(struct Cell) );
-	temp->card_value = c;
-	temp->next = (*top);	
-	*top = temp;
+    card temp = malloc(sizeof(struct Cell));
+    temp->card_value = c;
+    temp->next = (*top);
+    *top = temp;
 }
 
 /* obtém o valor do topo da pilha e elimina a sua posição na memória */
-void* stackPop( stack top )
-{	
-	void *c = (*top)->card_value;
-	card temp = *top;
-	*top = (*top)->next;
-	free(temp);
-	return c;
+void *stackPop(stack top)
+{
+    void *c = (*top)->card_value;
+    card temp = *top;
+    *top = (*top)->next;
+    free(temp);
+    return c;
 }
 
-void stackFinish( stack top ) {
-	free(top);
+void stackFinish(stack top)
+{
+    free(top);
 }
-
-

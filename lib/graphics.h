@@ -9,7 +9,7 @@
 typedef struct GraphicEngine *graphicEngine;
 
 #define SCREEN_SIZE_X 1024
-#define SCREEN_SIZE_Y 768 
+#define SCREEN_SIZE_Y 768
 #define WINDOWED_MODE 1
 #define FULLSCREEN_MODE 2
 

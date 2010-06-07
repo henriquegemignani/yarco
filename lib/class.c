@@ -11,8 +11,7 @@ void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
               void (*collideFunc) (object, object, double timedif),
-              void (*boundsFunc) (object), 
-			  void (*dumpFunc) (object))
+              void (*boundsFunc) (object), void (*dumpFunc) (object))
 {
     int i;
     for (i = 0; i < NUM_CLASS; i++)
@@ -39,17 +38,24 @@ Class getClass(objectType type)
     return NULL;
 }
 
-int classMethodIsNull(objectType type, int func ) {
-	Class c = getClass(type);
-	if(c == NULL) genError("classMethodIsNull chamado para classe inexistente.\n");
-	switch( func ) {
-		case CLASS_METHOD_UPDATE:	return c->updateFunc == NULL;
-		case CLASS_METHOD_COLLIDE:	return c->collideFunc == NULL;
-		case CLASS_METHOD_REMOVE:	return c->removeFunc == NULL;
-		case CLASS_METHOD_BOUNDS:	return c->boundsFunc == NULL;
-		case CLASS_METHOD_DUMP:		return c->dumpFunc == NULL;
-	}
-	return 1;
+int classMethodIsNull(objectType type, int func)
+{
+    Class c = getClass(type);
+    if (c == NULL)
+        genError("classMethodIsNull chamado para classe inexistente.\n");
+    switch (func) {
+    case CLASS_METHOD_UPDATE:
+        return c->updateFunc == NULL;
+    case CLASS_METHOD_COLLIDE:
+        return c->collideFunc == NULL;
+    case CLASS_METHOD_REMOVE:
+        return c->removeFunc == NULL;
+    case CLASS_METHOD_BOUNDS:
+        return c->boundsFunc == NULL;
+    case CLASS_METHOD_DUMP:
+        return c->dumpFunc == NULL;
+    }
+    return 1;
 }
 
 void classInitialize()

@@ -33,15 +33,14 @@ void classAdd(objectType type,
               void (*updateFunc) (object, int, double),
               void (*removeFunc) (object),
               void (*collideFunc) (object, object, double timedif),
-              void (*boundsFunc) (object),
-			  void (*dumpFunc) (object));
+              void (*boundsFunc) (object), void (*dumpFunc) (object));
 
 /* Devolve a classe correspondente ao tipo TYPE, ou NULL se nao existe. */
 Class getClass(objectType type);
 
 /* Devolve 1 se a classe correspondente ao tipo TYPE possui um valor NULL para a 
 	funcao func, 0 caso contrario. */
-int classMethodIsNull(objectType type, int func );
+int classMethodIsNull(objectType type, int func);
 #define CLASS_METHOD_UPDATE  1
 #define CLASS_METHOD_COLLIDE 2
 #define CLASS_METHOD_REMOVE  3

@@ -13,43 +13,47 @@
 /* Funcoes privadas. */
 point coralGeneratePosition()
 {
-    return vectorCreate( randDouble(0,MAX_X), randDouble(0,MAX_Y) );
+    return vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y));
 }
 
 coral coralCreate(texture tex, point pos)
 {
-    return objectCreate(TYPE_CORAL, 0, pos, vectorCreate(0,0), 
-		randomizeAround(CORAL_RADIUS, STD_DIST), tex);
+    return objectCreate(TYPE_CORAL, 0, pos, vectorCreate(0, 0),
+                        randomizeAround(CORAL_RADIUS, STD_DIST), tex);
 }
 
 /* Funcoes publicas. */
-void coralInitializeClass() {
+void coralInitializeClass()
+{
     classAdd(TYPE_CORAL, NULL, coralRemove, NULL, NULL, objectDump);
 }
 
-void coralRemove(coral c) {
-	free(c);
+void coralRemove(coral c)
+{
+    free(c);
 }
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
 coral coralAddNewToTable(int verbose)
 {
-    coral c = coralCreate(
-        createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_SQUARE), 
-        coralGeneratePosition() );
-	int err;
-	do {
-		err = objectTableAddObject(c);
-		if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
-			coralRemove(c);
-			return NULL;
-		} else if (err == ERROR_OBJECT_IS_COLLIDING) {
-			c->pos = coralGeneratePosition();
-		}
-		if( err != 0 && verbose) {
-			printf("Tentando criar coral. Err = %d ", err );
-			objectDump(c);
-		}
-	} while( err != 0 );
-	return c;
+    coral c =
+        coralCreate(createTexture
+                    (randInt(40, 200), randInt(40, 200), randInt(40, 200),
+                     TEX_SQUARE),
+                    coralGeneratePosition());
+    int err;
+    do {
+        err = objectTableAddObject(c);
+        if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
+            coralRemove(c);
+            return NULL;
+        } else if (err == ERROR_OBJECT_IS_COLLIDING) {
+            c->pos = coralGeneratePosition();
+        }
+        if (err != 0 && verbose) {
+            printf("Tentando criar coral. Err = %d ", err);
+            objectDump(c);
+        }
+    } while (err != 0);
+    return c;
 }

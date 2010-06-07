@@ -38,16 +38,17 @@ configuration configurationInit()
     return config;
 }
 
-configuration configurationGet() {
-	if( config == NULL )
-		config = configurationInit();
-	return config;
+configuration configurationGet()
+{
+    if (config == NULL)
+        config = configurationInit();
+    return config;
 }
 
 void configurationFinish()
 {
     free(config);
-	config = NULL;
+    config = NULL;
 }
 
 void argRead(int argc, char **argv, configuration defaults)
@@ -55,33 +56,37 @@ void argRead(int argc, char **argv, configuration defaults)
     char *argValue;
     if (argFind(argc, argv, "--help", "-h")) {
         printf("Usage: %s [OPTIONS]\n\n", argv[0]);
-        printf("Opcoes:\n"
-               "  -h\t--help\t\tImprime isso e sai\n");
-        printf("  -s\t--speed\t\tDetermina a velocidade media dos passageiros. Padrao: %3.2f\n"
-               "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
-	       "  -c\t--corals\t\tDetermina o numero de corais. Padrao: %d\n"
-	       "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
-	       defaults->defaultSpeed, defaults->createRate, defaults->numCorals, defaults->numPeople);
-        printf("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
-	       "  -v\t--verbose\t\tFala mais coisas\n"
-               "  -g\t--nographic\tIgnora parte grafica\n"
-               "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
-	       defaults->duration);
-        printf("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
-               "  -P\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
-               "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
-               "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
-               "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
-               "  -n\t--nosleep\t\tIgnora o sleep, rodando o maximo de frames por segundo possivel.\n"
-        	   );
-        printf("  -a\t--acceleration\t\tDetermina a aceleracao dos botes. Padrao: %3.2f\n"
-	       "  -t\t--turnrate\t\tDetermina, em radianos, quantos graus o bote pode virar por segundo\n"
-	       "  -f\t--friction\t\tDetermina a desaleracao dos botes pelo atrito. Padrao: %3.2f\n"
-	       "  -l\t--lives\t\tDetermina quantas vezes o bote pode bater num coral antes de encalhar. Padrao: %d\n"
-	       "  -b\t--timestuck\t\tDetermina quanto tempo o bote fica encalhado antes de reaparecer. Padrao: %3.2f\n",
-	       defaults->accel, defaults->friction, defaults->lives, defaults->timeStuck);
+        printf("Opcoes:\n" "  -h\t--help\t\tImprime isso e sai\n");
+        printf
+            ("  -s\t--speed\t\tDetermina a velocidade media dos passageiros. Padrao: %3.2f\n"
+             "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
+             "  -c\t--corals\t\tDetermina o numero de corais. Padrao: %d\n"
+             "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
+             defaults->defaultSpeed, defaults->createRate,
+             defaults->numCorals, defaults->numPeople);
+        printf
+            ("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
+             "  -v\t--verbose\t\tFala mais coisas\n"
+             "  -g\t--nographic\tIgnora parte grafica\n"
+             "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
+             defaults->duration);
+        printf
+            ("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
+             "  -P\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
+             "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
+             "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
+             "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
+             "  -n\t--nosleep\t\tIgnora o sleep, rodando o maximo de frames por segundo possivel.\n");
+        printf
+            ("  -a\t--acceleration\t\tDetermina a aceleracao dos botes. Padrao: %3.2f\n"
+             "  -t\t--turnrate\t\tDetermina, em radianos, quantos graus o bote pode virar por segundo\n"
+             "  -f\t--friction\t\tDetermina a desaleracao dos botes pelo atrito. Padrao: %3.2f\n"
+             "  -l\t--lives\t\tDetermina quantas vezes o bote pode bater num coral antes de encalhar. Padrao: %d\n"
+             "  -b\t--timestuck\t\tDetermina quanto tempo o bote fica encalhado antes de reaparecer. Padrao: %3.2f\n",
+             defaults->accel, defaults->friction, defaults->lives,
+             defaults->timeStuck);
         /* Separado em diversos printf pq -pedantic reclamou do tamanho da string:
-./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
+           ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
     }
     argValue = argShortFlags(argc, argv, "dPguknv");
@@ -98,7 +103,7 @@ void argRead(int argc, char **argv, configuration defaults)
     if (argFind(argc, argv, "--nosleep", "-n") || argValue[5])
         defaults->noSleep = 1;
     if (argFind(argc, argv, "--verbose", "-v") || argValue[6])
-            defaults->verbose = 1;
+        defaults->verbose = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
@@ -111,27 +116,27 @@ void argRead(int argc, char **argv, configuration defaults)
     if ((argValue = argVal(argc, argv, "--fps", "-F")))
         defaults->fps = atoi(argValue);
     /*
-    if ((argValue = argVal(argc, argv, "--willturn", "-T")))
-    	defaults->willTurn = atoi(argValue);
-    	*/
+       if ((argValue = argVal(argc, argv, "--willturn", "-T")))
+       defaults->willTurn = atoi(argValue);
+     */
     /*
-    if ((argValue = argVal(argc, argv, "--willaccel", "-A")))
-    	defaults->turnRate = atof(argValue);
-    	*/
+       if ((argValue = argVal(argc, argv, "--willaccel", "-A")))
+       defaults->turnRate = atof(argValue);
+     */
     if ((argValue = argVal(argc, argv, "--acceleration", "-a")))
-    	defaults->accel = atof(argValue);
+        defaults->accel = atof(argValue);
     if ((argValue = argVal(argc, argv, "--turnrate", "-t")))
-    	defaults->turnRate = atof(argValue);
+        defaults->turnRate = atof(argValue);
     if ((argValue = argVal(argc, argv, "--friction", "-f")))
-    	defaults->friction = atof(argValue);
+        defaults->friction = atof(argValue);
     if ((argValue = argVal(argc, argv, "--lives", "-l")))
-    	defaults->lives = atoi(argValue);
+        defaults->lives = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--timestuck", "-b")))
-    	defaults->timeStuck = atof(argValue);
+        defaults->timeStuck = atof(argValue);
     if ((argValue = argVal(argc, argv, "--people", "-p")))
-    	defaults->numPeople = atoi(argValue);
+        defaults->numPeople = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--corals", "-c")))
-    	defaults->numCorals = atoi(argValue);
+        defaults->numCorals = atoi(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)

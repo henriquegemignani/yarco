@@ -24,7 +24,7 @@ struct Object {
     double radius;
     quadrant quad;
     texture tex;
-	extraInfo extra;
+    extraInfo extra;
 };
 /*Posicao e velocidade sao dados por coordenadas cartesianas, enquanto a aceleracao e dada por coordenadas polares*/
 

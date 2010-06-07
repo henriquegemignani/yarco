@@ -12,7 +12,7 @@
 struct ObjectTable {
     object list[OBJECT_NUM_LIMIT];
     unsigned int curMax, lastID;
-	stack removeList;
+    stack removeList;
 };
 static objectTable table = NULL;
 
@@ -54,37 +54,40 @@ objectTable objectTableInit()
     objectTable table;
     AUTOMALLOC(table);
     table->curMax = table->lastID = 0;
-	table->removeList = stackInit();
+    table->removeList = stackInit();
     return table;
 }
 
-void objectTableRemovePending() {
-	object obj;
-	int i;
-	while( !stackIsEmpty(table->removeList) ) {
-		obj = (object) stackPop(table->removeList);
-		for(i = 0; i < table->curMax; i++)
-			if(table->list[i] == obj)
-				table->list[i] = NULL;
-		OBJECT_REMOVE(obj);
-	}
+void objectTableRemovePending()
+{
+    object obj;
+    int i;
+    while (!stackIsEmpty(table->removeList)) {
+        obj = (object) stackPop(table->removeList);
+        for (i = 0; i < table->curMax; i++)
+            if (table->list[i] == obj)
+                table->list[i] = NULL;
+        OBJECT_REMOVE(obj);
+    }
 }
 
 /* Funcoes publicas. */
 
-objectTable objectTableGet() {
-	if( table == NULL )
-		table = objectTableInit(); 
-	return table;
+objectTable objectTableGet()
+{
+    if (table == NULL)
+        table = objectTableInit();
+    return table;
 }
 
 int objectTableAddObject(object obj)
 {
-	if (objectTableFilled())
+    if (objectTableFilled())
         return ERROR_OBJECT_LIMIT_EXCEEDED;
     if (objectTableIsObjectColliding(obj))
-		return ERROR_OBJECT_IS_COLLIDING;
-	obj->quad = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
+        return ERROR_OBJECT_IS_COLLIDING;
+    obj->quad =
+        quadSet(obj->pos.x / QUAD_SIZE_X, obj->pos.y / QUAD_SIZE_Y);
     obj->id = ++table->lastID;
     table->list[table->curMax++] = obj;
     return 0;
@@ -109,7 +112,7 @@ int objectTableRemoveObjectByID(unsigned int id)
     int i;
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id) {
-			stackPush(table->list[i], table->removeList);
+            stackPush(table->list[i], table->removeList);
             return 0;
         }
     return WARNING_OBJECT_NOT_FOUND;
@@ -131,12 +134,14 @@ void objectTableUpdate(double timedif, int newIteraction)
                 (objectGetQuad(table->list[i]),
                  objectGetQuad(table->list[j])))
                 if (objectIsColliding(table->list[i], table->list[j])) {
-                    OBJECT_COLLIDE(table->list[i], table->list[j], timedif);
-					OBJECT_COLLIDE(table->list[j], table->list[i], timedif);
-				}
-				
-	objectTableRemovePending();
-	
+                    OBJECT_COLLIDE(table->list[i], table->list[j],
+                                   timedif);
+                    OBJECT_COLLIDE(table->list[j], table->list[i],
+                                   timedif);
+                }
+
+    objectTableRemovePending();
+
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL) {
             /* Atualiza e... */
@@ -148,8 +153,8 @@ void objectTableUpdate(double timedif, int newIteraction)
                 OBJECT_BOUNDS(table->list[i]);
             }
         }
-		
-	objectTableRemovePending();
+
+    objectTableRemovePending();
 
     objectTableSort();
     for (i = table->curMax - 1; i >= 0 && table->list[i] == NULL; i--)
@@ -166,23 +171,23 @@ void objectTableExecute(void (*func) (object p))
 
 int objectTableIsObjectColliding(object o)
 {
-  int i;
-  for (i = 0; i < table->curMax; i++)
-    if (table->list[i] != NULL && table->list[i] != o )
-    	if(quadNear(objectGetQuad(o), objectGetQuad(table->list[i])))
-    		if( objectIsColliding(table->list[i], o) )
-    			return 1;
-  return 0;
+    int i;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL && table->list[i] != o)
+            if (quadNear(objectGetQuad(o), objectGetQuad(table->list[i])))
+                if (objectIsColliding(table->list[i], o))
+                    return 1;
+    return 0;
 }
 
 int objectTableFilled()
 {
-   if (table->curMax == OBJECT_NUM_LIMIT) {
-        objectTableSort(); /* TODO: como ordenar objetos? decidir em grupo */
+    if (table->curMax == OBJECT_NUM_LIMIT) {
+        objectTableSort();      /* TODO: como ordenar objetos? decidir em grupo */
         if (table->curMax == OBJECT_NUM_LIMIT)
             return 1;
-   }
-   return 0;
+    }
+    return 0;
 }
 
 void objectTableDump()
@@ -199,6 +204,6 @@ void objectTableFinish()
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             OBJECT_REMOVE(table->list[i]);
-	stackFinish(table->removeList);
+    stackFinish(table->removeList);
     free(table);
 }
