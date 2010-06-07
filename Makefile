@@ -3,7 +3,7 @@ objects = graphics.o common.o object.o person.o objecttable.o configuration.o cl
 objectmain = main.o
 objecttest = tests.o
 CC = gcc
-CFLAGS = -Wall -g -pedantic# -ansi -std=c99
+CFLAGS = -Wall -g -pedantic -ansi -D_POSIX_C_SOURCE=199309L
 
 yarco :      $(objects) $(objectmain)
 	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lm -o $@   
@@ -49,7 +49,7 @@ realclean : moreclean
 
 .PHONY : TODO
 TODO : 
-	grep TODO *.[ch] lib/*.[ch] > autoTODO.txt
+	grep TODO *.[ch] lib/*.[ch] class/*.[ch] > autoTODO.txt
 
 .PHONY: publish
 publish : moreclean yarco

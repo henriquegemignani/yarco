@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 	ship asimov;
 	boat players[NUM_PLAYERS];
 		
-    struct timespec sleepTime, sleepErrorRemaining;
+	struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
     sleepTime.tv_sec = 0;       /* Tempo entre frames eh sempre menor que 1s */
 
