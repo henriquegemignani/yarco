@@ -20,7 +20,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-#define NUM_PLAYERS 1
+#define NUM_PLAYERS 2
 
 /* Devolve o tempo atual em microsegundos.*/
 long timeInMicrosecond()
@@ -62,8 +62,8 @@ int main(int argc, char **argv)
     /* Inicializa tabela de objetos */
     table = objectTableGet();
 	
-	players[0] = boatAddNewToTable(0xFF0000);
-	/* players[1] = boatAddNewToTable(0x0000FF); */
+	players[0] = boatAddNewToTable(0xFE0000);
+	 players[1] = boatAddNewToTable(0x0000FF); 
 	
 	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
 		TEX_HORIZONTAL_RETANGLE ) );
