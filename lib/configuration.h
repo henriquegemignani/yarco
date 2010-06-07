@@ -23,6 +23,9 @@ struct Configuration {
     double turnRate;
     int lives;
     double timeStuck;
+    int verbose;
+    int numPeople;
+    int numCorals;
 };
 typedef struct Configuration *configuration;
 

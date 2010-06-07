@@ -35,7 +35,7 @@ void personMoveToRandomBorder(person p);
 void personDump(person p);
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
-person personAddNewToTable(double speed);
+person personAddNewToTable(double speed, int verbose);
 /*person personCreateToTable(objectTable table, point pos, velocity vel);*/
 
 void personCollide(person per, object other, double timedif);

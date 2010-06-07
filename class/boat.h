@@ -16,4 +16,5 @@ void boatRemove(boat b);
 void boatOB(boat b);
 void boatCollide(boat b, object o, double timedif);
 boat boatAddNewToTable(int color);
+void boatDump(boat b);
 #endif

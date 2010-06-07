@@ -25,7 +25,7 @@ struct Extra {
   double defaultTimeStuck;
 } Extra;
 
-static struct defaults{
+static struct boatDefaults{
 	int turnFlag;
 	int accelFlag;
 	int turnValue;
@@ -35,16 +35,16 @@ static struct defaults{
 	double friction;
 	int lives;
 	double timeStuck;
-} defaults;
+} boatDefaults;
 
 
 
 void boatGetDefaults(double turnRate, double accel, double friction , int lives, double timeStuck){
-	defaults.turnRate = turnRate;
-	defaults.accel = accel;
-	defaults.friction = friction;
-	defaults.lives = lives;
-	defaults.timeStuck = timeStuck;
+	boatDefaults.turnRate = turnRate;
+	boatDefaults.accel = accel;
+	boatDefaults.friction = friction;
+	boatDefaults.lives = lives;
+	boatDefaults.timeStuck = timeStuck;
 }
 
 void boatInitializeClass()
@@ -54,26 +54,18 @@ void boatInitializeClass()
              boatRemove,
              boatCollide,
 			 boatOB,
-			 objectDump);
+			 boatDump);
 }
 
 boat boatCreate(texture tex, point pos, velocity vel){
 	boat b;
 	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vel, BOAT_RADIUS, tex);
 	AUTOMALLOC(b->extra);
-	if(!defaults.accelFlag)
-		b->extra->isAccel=randInt(0,2)-1;
-	else
-		b->extra->isAccel = defaults.accelValue;
-	b->extra->accel = defaults.accel;
-	b->extra->life = b->extra->defaultLives = defaults.lives;
-	b->extra->friction = defaults.friction;
-	if(!defaults.turnFlag)
-		b->extra->isTurning=randInt(0,2)-1;
-	else
-		b->extra->isTurning=defaults.turnValue;
-	b->extra->turnRate = defaults.turnRate;
-	b->extra->defaultTimeStuck = defaults.timeStuck;
+	b->extra->accel = boatDefaults.accel;
+	b->extra->life = b->extra->defaultLives = boatDefaults.lives;
+	b->extra->friction = boatDefaults.friction;
+	b->extra->turnRate = boatDefaults.turnRate;
+	b->extra->defaultTimeStuck = boatDefaults.timeStuck;
 	b->extra->color = b->tex.color;
 	return b;
 }
@@ -232,7 +224,7 @@ void boatCollide(boat b, object o, double timediff){
 		  			}
 		  break;
   case TYPE_PERSON: break;
-  default: debugMsg("Colisao de barco com tipo desconhecido!\n")
+  default: genWarning("Colisao de barco com tipo desconhecido!\n");
   }
 }
 
@@ -246,6 +238,7 @@ void boatOB(boat b){
     b->pos.y = (b->pos.y <0? 0:MAX_Y);
   }
 }
+
 boat boatAddNewToTable(int color) {
 	texture tex;
 	/* point p = vectorCreate(randDouble(0, MAX_X), randDouble(0, MAX_Y)); */
@@ -260,4 +253,12 @@ boat boatAddNewToTable(int color) {
 		return NULL;
 	}
 	return b;
+}
+
+
+void boatDump(boat b){
+	printf("Bote:\n\n");
+	objectDump(b);
+	printf("Virando: %s\n", b->extra->isTurning==0?"Nao":b->extra->isTurning<0?"Sentido horario":"Sentido anti-horario");
+	printf("Acelerando: %s\n", b->extra->isAccel==0?"Nao":b->extra->isTurning<0?"Para tras":"Para frente");
 }

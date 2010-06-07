@@ -86,7 +86,7 @@ void personDump(person p)
     printf("\n");
 }
 
-person personAddNewToTable(double speed)
+person personAddNewToTable(double speed, int verbose)
 {
   person p = personNew(createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_CIRCLE), speed);
   int err;
@@ -98,12 +98,14 @@ person personAddNewToTable(double speed)
     } else if (err == ERROR_OBJECT_IS_COLLIDING) {
       personGeneratePosAndVelInBorder(speed, &p->pos, &p->vel);
     }
-    if( err != 0 ) {
+
+    if( err != 0 && verbose) {
       printf("Tentando criar pessoa. Err = %d", err );
       vectorPrint(p->pos);
       vectorPrint(p->vel);
       printf("\n");
     }
+
   } while( err != 0 );
   return p;
 }
@@ -160,7 +162,7 @@ void personCollide(person per, object other, double timedif) {
 			
 			break;
 		default:
-			debugMsg("Erro (Person): colisao com objeto de tipo desconhecido.");
+			genWarning("Aviso (Person): colisao com objeto de tipo desconhecido.");
 	}
 }
   

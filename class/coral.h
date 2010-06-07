@@ -17,6 +17,6 @@ void coralRemove(coral c);
 void coralCollide(coral c, object other);
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
-coral coralAddNewToTable();
+coral coralAddNewToTable(int verbose);
 
 #endif                          /* _CORAL_H_ */

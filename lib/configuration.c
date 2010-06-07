@@ -31,6 +31,9 @@ configuration configurationInit()
     config->turnRate = DEFAULT_TURNRATE;
     config->lives = DEFAULT_LIVES;
     config->timeStuck = DEFAULT_TIME_STUCK;
+    config->verbose = 0;
+    config->numPeople = PERSON_NUM_INIT;
+    config->numCorals = CORAL_NUM_INIT;
 
     return config;
 }
@@ -55,14 +58,17 @@ void argRead(int argc, char **argv, configuration defaults)
         printf("Opcoes:\n"
                "  -h\t--help\t\tImprime isso e sai\n");
         printf("  -s\t--speed\t\tDetermina a velocidade media dos passageiros. Padrao: %3.2f\n"
-               "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n",
-				defaults->defaultSpeed, defaults->createRate);
+               "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
+        	   "  -c\t--corals\t\tDetermina o numero de corais. Padrao: %d\n"
+        	   "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
+				defaults->defaultSpeed, defaults->createRate, defaults->numCorals, defaults->numPeople);
         printf("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
+        	   "  -v\t--verbose\t\tFala mais coisas"
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
 			   defaults->duration);
         printf("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
-               "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
+               "  -P\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
                "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
                "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
@@ -78,10 +84,10 @@ void argRead(int argc, char **argv, configuration defaults)
 ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dpgukn");
+    argValue = argShortFlags(argc, argv, "dPguknv");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
-    if (argFind(argc, argv, "--pause", "-p") || argValue[1])
+    if (argFind(argc, argv, "--pause", "-P") || argValue[1])
         defaults->pause = 1;
     if (argFind(argc, argv, "--nographic", "-g") || argValue[2])
         defaults->graphic = 0;
@@ -91,6 +97,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->keepSpeed = 1;
     if (argFind(argc, argv, "--nosleep", "-n") || argValue[5])
         defaults->noSleep = 1;
+    if (argFind(argc, argv, "--verbose", "-v") || argValue[6])
+            defaults->verbose = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
@@ -120,6 +128,10 @@ void argRead(int argc, char **argv, configuration defaults)
     	defaults->lives = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--timestuck", "-b")))
     	defaults->timeStuck = atof(argValue);
+    if ((argValue = argVal(argc, argv, "--people", "-p")))
+    	defaults->numPeople = atoi(argValue);
+    if ((argValue = argVal(argc, argv, "--corals", "-c")))
+    	defaults->numCorals = atoi(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)

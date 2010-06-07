@@ -66,20 +66,20 @@ int main(int argc, char **argv)
     table = objectTableGet();
 	
 	players[0] = boatAddNewToTable(0xFE0000);
-	 players[1] = boatAddNewToTable(0x00FEFF);
+	players[1] = boatAddNewToTable(0x00FEFF);
 	
-	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
+	asimov = shipNew( createTexture(80, 80, 80),
 		TEX_HORIZONTAL_RETANGLE ) );
 	objectTableAddObject(asimov);
 	
-    for (i = 0; i < PERSON_NUM_INIT; i++)
-        if (personAddNewToTable(defaults->defaultSpeed) == NULL)
+    for (i = 0; i < defaults->numPeople; i++)
+        if (personAddNewToTable(defaults->defaultSpeed, defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
 
-    for (i = 0; i < CORAL_NUM_INIT; i++)
-        if (coralAddNewToTable() == NULL)
+    for (i = 0; i < defaults->numCorals; i++)
+        if (coralAddNewToTable(defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
 
     /* Inicializa parte grafica */
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
         if ((newPersonInterval -= timeDifference) < 0) {
             newPersonInterval +=
                 randomizeAround(defaults->createRate, STD_DIST);
-            personAddNewToTable(defaults->defaultSpeed);
+            personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
 			/* TODO(newPersonInterval): verificar se ja tem o numero de pessoas desejadas.
 				Atualmente ta tentando criar e ignora se teve erro. */
 			/* TODO(newPersonInterval): implementar limite de pessoas. Atualmente tem mais pessoas
@@ -152,7 +152,8 @@ int main(int argc, char **argv)
 
         if (timeSinceLastIteration > 1) {
             timeSinceLastIteration -= 1;
-            printf("\tNum Frames: %d\n", numFrame + 1);
+            if(defaults->verbose)
+            	printf("\tNum Frames: %d\n", numFrame + 1);
             numFrame = 0;
         } else {
             numFrame++;

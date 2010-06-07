@@ -32,7 +32,7 @@ void coralRemove(coral c) {
 }
 
 /* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
-coral coralAddNewToTable()
+coral coralAddNewToTable(int verbose)
 {
     coral c = coralCreate(
         createTexture(randInt(40,200), randInt(40,200), randInt(40,200), TEX_SQUARE), 
@@ -46,7 +46,7 @@ coral coralAddNewToTable()
 		} else if (err == ERROR_OBJECT_IS_COLLIDING) {
 			c->pos = coralGeneratePosition();
 		}
-		if( err != 0 ) {
+		if( err != 0 && verbose) {
 			printf("Tentando criar coral. Err = %d ", err );
 			objectDump(c);
 		}
