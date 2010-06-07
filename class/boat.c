@@ -261,4 +261,5 @@ void boatDump(boat b){
 	objectDump(b);
 	printf("Virando: %s\n", b->extra->isTurning==0?"Nao":b->extra->isTurning<0?"Sentido horario":"Sentido anti-horario");
 	printf("Acelerando: %s\n", b->extra->isAccel==0?"Nao":b->extra->isTurning<0?"Para tras":"Para frente");
+	printf("Vida: %d\n", b->extra->life);
 }

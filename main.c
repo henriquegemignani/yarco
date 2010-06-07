@@ -68,8 +68,8 @@ int main(int argc, char **argv)
 	players[0] = boatAddNewToTable(0xFE0000);
 	players[1] = boatAddNewToTable(0x00FEFF);
 	
-	asimov = shipNew( createTexture(80, 80, 80),
-		TEX_HORIZONTAL_RETANGLE ) );
+	asimov = shipNew( createTexture(80, 80, 80,
+					TEX_HORIZONTAL_RETANGLE ) );
 	objectTableAddObject(asimov);
 	
     for (i = 0; i < defaults->numPeople; i++)
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
     i = 0;
     while (timeElapsed < defaults->duration) {
-        if (timeSinceLastIteration > 1)
+        if (timeSinceLastIteration > 1 && defaults->verbose)
             printf("Iteracao: %d\n", ++i);
 
         frameTimeStart = timeInMicrosecond();
