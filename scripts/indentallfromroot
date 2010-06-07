@@ -1,3 +1,3 @@
 #!/bin/bash
 cat scripts/indentallfromroot
-indent -i4 -kr -nut *.c lib/*.[ch]
+indent -i4 -kr -nut *.c lib/*.[ch] class/*.[ch]

@@ -41,7 +41,7 @@ clean :
 
 .PHONY : moreclean
 moreclean : clean
-	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ 
+	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ class/\#*\# class/*~ 
 
 .PHONY : realclean
 realclean : moreclean
@@ -59,7 +59,7 @@ publish : moreclean yarco
 
 .PHONY: publish-source
 publish-source : moreclean
-	indent -i4 -kr -nut *.c lib/*.[ch]
+	indent -i4 -kr -nut *.c lib/*.[ch] class/*.[ch]
 	mkdir -p publish
 	rm -f publish/source.tar
 	tar -cvzf publish/source.tar.gz * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish --exclude=*~
