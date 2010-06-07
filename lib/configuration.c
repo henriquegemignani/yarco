@@ -26,6 +26,11 @@ configuration configurationInit()
     config->uniqueGraphic = 0;
     config->keepSpeed = 0;
     config->fps = DEFAULT_FPS;
+    config->accel = DEFAULT_ACCEL;
+    config->friction = DEFAULT_FRICTION;
+    config->turnRate = DEFAULT_TURNRATE;
+    config->lives = DEFAULT_LIVES;
+    config->timeStuck = DEFAULT_TIME_STUCK;
 
     return config;
 }
@@ -56,12 +61,19 @@ void argRead(int argc, char **argv, configuration defaults)
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
 			   defaults->duration);
-        printf("  -f\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
+        printf("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
                "  -p\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
                "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
                "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
                "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
-               "  -n\t--nosleep\t\tIgnora o sleep.\n");
+               "  -n\t--nosleep\t\tIgnora o sleep, rodando o maximo de frames por segundo possivel.\n"
+        	   );
+        printf("  -a\t--acceleration\t\tDetermina a aceleracao dos botes. Padrao: %3.2f\n"
+        	   "  -t\t--turnrate\t\tDetermina, em radianos, quantos graus o bote pode virar por segundo\n"
+        	   "  -f\t\t--friction\t\tDetermina a desalereacao dos botes pelo atrito. Padrao: %3.2f\n"
+        	   "  -l\t\t--lives\t\tDetermina quantas vezes o bote pode bater num coral antes de encalhar. Padrao: %d\n"
+        	   "  -b\t\t--timestuck\t\tDetermina quanto tempo o bote fica encalhado antes de reaparecer. Padrao: %3.2f\n",
+        		defaults->accel, defaults->friction, defaults->lives, defaults->timeStuck);
         /* Separado em diversos printf pq -pedantic reclamou do tamanho da string:
 ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
@@ -88,8 +100,26 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->duration = atof(argValue);
     if ((argValue = argVal(argc, argv, "--randomseed", "-S")))
         defaults->randomSeed = atoi(argValue);
-    if ((argValue = argVal(argc, argv, "--fps", "-f")))
+    if ((argValue = argVal(argc, argv, "--fps", "-F")))
         defaults->fps = atoi(argValue);
+    /*
+    if ((argValue = argVal(argc, argv, "--willturn", "-T")))
+    	defaults->willTurn = atoi(argValue);
+    	*/
+    /*
+    if ((argValue = argVal(argc, argv, "--willaccel", "-A")))
+    	defaults->turnRate = atof(argValue);
+    	*/
+    if ((argValue = argVal(argc, argv, "--acceleration", "-a")))
+    	defaults->accel = atof(argValue);
+    if ((argValue = argVal(argc, argv, "--turnrate", "-t")))
+    	defaults->turnRate = atof(argValue);
+    if ((argValue = argVal(argc, argv, "--friction", "-f")))
+    	defaults->friction = atof(argValue);
+    if ((argValue = argVal(argc, argv, "--lives", "-l")))
+    	defaults->lives = atoi(argValue);
+    if ((argValue = argVal(argc, argv, "--timestuck", "-b")))
+    	defaults->timeStuck = atof(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)

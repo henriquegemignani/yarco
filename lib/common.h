@@ -27,7 +27,7 @@
 
 
 #define SQRT_2 1.414213562
-
+#define SQRT_5 2.236067977
 
 #define PERSON_NUM_LIMIT            100
 #define PERSON_NUM_INIT             30
@@ -47,7 +47,12 @@
 #define QUAD_SIZE_X                 100
 #define QUAD_SIZE_Y                 100
 #define DEFAULT_FPS 				30
-#define VERY_SMALL					0.0001
+
+#define DEFAULT_TURNRATE   			(PI/2)
+#define DEFAULT_ACCEL 				50
+#define DEFAULT_FRICTION 			0.5
+#define DEFAULT_TIME_STUCK 			5
+#define DEFAULT_LIVES 				3
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>
@@ -67,7 +72,7 @@ typedef struct Vector velocity;
 typedef struct Vector acceleration;
 /*Afinal, em fisica, posicao, aceleracao, e velocidade podem ser representados por vetores!*/
 
-typedef struct Quad quad;
+typedef struct Quad quadrant;
 
 typedef enum {
     TEX_SQUARE,
@@ -89,9 +94,9 @@ texture createTexture(int red, int blue, int green, texType type);
 vector vectorCreate(double x, double y);
 /* Todas as outras operacoes com vetores sao definidas em "lib/vector.h" */
 
-quad quadSet(int x, int y);
+quadrant quadSet(int x, int y);
 
-int quadNear(quad a, quad b);
+int quadNear(quadrant a, quadrant b);
 
 int signInt(int a);
 int signDouble(double a);

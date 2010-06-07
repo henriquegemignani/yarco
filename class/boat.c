@@ -9,20 +9,15 @@
 #include "../lib/vector.h"
 #include <math.h>
 
-#define MAXTURN (PI/2)
-#define ACCEL 50
 #define MAXSPEED 50
-#define IDLEACCEL 5
-#define FRICTION 0.5
-#define DEFAULT_TIME_STUCK 5
-#define DEFAULT_LIVES 3
 
 struct Extra {
   int isAccel;
   int color;
   double accel;
   double friction;
-  double isTurning;
+  int isTurning;
+  double turnRate;
   velocity prevVel;
   int life;
   int defaultLives;
@@ -30,6 +25,27 @@ struct Extra {
   double defaultTimeStuck;
 } Extra;
 
+static struct defaults{
+	int turnFlag;
+	int accelFlag;
+	int turnValue;
+	int accelValue;
+	double turnRate;
+	double accel;
+	double friction;
+	int lives;
+	double timeStuck;
+} defaults;
+
+
+
+void boatGetDefaults(double turnRate, double accel, double friction , int lives, double timeStuck){
+	defaults.turnRate = turnRate;
+	defaults.accel = accel;
+	defaults.friction = friction;
+	defaults.lives = lives;
+	defaults.timeStuck = timeStuck;
+}
 
 void boatInitializeClass()
 {
@@ -45,12 +61,19 @@ boat boatCreate(texture tex, point pos, velocity vel){
 	boat b;
 	b= objectCreate(TYPE_BOAT, 0/*TODO (boatCreate): fix ID*/, pos, vel, BOAT_RADIUS, tex);
 	AUTOMALLOC(b->extra);
-	b->extra->isAccel=randInt(-1,1);
-	b->extra->accel = ACCEL;
-	b->extra->life = b->extra->defaultLives = DEFAULT_LIVES;
-	b->extra->friction = FRICTION;
-	b->extra->isTurning=randInt(-1,1);
-	b->extra->defaultTimeStuck = DEFAULT_TIME_STUCK;
+	if(!defaults.accelFlag)
+		b->extra->isAccel=randInt(0,2)-1;
+	else
+		b->extra->isAccel = defaults.accelValue;
+	b->extra->accel = defaults.accel;
+	b->extra->life = b->extra->defaultLives = defaults.lives;
+	b->extra->friction = defaults.friction;
+	if(!defaults.turnFlag)
+		b->extra->isTurning=randInt(0,2)-1;
+	else
+		b->extra->isTurning=defaults.turnValue;
+	b->extra->turnRate = defaults.turnRate;
+	b->extra->defaultTimeStuck = defaults.timeStuck;
 	b->extra->color = b->tex.color;
 	return b;
 }
@@ -88,9 +111,9 @@ void boatUpdate(boat b, int keepDir, double timedif){
 		return;
 	}
   if(!keepDir){
-    b->extra->isTurning = randInt(0, 2)-1;
+		b->extra->isTurning = randInt(0, 2)-1;
     /*b->extra->isTurning = 0;*/
-    b->extra->isAccel = randInt(0, 2)-1;
+		b->extra->isAccel = randInt(0, 2)-1;
     /*b->extra->isAccel = 1;*/
   }
   /*
@@ -130,12 +153,12 @@ void boatUpdate(boat b, int keepDir, double timedif){
   
   b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
   b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
-  b->dir += b->extra->isTurning * MAXTURN * timedif;
+  b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
   /*
   if(vectorLength(b->vel)>b->extra->maxSpeed){
   genWarning("Aviso: Velocidade do barco superior a velocidade maxima\n");
   */
-
+  b->quad = quadSet(b->pos.x/QUAD_SIZE_X, b->pos.y/QUAD_SIZE_Y);
 
 }
 
@@ -145,7 +168,7 @@ void boatRemove(boat b){
 }
 
 void boatCollide(boat b, object o, double timediff){
-  double halfCoralSize;
+  double objectSide;
   switch(o->type){
   case TYPE_BOAT: 
 	 	if(vectorLength(o->extra->prevVel) != 0)
@@ -160,33 +183,54 @@ void boatCollide(boat b, object o, double timediff){
 		}	
 	break;
   case TYPE_CORAL:
-   	b->extra->life--;
-   if(b->extra->life == 0){
-		b->extra->life=-1;
-		b->vel.x=0;
-		b->vel.y=0;
-		/*adicoes bem-vindas*/
-		b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
-   }	   
-   else{
-	halfCoralSize = o->radius * SQRT_2/2;
-			if(abs(b->pos.x - o->pos.x)<= halfCoralSize && abs(b->pos.y - o->pos.y)<=(halfCoralSize + b->radius))
+   	/*b->extra->life--;*/
+
+   if(b->extra->life>0){
+	objectSide = o->radius * SQRT_2/2;
+			if(abs(b->pos.x - o->pos.x)<= objectSide && abs(b->pos.y - o->pos.y)<=(objectSide + b->radius)){
 				b->vel.y *=-1;
-			else if(abs(b->pos.y - o->pos.y)<= halfCoralSize && abs(b->pos.x - o->pos.x)<=(halfCoralSize + b->radius))
+				b->extra->life--;
+			}
+			else if(abs(b->pos.y - o->pos.y)<= objectSide && abs(b->pos.x - o->pos.x)<=(objectSide + b->radius)){
 				b->vel.x *= -1;
-			else if(abs(b->pos.x - o->pos.x)>=halfCoralSize && abs(b->pos.y - o->pos.y) >= halfCoralSize){
+				b->extra->life--;
+			}
+			else if(abs(b->pos.x - o->pos.x)>=objectSide && abs(b->pos.y - o->pos.y) >= objectSide){
 				b->vel.x *=-1;
 				b->vel.y *= -1;
+				b->extra->life--;
 			}
-			
+			if(b->extra->life <=0){
+				/*
+					b->extra->life=-1;
+					*/
+					b->vel.x=0;
+					b->vel.y=0;
+					/*adicoes bem-vindas*/
+					b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
+			   }
    }
 	break;
   case TYPE_SHIP:
-	  if((b->pos.x+b->radius) > (o->pos.x-(2*(o->radius/sqrt(5)))) && b->pos.x < (o->pos.x+(2*(o->radius/sqrt(5))) ) )
-	  	b->vel.x*=-1;
-	  if( (b->pos.y+b->radius) > (o->pos.y-(o->radius/sqrt(5))) && b->pos.y < (o->pos.y+(o->pos.y/sqrt(5)))) 
+	  objectSide = o->radius/SQRT_5;
+
+	  /*
+	  if((b->pos.x+b->radius) > (o->pos.x-(2*(o->radius/SQRT_5))) && b->pos.x < (o->pos.x+(2*(o->radius/SQRT_5)) ) )
+	  b->vel.x*=-1;
+	  if( (b->pos.y+b->radius) > (o->pos.y-(o->radius/SQRT_5)) && b->pos.y < (o->pos.y+(o->pos.y/SQRT_5)))
 	  	b->vel.y*=-1;
-	  ; break;
+	  */
+		  if(abs(b->pos.x - o->pos.x)<= 2*objectSide && abs(b->pos.y - o->pos.y)<=(objectSide + b->radius)){
+		  				b->vel.y *=-1;
+		  			}
+		  			else if(abs(b->pos.y - o->pos.y)<= objectSide && abs(b->pos.x - o->pos.x)<=(2*objectSide + b->radius)){
+		  				b->vel.x *= -1;
+		  			}
+		  			else if(abs(b->pos.x - o->pos.x)>=2*objectSide && abs(b->pos.y - o->pos.y) >= objectSide){
+		  				b->vel.x *=-1;
+		  				b->vel.y *= -1;
+		  			}
+		  break;
   case TYPE_PERSON: break;
   default: debugMsg("Colisao de barco com tipo desconhecido!\n")
   }

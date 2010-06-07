@@ -73,10 +73,10 @@ void graphicUpdateObject(object per)
         /*TODO: Ver se funfa. >_> */
         break;
 	case TEX_HORIZONTAL_RETANGLE:
-		aux1.x=per->radius-(2*(per->radius/sqrt(5)));
-		aux1.y=per->radius-(per->radius/sqrt(5));
-		aux2.x=per->radius+(2*(per->radius/sqrt(5)));
-		aux2.y=per->radius+(per->radius/sqrt(5));
+		aux1.x=per->radius-(2*(per->radius/SQRT_5));
+		aux1.y=per->radius-(per->radius/SQRT_5);
+		aux2.x=per->radius+(2*(per->radius/SQRT_5));
+		aux2.y=per->radius+(per->radius/SQRT_5);
 		rectfill(tmp, aux1.x, aux1.y, aux2.x, aux2.y, per->tex.color);
 		break;
     default:

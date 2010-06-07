@@ -21,15 +21,15 @@ vector vectorCreate(double x, double y)
     return v;
 }
 
-quad quadSet(int x, int y)
+quadrant quadSet(int x, int y)
 {
-    quad q;
+    quadrant q;
     q.x = x;
     q.y = y;
     return q;
 }
 
-int quadNear(quad a, quad b)
+int quadNear(quadrant a, quadrant b)
 {
     if (a.x - b.x > 1 || b.x - a.x > 1 || a.y - b.y > 1 || b.y - a.y > 1)
         return 0;

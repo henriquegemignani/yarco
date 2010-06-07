@@ -73,7 +73,7 @@ void personMoveToRandomBorder(person p)
 {
 	do{
 		personGeneratePosAndVelInBorder(configurationGet()->defaultSpeed, &p->pos, &p->vel);
-		p->quadrante = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
+		p->quad = quadSet(p->pos.x/QUAD_SIZE_X, p->pos.y/QUAD_SIZE_Y);
 	} while( objectTableIsObjectColliding(p) );
 }
 
@@ -109,7 +109,7 @@ person personAddNewToTable(double speed)
 }
 
 void personCollide(person per, object other, double timedif) {
-	double halfCoralSize;
+	double objectSide;
 	switch( other->type ) {
 		case TYPE_PERSON:
 			if( vectorLength(other->prevSpeed) != 0 ) {
@@ -123,18 +123,31 @@ void personCollide(person per, object other, double timedif) {
 			}
 			break;
 		case TYPE_SHIP:
+			objectSide = other->radius/SQRT_5;
+			/*
 			if((per->pos.x+per->radius) > (other->pos.x-(2*(other->radius/sqrt(5)))) && per->pos.x < (other->pos.x+(2*(other->radius/sqrt(5)))) )
 				per->vel.x*=-1;
 			if( (per->pos.y+per->radius) > (other->pos.y-(other->radius/sqrt(5))) && per->pos.y < (other->pos.y+(other->pos.y/sqrt(5))) )
 				per->vel.y*=-1;
+				*/
+			if(abs(per->pos.x - other->pos.x)<= 2*objectSide && abs(per->pos.y - other->pos.y)<=(objectSide + per->radius)){
+					  				per->vel.y *=-1;
+					  			}
+					  			else if(abs(per->pos.y - other->pos.y)<= objectSide && abs(per->pos.x - other->pos.x)<=(2*objectSide + per->radius)){
+					  				per->vel.x *= -1;
+					  			}
+					  			else if(abs(per->pos.x - other->pos.x)>=2*objectSide && abs(per->pos.y - other->pos.y) >= objectSide){
+					  				per->vel.x *=-1;
+					  				per->vel.y *= -1;
+					  			}
 			break;
 		case TYPE_CORAL:
-			halfCoralSize = other->radius * SQRT_2/2;
-			if(abs(per->pos.x - other->pos.x)<= halfCoralSize && abs(per->pos.y - other->pos.y)<=(halfCoralSize + per->radius))
+			objectSide = other->radius * SQRT_2/2;
+			if(abs(per->pos.x - other->pos.x)<= objectSide && abs(per->pos.y - other->pos.y)<=(objectSide + per->radius))
 				per->vel.y *=-1;
-			else if(abs(per->pos.y - other->pos.y)<= halfCoralSize && abs(per->pos.x - other->pos.x)<=(halfCoralSize + per->radius))
+			else if(abs(per->pos.y - other->pos.y)<= objectSide && abs(per->pos.x - other->pos.x)<=(objectSide + per->radius))
 				per->vel.x *= -1;
-			else if(abs(per->pos.x - other->pos.x)>=halfCoralSize && abs(per->pos.y - other->pos.y) >= halfCoralSize){
+			else if(abs(per->pos.x - other->pos.x)>= objectSide && abs(per->pos.y - other->pos.y) >= objectSide){
 				per->vel.x *=-1;
 				per->vel.y *= -1;
 			}

@@ -84,7 +84,7 @@ int objectTableAddObject(object obj)
         return ERROR_OBJECT_LIMIT_EXCEEDED;
     if (objectTableIsObjectColliding(obj))
 		return ERROR_OBJECT_IS_COLLIDING;
-	obj->quadrante = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
+	obj->quad = quadSet(obj->pos.x/QUAD_SIZE_X, obj->pos.y/QUAD_SIZE_Y);
     obj->id = ++table->lastID;
     table->list[table->curMax++] = obj;
     return 0;

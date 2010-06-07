@@ -22,7 +22,7 @@ struct Object {
     acceleration acc;
     double dir;
     double radius;
-    quad quadrante;
+    quadrant quad;
     texture tex;
 	extraInfo extra;
 };
@@ -37,7 +37,7 @@ point objectGetPos(object a);
 /*Devolve a velocidade do objeto*/
 double objectGetSpeed(object a);
 
-quad objectGetQuad(object a);
+quadrant objectGetQuad(object a);
 
 /*Devolve o ID do objeto*/
 unsigned int objectGetID(object a);

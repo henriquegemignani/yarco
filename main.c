@@ -22,6 +22,8 @@
 
 #define NUM_PLAYERS 2
 
+void boatGetDefaults(double turnRate, double accel, double friction , int lives, double timeStuck);
+
 /* Devolve o tempo atual em microsegundos.*/
 long timeInMicrosecond()
 {
@@ -58,12 +60,13 @@ int main(int argc, char **argv)
 	coralInitializeClass();
 	boatInitializeClass();
 
+	boatGetDefaults(defaults->turnRate, defaults->accel, defaults->friction, defaults->lives, defaults->timeStuck);
 
     /* Inicializa tabela de objetos */
     table = objectTableGet();
 	
 	players[0] = boatAddNewToTable(0xFE0000);
-	 players[1] = boatAddNewToTable(0x0000FF); 
+	 players[1] = boatAddNewToTable(0x00FEFF);
 	
 	asimov = shipNew( createTexture(randInt(40,200), randInt(40,200), randInt(40,200),
 		TEX_HORIZONTAL_RETANGLE ) );

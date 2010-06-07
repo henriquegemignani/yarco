@@ -18,6 +18,11 @@ struct Configuration {
     int keepSpeed;
     int fps;
     int noSleep;
+    double accel;
+    double friction;
+    double turnRate;
+    int lives;
+    double timeStuck;
 };
 typedef struct Configuration *configuration;
 

@@ -18,7 +18,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
     o->vel = vel;
     o->tex = tex;
     o->acc = vectorCreate(0, 0);
-    o->quadrante =
+    o->quad =
         quadSet((int) (pos.x / QUAD_SIZE_X), (int) (pos.y / QUAD_SIZE_Y));
 	o->extra = NULL;
     return o;
@@ -34,9 +34,9 @@ point objectGetPos(object a)
     return a->pos;
 }
 
-quad objectGetQuad(object a)
+quadrant objectGetQuad(object a)
 {
-    return a->quadrante;
+    return a->quad;
 }
 
 double objectGetSpeed(object a)
@@ -59,7 +59,7 @@ void updateObject(object o, double timedif)
     /*vector aux = vectorPolarToCartesian(o->acc);*/
     o->pos = vectorSum(o->pos, vectorMulDouble(o->vel, timedif));
     /*o->vel = vectorSum(o->vel, vectorMulDouble(aux, timedif));*/
-    o->quadrante =
+    o->quad =
         quadSet((int) (o->pos.x / QUAD_SIZE_X),
                 (int) (o->pos.y / QUAD_SIZE_Y));
 }
