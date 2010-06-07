@@ -63,7 +63,7 @@ void argRead(int argc, char **argv, configuration defaults)
 	       "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
 	       defaults->defaultSpeed, defaults->createRate, defaults->numCorals, defaults->numPeople);
         printf("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
-	       "  -v\t--verbose\t\tFala mais coisas"
+	       "  -v\t--verbose\t\tFala mais coisas\n"
                "  -g\t--nographic\tIgnora parte grafica\n"
                "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
 	       defaults->duration);
