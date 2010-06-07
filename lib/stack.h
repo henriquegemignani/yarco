@@ -16,6 +16,9 @@ EP 1
 STACK.h - header contendo a interface de pilha
 */
 
+#ifndef _STACK_H_
+#define _STACK_H_
+
 typedef struct Cell *card;
 typedef struct Cell **stack;
 /*
@@ -27,3 +30,5 @@ int		stackIsEmpty( stack top ); /* retorna 1 se a pilha estiver vazio, 0 se não
 void	stackPush( void *c, stack top ); /* insere 'c' na pilha */
 void*	stackPop( stack top ); /* retorna o o topo da pilha */
 void    stackFinish( stack top );
+
+#endif /* _STACK_H_ */
