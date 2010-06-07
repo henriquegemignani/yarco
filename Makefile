@@ -1,5 +1,5 @@
 VPATH = ./lib/:./class/
-objects = graphics.o common.o object.o person.o objecttable.o configuration.o class.o ship.o coral.o boat.o vector.o stackll.o
+objects = graphics.o common.o object.o person.o objecttable.o configuration.o class.o ship.o coral.o boat.o vector.o
 objectmain = main.o
 objecttest = tests.o
 CC = gcc
@@ -17,7 +17,7 @@ tests.o :       common.h
 common.o :      common.h common.c
 object.o :      common.h object.h object.c
 person.o :      common.h object.h person.h person.c
-objecttable.o : common.h object.h objecttable.h class.h stack.h objecttable.c
+objecttable.o : common.h object.h objecttable.h class.h objecttable.c
 graphics.o :    common.h object.h objecttable.h graphics.h graphics.c
 configuration.o: common.h configuration.h configuration.c
 class.o :       common.h object.h class.h objecttable.h class.c
@@ -25,7 +25,6 @@ ship.o :		common.h object.h class.h objecttable.h ship.h ship.c
 coral.o :		common.h object.h class.h objecttable.h coral.h coral.c
 boat.o :		common.h object.h class.h objecttable.h boat.h boat.c
 vector.o :		common.h vector.h vector.c
-stackll.o :		stack.h
 
 .PHONY : believe
 believe : 
