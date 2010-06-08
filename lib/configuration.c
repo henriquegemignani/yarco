@@ -34,6 +34,7 @@ configuration configurationInit()
     config->verbose = 0;
     config->numPeople = PERSON_NUM_INIT;
     config->numCorals = CORAL_NUM_INIT;
+    config->seizure = 0;
 
     return config;
 }
@@ -104,6 +105,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->noSleep = 1;
     if (argFind(argc, argv, "--verbose", "-v") || argValue[6])
         defaults->verbose = 1;
+    if(argFind(argc, argv, "--seizure", NULL))
+      defaults->seizure = 1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);

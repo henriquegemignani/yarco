@@ -202,3 +202,10 @@ void objectTableFinish()
             OBJECT_REMOVE(table->list[i]);
     free(table);
 }
+
+void objectTableRandColor(){
+  int i;
+  for(i=0; i<table->curMax; i++)
+    if(table->list[i] != NULL)
+      table->list[i]->tex.color = randInt(0x000000, 0xFFFFFF);
+}

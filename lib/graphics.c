@@ -106,10 +106,13 @@ void graphicUpdateObject(object per)
     destroy_bitmap(tmp);
 }
 
-void graphicUpdate()
+void graphicUpdate(int seizure)
 {
     clear(buffer);
-    rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
+    if(seizure)
+      rectfill(buffer, 0, 0, MAX_X, MAX_Y, randInt(0x000000, 0xFFFFFF));
+    else
+      rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
     objectTableExecute(graphicUpdateObject);
 }
 

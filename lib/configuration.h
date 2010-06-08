@@ -26,6 +26,7 @@ struct Configuration {
     int verbose;
     int numPeople;
     int numCorals;
+  int seizure;
 };
 typedef struct Configuration *configuration;
 

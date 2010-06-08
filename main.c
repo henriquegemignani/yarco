@@ -107,7 +107,9 @@ int main(int argc, char **argv)
         objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
 
         if (defaults->graphic) {
-            graphicUpdate(table);
+	  if(defaults->seizure)
+	    objectTableRandColor();
+	  graphicUpdate(defaults->seizure);
             graphicDraw();
         }
 

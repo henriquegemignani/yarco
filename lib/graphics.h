@@ -17,7 +17,7 @@ typedef struct GraphicEngine *graphicEngine;
 para cada pessoa desenhada.*/
 void graphicInitialize(int mode);
 /*Atualiza os buffers*/
-void graphicUpdate();
+void graphicUpdate(int seizure);
 /*Mostra o que tem que ser mostrado*/
 void graphicDraw();
 /*Libera a memoria da parte grafica*/
