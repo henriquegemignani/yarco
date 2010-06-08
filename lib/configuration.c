@@ -35,6 +35,7 @@ configuration configurationInit()
     config->numPeople = PERSON_NUM_INIT;
     config->numCorals = CORAL_NUM_INIT;
     config->seizure = 0;
+    config->disco = 0;
 
     return config;
 }
@@ -140,6 +141,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->numPeople = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--corals", "-c")))
         defaults->numCorals = atoi(argValue);
+    if ((argValue = argVal(argc, argv, "--disco", "--christmas")))
+      config->disco = atof(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)

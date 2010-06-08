@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     objectTable table;
     double
         timeElapsed = 0,
-        timeDifference = 0, timeSinceLastIteration = 0, newPersonInterval;
+      timeDifference = 0, timeSinceLastIteration = 0, newPersonInterval, discoInterval;
     ship asimov;
     boat players[NUM_PLAYERS];
 
@@ -84,8 +84,10 @@ int main(int argc, char **argv)
             genError("Erro: limite de objetos atingido!\n");
 
     /* Inicializa parte grafica */
-    if (defaults->graphic)
+    if (defaults->graphic){
+      discoInterval = defaults->disco;
         graphicInitialize(WINDOWED_MODE);       /*pode ser FULLSCREEN_MODE */
+    }
 
     i = 0;
     while (timeElapsed < defaults->duration) {
@@ -107,6 +109,13 @@ int main(int argc, char **argv)
         objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
 
         if (defaults->graphic) {
+	  if(defaults->disco > 0){
+	    discoInterval -= timeDifference;
+	    if(discoInterval <=0){
+	      discoInterval = defaults->disco;
+	      objectTableRandColor();
+	    }
+	  }
 	  if(defaults->seizure)
 	    objectTableRandColor();
 	  graphicUpdate(defaults->seizure);

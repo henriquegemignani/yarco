@@ -27,6 +27,7 @@ struct Configuration {
     int numPeople;
     int numCorals;
   int seizure;
+  double disco;
 };
 typedef struct Configuration *configuration;
 
