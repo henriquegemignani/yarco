@@ -25,10 +25,8 @@ struct Object {
     quadrant quad;
     texture tex;
     extraInfo extra;
-	short int toBeRemoved;
+    short int toBeRemoved;
 };
-/*Posicao e velocidade sao dados por coordenadas cartesianas, enquanto a aceleracao e dada por coordenadas polares*/
-
 /*Devolve a textura do objeto*/
 texture objectGetTexture(object a);
 
@@ -38,8 +36,10 @@ point objectGetPos(object a);
 /*Devolve a velocidade do objeto*/
 double objectGetSpeed(object a);
 
+/*Retorna o quadrante do objeto*/
 quadrant objectGetQuad(object a);
 
+/*Atualiza o quadrante do objeto*/
 void objectQuadUpdate(object a);
 
 /*Devolve o ID do objeto*/

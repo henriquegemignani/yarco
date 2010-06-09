@@ -129,20 +129,20 @@ void personCollide(person per, object other, double timedif)
         break;
     case TYPE_CORAL:
         objectSide = other->radius * SQRT_2 / 2;
-        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao*/
+        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao */
         /*Note que nem sempre que uma colisao e detectada algo acontece. Isso ocorre porque e possivel que o circulo
          * de colisao dos dois objetos estejam colidindo sem que os objetos em si estejam*/
-        /*Se estiver batendo por cima ou por baixo*/
+        /*Se estiver batendo por cima ou por baixo */
         if (abs(per->pos.x - other->pos.x) <= objectSide
             && abs(per->pos.y - other->pos.y) <=
             (objectSide + per->radius))
             per->vel.y *= -1;
-        /*Se estiver batendo pela esquerda ou pela direita*/
+        /*Se estiver batendo pela esquerda ou pela direita */
         else if (abs(per->pos.y - other->pos.y) <= objectSide
                  && abs(per->pos.x - other->pos.x) <=
                  (objectSide + per->radius))
             per->vel.x *= -1;
-        /*Se estiver batendo na quina*/
+        /*Se estiver batendo na quina */
         else if (abs(per->pos.x - other->pos.x) >= objectSide
                  && abs(per->pos.y - other->pos.y) >= objectSide) {
             per->vel.x *= -1;
@@ -150,8 +150,8 @@ void personCollide(person per, object other, double timedif)
         }
         break;
     case TYPE_SHIP:
-        objectSide = other->radius / SQRT_5;/*Vide comentarios para colisao com corais. Note tambem que
-        o Asimov e um retangulo inscrito ao circulo de colisao*/
+        objectSide = other->radius / SQRT_5;    /*Vide comentarios para colisao com corais. Note tambem que
+                                                   o Asimov e um retangulo inscrito ao circulo de colisao */
         if (abs(per->pos.x - other->pos.x) <= 2 * objectSide
             && abs(per->pos.y - other->pos.y) <=
             (objectSide + per->radius)) {
@@ -167,7 +167,7 @@ void personCollide(person per, object other, double timedif)
         }
         break;
     case TYPE_BOAT:
-    	objectTableRemoveObject(per);
+        objectTableRemoveObject(per);
         break;
     default:
         genWarning

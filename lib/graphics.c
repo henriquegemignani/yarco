@@ -31,7 +31,7 @@ void graphicInitialize(int mode)
                      SCREEN_SIZE_Y, 0, 0);
 
     buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-    /* floodfill(buffer, 0, 0, SEA_COLOR); */
+    rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
 }
 
 void graphicUpdateObject(object per)
@@ -39,8 +39,6 @@ void graphicUpdateObject(object per)
     BITMAP *tmp = create_bitmap(per->radius * 3, per->radius * 3);
     point aux1, aux2, aux3, p = objectGetPos(per);
     rectfill(tmp, 0, 0, per->radius * 3, per->radius * 3, 0xff00ff);
-    /* TODO (graphicUpdateObject): algo que verifique qual o modo grafico para determinar qual a 
-       cor transparente */
     switch (per->tex.type) {
     case TEX_CIRCLE:
         circlefill(tmp, per->radius, per->radius, per->radius,
@@ -50,30 +48,17 @@ void graphicUpdateObject(object per)
         rectfill(tmp, 0, 0, per->radius * SQRT_2, per->radius * SQRT_2,
                  per->tex.color);
         break;
-        /* a parte dos barcos vai ser punk */
-    case /*TEX_ISOSC_TRIANGLE */ TEX_TRIANGLE:
-        aux1.x =
-            per->radius -
-            (per->radius * cos( /*vectorAngle */ (per->dir)));
-        aux1.y =
-            per->radius -
-            (per->radius * sin( /*vectorAngle */ (per->dir)));
+    case TEX_TRIANGLE:
+        aux1.x = per->radius - (per->radius * cos((per->dir)));
+        aux1.y = per->radius - (per->radius * sin((per->dir)));
         aux2.x =
-            per->radius -
-            (per->radius *
-             cos( /*vectorAngle */ (per->dir) + (4 * PI / 5)));
+            per->radius - (per->radius * cos((per->dir) + (4 * PI / 5)));
         aux2.y =
-            per->radius -
-            (per->radius *
-             sin( /*vectorAngle */ (per->dir) + (4 * PI / 5)));
+            per->radius - (per->radius * sin((per->dir) + (4 * PI / 5)));
         aux3.x =
-            per->radius -
-            (per->radius *
-             cos( /*vectorAngle */ (per->dir) - (4 * PI / 5)));
+            per->radius - (per->radius * cos((per->dir) - (4 * PI / 5)));
         aux3.y =
-            per->radius -
-            (per->radius *
-             sin( /*vectorAngle */ (per->dir) - (4 * PI / 5)));
+            per->radius - (per->radius * sin((per->dir) - (4 * PI / 5)));
         triangle(tmp, aux1.x, aux1.y, aux2.x, aux2.y, aux3.x, aux3.y,
                  per->tex.color);
         /*Codigo abaixo mantido para a posteridade - DO NOT EXCLUAM */
@@ -87,9 +72,6 @@ void graphicUpdateObject(object per)
            per->radius-(per->radius*sin(vectorAngle(per->acc)-(4*PI/5))), 
            per->tex.color);
          */
-        /* rotate_sprite(buffer, tmp, p.x, p.y, per->acc.y / (2 * PI) * 256); */
-        /*OH CEUS  TODO: implementar o giramento de barquinhos */
-        /*TODO: Ver se funfa. >_> */
         break;
     case TEX_HORIZONTAL_RETANGLE:
         aux1.x = per->radius - (2 * (per->radius / SQRT_5));
@@ -100,19 +82,19 @@ void graphicUpdateObject(object per)
         break;
     default:
         /* foto dos desenvolvedores */
+         /*NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
+            genWarning("Aviso: Formato nao reconhecido!\n");
         break;
     }
     draw_sprite(buffer, tmp, p.x - per->radius, p.y - per->radius);
     destroy_bitmap(tmp);
 }
 
-void graphicUpdate(/*int seizure*/)
+
+void graphicUpdate()
 {
     clear(buffer);
-    /*if(seizure)
-      rectfill(buffer, 0, 0, MAX_X, MAX_Y, randInt(0x000000, 0xFFFFFF));
-    else*/
-      rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
+    rectfill(buffer, 0, 0, MAX_X, MAX_Y, SEA_COLOR);
     objectTableExecute(graphicUpdateObject);
 }
 

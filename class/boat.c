@@ -12,19 +12,19 @@
 #define MAXSPEED 50
 
 struct Extra {
-    int isAccel; /*Verifica se esta acelerando, e em qual direcao: 1 para frente, -1 para tras e 0 caso nao acelere*/
-    int color;   /*Cor usual do bote - guardado uma vez que boat->tex.color nao e constante*/
-    double accel; /*Aceleracao do bote, seja para frente ou para tras*/
-    double friction; /*Desaceleracao devida ao atrito*/
-    int isTurning;  /*Verifica se esta virando, e para qual lado -  -1: sentido horario, 1: sentido anti-horario*/
-    double turnRate; /*Quanto o bote pode virar em um segundo, em radianos*/
-    velocity prevVel; /*Velocidade anterior, para colisoes com outros botes*/
-    int life; /*Quantas vezes ele pode bater num coral antes de encalhar
-    Ja que a chance de encalhar e arbitraria, definimos como 0, se bateu um numero de vezes menor
-    que o numero de vidas, e 1 caso contrario.*/
-    int defaultLives; /*Numero padrao de vidas*/
-    double timeStuckLeft; /*Quanto tempo falta para o barquinho encalhado dar respawn*/
-    double defaultTimeStuck; /*Tempo que ele demora para dar respawn apos encalhar*/
+    int isAccel;                /*Verifica se esta acelerando, e em qual direcao: 1 para frente, -1 para tras e 0 caso nao acelere */
+    int color;                  /*Cor usual do bote - guardado uma vez que boat->tex.color nao e constante */
+    double accel;               /*Aceleracao do bote, seja para frente ou para tras */
+    double friction;            /*Desaceleracao devida ao atrito */
+    int isTurning;              /*Verifica se esta virando, e para qual lado -  -1: sentido horario, 1: sentido anti-horario */
+    double turnRate;            /*Quanto o bote pode virar em um segundo, em radianos */
+    velocity prevVel;           /*Velocidade anterior, para colisoes com outros botes */
+    int life;                   /*Quantas vezes ele pode bater num coral antes de encalhar
+                                   Ja que a chance de encalhar e arbitraria, definimos como 0, se bateu um numero de vezes menor
+                                   que o numero de vidas, e 1 caso contrario. */
+    int defaultLives;           /*Numero padrao de vidas */
+    double timeStuckLeft;       /*Quanto tempo falta para o barquinho encalhado dar respawn */
+    double defaultTimeStuck;    /*Tempo que ele demora para dar respawn apos encalhar */
 } Extra;
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -85,8 +85,7 @@ void boatInitializeClass()
 boat boatCreate(texture tex, point pos, velocity vel)
 {
     boat b;
-    b = objectCreate(TYPE_BOAT, 0, pos,
-                     vel, BOAT_RADIUS, tex);
+    b = objectCreate(TYPE_BOAT, 0, pos, vel, BOAT_RADIUS, tex);
     AUTOMALLOC(b->extra);
     b->extra->accel = boatDefaults.accel;
     b->extra->life = b->extra->defaultLives = boatDefaults.lives;
@@ -99,20 +98,20 @@ boat boatCreate(texture tex, point pos, velocity vel)
 
 void boatUpdate(boat b, int keepDir, double timedif)
 {
-    if (b->extra->life <= 0) { /*Se o barco esta encalhado*/
+    if (b->extra->life <= 0) {  /*Se o barco esta encalhado */
         b->extra->timeStuckLeft -= timedif;
-        b->tex.color = b->extra->color / 2;/*Torna o bote mais escuro - note que
-        os valores para R e G sempre sao pares para lidar com isso*/
+        b->tex.color = b->extra->color / 2;     /*Torna o bote mais escuro - note que
+                                                   os valores para R e G sempre sao pares para lidar com isso */
         if (b->extra->timeStuckLeft <= 0) {
             b->extra->life = b->extra->defaultLives;
             boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
-            b->tex.color = b->extra->color; /*Retornando a cor original,
-            ja que o bote muda de cor quando encalhado*/
+            b->tex.color = b->extra->color;     /*Retornando a cor original,
+                                                   ja que o bote muda de cor quando encalhado */
         }
         return;
     }
     if (!keepDir) {
-        b->extra->isTurning = randInt(0, 2) - 1; /*Feito dessa forma uma vez que randInt buga para valores negativos*/
+        b->extra->isTurning = randInt(0, 2) - 1;        /*Feito dessa forma uma vez que randInt buga para valores negativos */
         b->extra->isAccel = randInt(0, 2) - 1;
     }
     if (b->extra->isAccel) {
@@ -137,7 +136,7 @@ void boatRemove(boat b)
 
 void boatCollide(boat b, object o, double timediff)
 {
-    double objectSide; /*Variavel que guarda o tamanho de um dos lados do outro objeto, caso seja o Asimov ou um coral*/
+    double objectSide;          /*Variavel que guarda o tamanho de um dos lados do outro objeto, caso seja o Asimov ou um coral */
     switch (o->type) {
     case TYPE_BOAT:
         if (vectorLength(o->extra->prevVel) != 0) {
@@ -150,28 +149,28 @@ void boatCollide(boat b, object o, double timediff)
         break;
     case TYPE_CORAL:
         if (b->extra->life > 0) {
-            objectSide = o->radius * SQRT_2 / 2; /*Uma vez que coral e um quadrado inscrito ao circulo de colisao*/
+            objectSide = o->radius * SQRT_2 / 2;        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao */
             /*Note que nem sempre que uma colisao e detectada algo acontece. Isso ocorre porque e possivel que o circulo
              * de colisao dos dois objetos estejam colidindo sem que os objetos em si estejam*/
-            /*Se estiver batendo por cima ou por baixo*/
+            /*Se estiver batendo por cima ou por baixo */
             if (abs(b->pos.x - o->pos.x) <= objectSide
                 && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
                 b->vel.y *= -1;
                 b->extra->life--;
-                /*Se estiver batendo pela direita ou esquerda*/
+                /*Se estiver batendo pela direita ou esquerda */
             } else if (abs(b->pos.y - o->pos.y) <= objectSide
                        && abs(b->pos.x - o->pos.x) <=
                        (objectSide + b->radius)) {
                 b->vel.x *= -1;
                 b->extra->life--;
-                /*Se estiver batendo na quina*/
+                /*Se estiver batendo na quina */
             } else if (abs(b->pos.x - o->pos.x) >= objectSide
                        && abs(b->pos.y - o->pos.y) >= objectSide) {
                 b->vel.x *= -1;
                 b->vel.y *= -1;
                 b->extra->life--;
             }
-            /*Se apos essa colisao, encalhou*/
+            /*Se apos essa colisao, encalhou */
             if (b->extra->life <= 0) {
                 b->vel.x = 0;
                 b->vel.y = 0;
@@ -180,9 +179,9 @@ void boatCollide(boat b, object o, double timediff)
         }
         break;
     case TYPE_SHIP:
-        objectSide = o->radius / SQRT_5; /*Note que o retangulo e um retangulo
-        inscrito ao circulo de colisao*/
-        /*Vide comentarios para colisao com coral*/
+        objectSide = o->radius / SQRT_5;        /*Note que o retangulo e um retangulo
+                                                   inscrito ao circulo de colisao */
+        /*Vide comentarios para colisao com coral */
         if (abs(b->pos.x - o->pos.x) <= 2 * objectSide
             && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
             b->vel.y *= -1;
@@ -207,7 +206,7 @@ void boatOB(boat b)
 {
     if (b->pos.x < 0 || b->pos.x > MAX_X) {
         b->vel.x = -b->vel.x;
-        /*Coloca o bote de volta na borda*/
+        /*Coloca o bote de volta na borda */
         b->pos.x = (b->pos.x < 0 ? 0 : MAX_X);
     }
     if (b->pos.y < 0 || b->pos.y > MAX_Y) {

@@ -37,7 +37,8 @@ int main(int argc, char **argv)
     objectTable table;
     double
         timeElapsed = 0,
-      timeDifference = 0, timeSinceLastIteration = 0, newPersonInterval, discoInterval/*...?*/;
+        timeDifference = 0, timeSinceLastIteration =
+        0, newPersonInterval, discoInterval /*...? */ ;
     ship asimov;
     boat players[NUM_PLAYERS];
 
@@ -48,7 +49,6 @@ int main(int argc, char **argv)
     argRead(argc, argv, defaults);
 
     srand(defaults->randomSeed);
-    /* TODO: aqui fica o critério. MUST CHANGE */
     /* Incializa as classes. */
     classInitialize();
     personInitializeClass();
@@ -81,8 +81,8 @@ int main(int argc, char **argv)
             genError("Erro: limite de objetos atingido!\n");
 
     /* Inicializa parte grafica */
-    if (defaults->graphic){
-      discoInterval = defaults->disco;
+    if (defaults->graphic) {
+        discoInterval = defaults->disco;
         graphicInitialize(WINDOWED_MODE);       /*pode ser FULLSCREEN_MODE */
     }
 
@@ -93,27 +93,24 @@ int main(int argc, char **argv)
 
         frameTimeStart = timeInMicrosecond();
 
-        if ((newPersonInterval -= timeDifference) < 0 && defaults->createRate>0) {
+        if ((newPersonInterval -= timeDifference) < 0
+            && defaults->createRate > 0) {
             newPersonInterval +=
                 randomizeAround(defaults->createRate, STD_DIST);
             personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
-            /* TODO(newPersonInterval): verificar se ja tem o numero de pessoas desejadas.
-               Atualmente ta tentando criar e ignora se teve erro. */
-            /* TODO(newPersonInterval): implementar limite de pessoas. Atualmente tem mais pessoas
-               ate atingir o limite de objetos. */
         }
 
         objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
 
         if (defaults->graphic) {
-	  if(defaults->disco > 0){
-	    discoInterval -= timeDifference;
-	    if(discoInterval <=0){
-	      discoInterval = defaults->disco;
-	      objectTableRandColor();
-	    }
-	  }
-	  graphicUpdate();
+            if (defaults->disco > 0) {
+                discoInterval -= timeDifference;
+                if (discoInterval <= 0) {
+                    discoInterval = defaults->disco;
+                    objectTableRandColor();
+                }
+            }
+            graphicUpdate();
             graphicDraw();
         }
 
@@ -139,9 +136,8 @@ int main(int argc, char **argv)
             if (sleepTime.tv_nsec > 0) {
                 if (nanosleep(&sleepTime, &sleepErrorRemaining)) {
                     /* Ocorreu algum erro no nanoSleep. */
-                    /* TODO: tratar erros no nanosleep */
-                    printf("sleepTime:\n\tsec: %ld\nnsec: %ld\n",
-                           sleepTime.tv_sec, sleepTime.tv_nsec);
+                    fprintf(stderr, "sleepTime:\n\tsec: %ld\nnsec: %ld\n",
+                            sleepTime.tv_sec, sleepTime.tv_nsec);
                     genError("Erro: nanosleep devolveu nao-zero.\n");
                 }
             }

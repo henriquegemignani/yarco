@@ -21,7 +21,7 @@ object objectCreate(objectType type, unsigned int id, point pos,
     o->quad =
         quadSet((int) (pos.x / QUAD_SIZE_X), (int) (pos.y / QUAD_SIZE_Y));
     o->extra = NULL;
-	o->toBeRemoved = 0;
+    o->toBeRemoved = 0;
     return o;
 }
 
@@ -40,8 +40,11 @@ quadrant objectGetQuad(object a)
     return a->quad;
 }
 
-void objectQuadUpdate(object a){
-	a->quad = quadSet((int)(a->pos.x/QUAD_SIZE_X), (int)(a->pos.y/QUAD_SIZE_Y));
+void objectQuadUpdate(object a)
+{
+    a->quad =
+        quadSet((int) (a->pos.x / QUAD_SIZE_X),
+                (int) (a->pos.y / QUAD_SIZE_Y));
 }
 
 double objectGetSpeed(object a)
@@ -63,9 +66,6 @@ void updateObject(object o, double timedif)
 {
     o->pos = vectorSum(o->pos, vectorMulDouble(o->vel, timedif));
     objectQuadUpdate(o);
-    /*o->quad =
-        quadSet((int) (o->pos.x / QUAD_SIZE_X),
-                (int) (o->pos.y / QUAD_SIZE_Y));*/
 }
 
 int objectCompare(object r, object s)

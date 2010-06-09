@@ -58,11 +58,11 @@ objectTable objectTableInit()
 void objectTableRemovePending()
 {
     int i;
-	for (i = 0; i < table->curMax; i++)
-		if (table->list[i] != NULL && table->list[i]->toBeRemoved == 1) {
-			OBJECT_REMOVE(table->list[i]);
-			table->list[i] = NULL;
-		}
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL && table->list[i]->toBeRemoved == 1) {
+            OBJECT_REMOVE(table->list[i]);
+            table->list[i] = NULL;
+        }
 }
 
 /* Funcoes publicas. */
@@ -76,14 +76,11 @@ objectTable objectTableGet()
 
 int objectTableAddObject(object obj)
 {
-	objectQuadUpdate(obj);
+    objectQuadUpdate(obj);
     if (objectTableFilled())
         return ERROR_OBJECT_LIMIT_EXCEEDED;
     if (objectTableIsObjectColliding(obj))
         return ERROR_OBJECT_IS_COLLIDING;
-    /*
-    obj->quad =
-        quadSet(obj->pos.x / QUAD_SIZE_X, obj->pos.y / QUAD_SIZE_Y);*/
     obj->id = ++table->lastID;
     table->list[table->curMax++] = obj;
     return 0;
@@ -129,8 +126,8 @@ void objectTableUpdate(double timedif, int newIteraction)
             if (quadNear
                 (objectGetQuad(table->list[i]),
                  objectGetQuad(table->list[j]))
-				 && table->list[i]->toBeRemoved == 0
-				 && table->list[j]->toBeRemoved == 0)
+                && table->list[i]->toBeRemoved == 0
+                && table->list[j]->toBeRemoved == 0)
                 if (objectIsColliding(table->list[i], table->list[j])) {
                     OBJECT_COLLIDE(table->list[i], table->list[j],
                                    timedif);
@@ -205,9 +202,10 @@ void objectTableFinish()
     free(table);
 }
 
-void objectTableRandColor(){
-  int i;
-  for(i=0; i<table->curMax; i++)
-    if(table->list[i] != NULL)
-      table->list[i]->tex.color = randInt(0x000000, 0xFFFFFF);
+void objectTableRandColor()
+{
+    int i;
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            table->list[i]->tex.color = randInt(0x000000, 0xFFFFFF);
 }

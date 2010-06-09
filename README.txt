@@ -9,39 +9,51 @@ Renan Teruo Carneiro                nUSP: 6514157
 
 1) O programa
 
-O programa, no momento chamado "Yarco" por motivos desconhecidos, atualmente apenas imprime os
-passageiros na tela conforme eles esariam a cada segundo. # representa um passageiro enquanto
-! representa dois ou mais passageiros, muito provavelmente colidindo. Ele pode ser configurado
-através de diversos parâmetros da linha de comando.
-Para mais informações, execute-o com a opçao -h ou --help.
+Bem vindo à segunda segunda iteração do projeto! Nessa etapa, o ainda misteriosamente nomeado Yarco
+é capaz de algo próximo de uma simulação do oceano. Assim como na iteração anterior, o programa po-
+de ser configurado da maneira que mais lhe agradar via parâmetors da linha de comando. Consulte a 
+opção -h para mais informações. 
 
-É possível criar também um executável de testes, com algumas opções pré-definidas. Não tivemos
-tempo de fazer algo completamente customizável, embora isso possivelmente se de pelo fato de essa
-ideia sequer ter sido discutida. Ele aceita os mesmos paâmetros que o executável principal, embora
-algumas das opções possam ignorar o valor fornecido pelo usuário.
+Quanto ao funcionamento do programa, agora temos botes, passageiros, corais e a R.M.S. Asimov. Cada
+objeto é representado por uma forma geométrica simples. A seguir, mais detalhes sobre cada um deles:
+
+1.1 - Os passageiros
+Passageiros são representados por simpáticas bolinhas de cores aleatórias que flutuam a esmo no
+oceano. Ao saírem da tela, eles aparecem em outra borda, e ao colidirem com qualquer coisa que não
+seja um bote, eles simplesmente quicam. Numa colisão com um bote, eles são alegremente exter- digo,
+resgatados e saem do jogo.
+
+1.2 - Os corais
+Corais são o obstáculo básico, atrapalhando a vida de todos os botes bem-intencionados. São repre-
+sentados por quadrados de cores e tamanho aleatórios, e, na parte jogável, provavelmente sempre es-
+tarão no meio do caminho, mesmo sendo absolutamente imóveis.
+
+1.3 - A R.M.S. Asimov
+Enquanto estiver rodando a simulação física, procure por um grande retângulo cinza. Esse é o glori-
+oso navio, a R.M.S. Asimov. Por enquanto, ela só fica parada e não faz nada além de agir como uma
+parede, mas será mais importante no futuro.
+
+1.4 - Os botes
+Os nossos queridos botes são representados por triangulozinhos, um vermelho e um azul. Eles surgem
+nas bordas da tela e são capazes de acelerar para frente e para trás, em relação à direção na qual
+estão apontando, e podem virar quase livremente. Eles simplesmente quicam quando batem nas bordas
+da tela ou na R.M.S. Asimov, e geralmente, simplesmente quicam nos corais. Exceto pela terceira co-
+lisão. Nesse caso, eles ficam encalhados por um tempo, até ressurgirem numa das bordas da tela, in-
+tactos, como se nada tivesse acontecido.
 
 
 2) Gerando o programa e outros comandos do Makefile
 
-Para gerar o programa executável principal, basta um simples "make", ou "make yarco" caso queira
-ser criterioso. O arquivo de testes pode ser gerado a partir do comando "make yarco.test".
+Como de sempre, para gerar o programa usualmente, um simples make basta. Make clean é para aqueles
+que se cansaram de ver as coisas boiando e querem se livrar de todos os .o e de qualquer coisa cujo
+nome comece com yarco na pasta corrente. Make moreclean remove também todos os arquivos de backup,
+e make realclean remove, além desses, também qualquer cosia que estivesse pronta a ser publicada.
 
-Existem os comando "make clean", "make moreclean" e "make realclean". O comando "make clean" remove
-todos os .o e os executáveis, e qualquer outro arquivo infeliz cujo nome comece com yarco. "make
-moreclean" também remove quaisquer arquivos de backup presentes. Finalmente, "make realclean" remove
-também a pasta publish, criada pelos comando "make publish" e "make publish-source", caso ela exista.
+O make nuke foi abortado, uma vez que rm -rf ./ pode ser perigoso nas mãos erradas. E além disso,
+não queríamos ser acusados de terrorismo nuclear.
 
-Os comandos "make publish" e "make publish-source" servem para criar automaticamente pacotes prontos
-para a distribuição desse programa. "make publish" gera um pacote com o executável pronto para
-execução, enquanto "make publish-source" gera o pacote com o código fonte do programa, além deste 
-Readme. (o pacote entregue foi gerado com esse comando)
+Make publish é útil para aqueles que quiserem, por algum motivo, redistribuir o executável, enquan-
+to make publish-source gera um pacote com tudo necessário para compilar, editar e redistribuir esse
+programa. Bom, exceto o allegro e o gcc, mas esses são utilitários mais facilmente acessíveis.
 
-"make TODO" é algo para os desenvolvedores saberem o que tem que fazer sem olhar arquivo por arquivo.
-Você pode tentar, mas não deve fazer muita coisa. Além de criar um autoTODO.txt vazio. Eu espero.
-
-Nesse pacote deve estar incluso o Makefile. Se não estiver, culpe o Haruki. Sim, ele é de outro
-grupo, mas isso é um pequeno detalhe.
-
-"make nuke" ainda não existe, está em processo de enriquecimento de urânio. Estará pronto em breve.
-Ainda não temos suporte ao preparo de sanduíches nem ao faz-de-conta. Também não foram implementados
-os poderes de vaca.
+E, só pra reafirmar, não fazemos sanduíches nem bolos.

@@ -101,8 +101,8 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->noSleep = 1;
     if (argFind(argc, argv, "--verbose", "-v") || argValue[5])
         defaults->verbose = 1;
-    if(argFind(argc, argv, "--christmas", NULL))
-      defaults->disco = 0.1;
+    if (argFind(argc, argv, "--christmas", NULL))
+        defaults->disco = 0.1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
@@ -129,7 +129,7 @@ void argRead(int argc, char **argv, configuration defaults)
     if ((argValue = argVal(argc, argv, "--corals", "-c")))
         defaults->numCorals = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--disco", NULL)))
-      config->disco = atof(argValue);
+        config->disco = atof(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)
