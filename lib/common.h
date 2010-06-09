@@ -20,12 +20,7 @@
 /* Constantes do programa */
 #define PI 3.141592654
 
-/*Constante abaixo precalculada para economizar processamento. Serve para deixar o
- *circulo de colisao e o quadrado desenhado com a mesma area, para tentar reduzir a diferenca
- *entre o circulo de colisao e o desenho do quadrado*/
-/*#define SQRT_PI 1.772453851 */
-
-
+/* Valores precalculados para economizar um pouco de processamento, ja que sao usados com certa frequencia*/
 #define SQRT_2 1.414213562
 #define SQRT_5 2.236067977
 
@@ -60,7 +55,7 @@
 struct Vector {
     double x, y;
 };
-/* Se em coordenadas polares, x representa o raio enquanto e y o angulo. */
+
 struct Quad {
     int x, y;
 };
@@ -94,10 +89,13 @@ texture createTexture(int red, int blue, int green, texType type);
 vector vectorCreate(double x, double y);
 /* Todas as outras operacoes com vetores sao definidas em "lib/vector.h" */
 
+/*Seta um quadrante*/
 quadrant quadSet(int x, int y);
 
+/*Verifica se o quadrante b esta num dos 8 quadrantes adjances ao quadrante a*/
 int quadNear(quadrant a, quadrant b);
 
+/*Funcoes que retornam o sinal de um numero*/
 int signInt(int a);
 int signDouble(double a);
 
@@ -110,11 +108,13 @@ int randInt(int min, int max);
 double randDouble(double min, double max);
 /*Aleatoriza o valor dado em no maximo value * +-distance*/
 double randomizeAround(double value, double distance);
-
+/*Gera um ponto na borda da tela*/
 void generatePosInBorder(point * pos, double *dir);
 
 /*Imprime mensagem de erro, sai do programa*/
 void genError(char *msg);
+
+/*Imprime uma mesngagem de aviso, continua no programa*/
 void genWarning(char *msg);
 
 

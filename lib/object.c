@@ -40,6 +40,10 @@ quadrant objectGetQuad(object a)
     return a->quad;
 }
 
+void objectQuadUpdate(object a){
+	a->quad = quadSet((int)(a->pos.x/QUAD_SIZE_X), (int)(a->pos.y/QUAD_SIZE_Y));
+}
+
 double objectGetSpeed(object a)
 {
     return vectorLength(a->vel);
@@ -57,12 +61,11 @@ void objectSetID(object a, unsigned int id)
 
 void updateObject(object o, double timedif)
 {
-    /*vector aux = vectorPolarToCartesian(o->acc); */
     o->pos = vectorSum(o->pos, vectorMulDouble(o->vel, timedif));
-    /*o->vel = vectorSum(o->vel, vectorMulDouble(aux, timedif)); */
-    o->quad =
+    objectQuadUpdate(o);
+    /*o->quad =
         quadSet((int) (o->pos.x / QUAD_SIZE_X),
-                (int) (o->pos.y / QUAD_SIZE_Y));
+                (int) (o->pos.y / QUAD_SIZE_Y));*/
 }
 
 int objectCompare(object r, object s)
@@ -90,17 +93,8 @@ double objectGetDistFrom(object o, point p)
 
 int objectIsColliding(object a, object b)
 {
-    /* point centerOfA, centerOfB;
-       centerOfA = a->pos; vectorCreate(a->pos.x+a->radius,a->pos.y+a->radius);
-       centerOfB = b->pos; vectorCreate(b->pos.x+b->radius,b->pos.y+b->radius);
-       return (distanceBetweenPoints(centerOfA, centerOfB) <
-       (a->radius + b->radius));
-       Serio, wtf? o que estava acima podia estar errado de tantos jeitos diferentes que eu nem vou comentar. Se nao estava quebrado, e porque tudo tinha o mesmo raio
-       if((a->tex.type == TEX_CIRCLE || a->tex.type == TEX_TRIANGLE) && (b->tex.type == TEX_CIRCLE || b->tex.type == TEX_TRIANGLE)) */
-    /* TODO(objectIsColliding): limpar excesso de codigo comentado bizarro */
     return (distanceBetweenPoints(a->pos, b->pos) <
             (a->radius + b->radius));
-
 }
 
 void objectDump(object a)

@@ -40,6 +40,8 @@ double objectGetSpeed(object a);
 
 quadrant objectGetQuad(object a);
 
+void objectQuadUpdate(object a);
+
 /*Devolve o ID do objeto*/
 unsigned int objectGetID(object a);
 

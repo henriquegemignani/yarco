@@ -22,9 +22,6 @@
 
 #define NUM_PLAYERS 2
 
-void boatGetDefaults(double turnRate, double accel, double friction,
-                     int lives, double timeStuck);
-
 /* Devolve o tempo atual em microsegundos.*/
 long timeInMicrosecond()
 {
@@ -40,7 +37,7 @@ int main(int argc, char **argv)
     objectTable table;
     double
         timeElapsed = 0,
-      timeDifference = 0, timeSinceLastIteration = 0, newPersonInterval, discoInterval;
+      timeDifference = 0, timeSinceLastIteration = 0, newPersonInterval, discoInterval/*...?*/;
     ship asimov;
     boat players[NUM_PLAYERS];
 
@@ -51,7 +48,7 @@ int main(int argc, char **argv)
     argRead(argc, argv, defaults);
 
     srand(defaults->randomSeed);
-
+    /* TODO: aqui fica o critério. MUST CHANGE */
     /* Incializa as classes. */
     classInitialize();
     personInitializeClass();
@@ -116,9 +113,7 @@ int main(int argc, char **argv)
 	      objectTableRandColor();
 	    }
 	  }
-	  if(defaults->seizure)
-	    objectTableRandColor();
-	  graphicUpdate(defaults->seizure);
+	  graphicUpdate();
             graphicDraw();
         }
 

@@ -14,7 +14,6 @@ struct Configuration {
     int pause;
     int graphic;
     int randomSeed;
-    int uniqueGraphic;
     int keepSpeed;
     int fps;
     int noSleep;
@@ -26,7 +25,6 @@ struct Configuration {
     int verbose;
     int numPeople;
     int numCorals;
-  int seizure;
   double disco;
 };
 typedef struct Configuration *configuration;

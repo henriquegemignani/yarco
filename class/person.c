@@ -72,7 +72,7 @@ void personMoveToRandomBorder(person p)
     do {
         personGeneratePosAndVelInBorder(configurationGet()->defaultSpeed,
                                         &p->pos, &p->vel);
-        p->quad = quadSet(p->pos.x / QUAD_SIZE_X, p->pos.y / QUAD_SIZE_Y);
+        objectQuadUpdate(p);
     } while (objectTableIsObjectColliding(p));
 }
 
@@ -127,14 +127,31 @@ void personCollide(person per, object other, double timedif)
             per->vel = other->vel;
         }
         break;
+    case TYPE_CORAL:
+        objectSide = other->radius * SQRT_2 / 2;
+        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao*/
+        /*Note que nem sempre que uma colisao e detectada algo acontece. Isso ocorre porque e possivel que o circulo
+         * de colisao dos dois objetos estejam colidindo sem que os objetos em si estejam*/
+        /*Se estiver batendo por cima ou por baixo*/
+        if (abs(per->pos.x - other->pos.x) <= objectSide
+            && abs(per->pos.y - other->pos.y) <=
+            (objectSide + per->radius))
+            per->vel.y *= -1;
+        /*Se estiver batendo pela esquerda ou pela direita*/
+        else if (abs(per->pos.y - other->pos.y) <= objectSide
+                 && abs(per->pos.x - other->pos.x) <=
+                 (objectSide + per->radius))
+            per->vel.x *= -1;
+        /*Se estiver batendo na quina*/
+        else if (abs(per->pos.x - other->pos.x) >= objectSide
+                 && abs(per->pos.y - other->pos.y) >= objectSide) {
+            per->vel.x *= -1;
+            per->vel.y *= -1;
+        }
+        break;
     case TYPE_SHIP:
-        objectSide = other->radius / SQRT_5;
-        /*
-           if((per->pos.x+per->radius) > (other->pos.x-(2*(other->radius/sqrt(5)))) && per->pos.x < (other->pos.x+(2*(other->radius/sqrt(5)))) )
-           per->vel.x*=-1;
-           if( (per->pos.y+per->radius) > (other->pos.y-(other->radius/sqrt(5))) && per->pos.y < (other->pos.y+(other->pos.y/sqrt(5))) )
-           per->vel.y*=-1;
-         */
+        objectSide = other->radius / SQRT_5;/*Vide comentarios para colisao com corais. Note tambem que
+        o Asimov e um retangulo inscrito ao circulo de colisao*/
         if (abs(per->pos.x - other->pos.x) <= 2 * objectSide
             && abs(per->pos.y - other->pos.y) <=
             (objectSide + per->radius)) {
@@ -149,28 +166,8 @@ void personCollide(person per, object other, double timedif)
             per->vel.y *= -1;
         }
         break;
-    case TYPE_CORAL:
-        objectSide = other->radius * SQRT_2 / 2;
-        if (abs(per->pos.x - other->pos.x) <= objectSide
-            && abs(per->pos.y - other->pos.y) <=
-            (objectSide + per->radius))
-            per->vel.y *= -1;
-        else if (abs(per->pos.y - other->pos.y) <= objectSide
-                 && abs(per->pos.x - other->pos.x) <=
-                 (objectSide + per->radius))
-            per->vel.x *= -1;
-        else if (abs(per->pos.x - other->pos.x) >= objectSide
-                 && abs(per->pos.y - other->pos.y) >= objectSide) {
-            per->vel.x *= -1;
-            per->vel.y *= -1;
-        }
-        break;
     case TYPE_BOAT:
-        /* TODO(personCollide): mandar objectTable remover essa pessoa. Problema: consiguir a table. */
-        /* personAddNewToTable(vectorLength(per->vel)); */
-        objectTableRemoveObject(per);
-        debugMsg("OH NEOS PERSON COLIDIU COM BARCO!!");
-
+    	objectTableRemoveObject(per);
         break;
     default:
         genWarning

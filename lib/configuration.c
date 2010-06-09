@@ -23,7 +23,6 @@ configuration configurationInit()
     config->pause = 0;
     config->graphic = 1;
     config->randomSeed = time(NULL);
-    config->uniqueGraphic = 0;
     config->keepSpeed = 0;
     config->fps = DEFAULT_FPS;
     config->accel = DEFAULT_ACCEL;
@@ -34,7 +33,6 @@ configuration configurationInit()
     config->verbose = 0;
     config->numPeople = PERSON_NUM_INIT;
     config->numCorals = CORAL_NUM_INIT;
-    config->seizure = 0;
     config->disco = 0;
 
     return config;
@@ -76,7 +74,6 @@ void argRead(int argc, char **argv, configuration defaults)
             ("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
              "  -P\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
              "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
-             "  -u\t--unique\t\tUsa todos os caracteres entre 'A' e 'z' para passageiros.\n"
              "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
              "  -n\t--nosleep\t\tIgnora o sleep, rodando o maximo de frames por segundo possivel.\n");
         printf
@@ -91,23 +88,21 @@ void argRead(int argc, char **argv, configuration defaults)
            ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dPguknv");
+    argValue = argShortFlags(argc, argv, "dPgknv");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-P") || argValue[1])
         defaults->pause = 1;
     if (argFind(argc, argv, "--nographic", "-g") || argValue[2])
         defaults->graphic = 0;
-    if (argFind(argc, argv, "--unique", "-u") || argValue[3])
-        defaults->uniqueGraphic = 1;
-    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[4])
+    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[3])
         defaults->keepSpeed = 1;
-    if (argFind(argc, argv, "--nosleep", "-n") || argValue[5])
+    if (argFind(argc, argv, "--nosleep", "-n") || argValue[4])
         defaults->noSleep = 1;
-    if (argFind(argc, argv, "--verbose", "-v") || argValue[6])
+    if (argFind(argc, argv, "--verbose", "-v") || argValue[5])
         defaults->verbose = 1;
-    if(argFind(argc, argv, "--seizure", NULL))
-      defaults->seizure = 1;
+    if(argFind(argc, argv, "--christmas", NULL))
+      defaults->disco = 0.1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
         defaults->createRate = atof(argValue);
@@ -119,14 +114,6 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->randomSeed = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--fps", "-F")))
         defaults->fps = atoi(argValue);
-    /*
-       if ((argValue = argVal(argc, argv, "--willturn", "-T")))
-       defaults->willTurn = atoi(argValue);
-     */
-    /*
-       if ((argValue = argVal(argc, argv, "--willaccel", "-A")))
-       defaults->turnRate = atof(argValue);
-     */
     if ((argValue = argVal(argc, argv, "--acceleration", "-a")))
         defaults->accel = atof(argValue);
     if ((argValue = argVal(argc, argv, "--turnrate", "-t")))
@@ -141,7 +128,7 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->numPeople = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--corals", "-c")))
         defaults->numCorals = atoi(argValue);
-    if ((argValue = argVal(argc, argv, "--disco", "--christmas")))
+    if ((argValue = argVal(argc, argv, "--disco", NULL)))
       config->disco = atof(argValue);
 }
 

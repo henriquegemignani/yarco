@@ -51,6 +51,7 @@ void objectTableDump();
 /* Chama OBJECT_REMOVE para cada objeto da tabela, e depois destroi a tabela. */
 void objectTableFinish();
 
+/*...?*/
 void objectTableRandColor();
 
 #endif                          /* _OBJECTTABLE_H_ */

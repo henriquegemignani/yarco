@@ -16,7 +16,7 @@ static objectTable table = NULL;
 
 /* Funcoes privadas. */
 int particao(object * vet, int ini, int fim)
-{                               /* TODO: aqui fica o critério. MUST CHANGE */
+{
     int i, j;
     object tmp;
 
@@ -38,7 +38,7 @@ int particao(object * vet, int ini, int fim)
 
 
 void quicksort(object * vet, int ini, int fim)
-{                               /*essa não muda nada !!! */
+{
     int r;
     if (fim > ini) {
         r = particao(vet, ini, fim);
@@ -76,12 +76,14 @@ objectTable objectTableGet()
 
 int objectTableAddObject(object obj)
 {
+	objectQuadUpdate(obj);
     if (objectTableFilled())
         return ERROR_OBJECT_LIMIT_EXCEEDED;
     if (objectTableIsObjectColliding(obj))
         return ERROR_OBJECT_IS_COLLIDING;
+    /*
     obj->quad =
-        quadSet(obj->pos.x / QUAD_SIZE_X, obj->pos.y / QUAD_SIZE_Y);
+        quadSet(obj->pos.x / QUAD_SIZE_X, obj->pos.y / QUAD_SIZE_Y);*/
     obj->id = ++table->lastID;
     table->list[table->curMax++] = obj;
     return 0;
@@ -179,7 +181,7 @@ int objectTableIsObjectColliding(object o)
 int objectTableFilled()
 {
     if (table->curMax == OBJECT_NUM_LIMIT) {
-        objectTableSort();      /* TODO: como ordenar objetos? decidir em grupo */
+        objectTableSort();
         if (table->curMax == OBJECT_NUM_LIMIT)
             return 1;
     }
@@ -191,7 +193,7 @@ void objectTableDump()
     int i;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
-            objectDump(table->list[i]);
+            OBJECT_DUMP(table->list[i]);
 }
 
 void objectTableFinish()

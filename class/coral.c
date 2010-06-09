@@ -25,15 +25,10 @@ coral coralCreate(texture tex, point pos)
 /* Funcoes publicas. */
 void coralInitializeClass()
 {
-    classAdd(TYPE_CORAL, NULL, coralRemove, NULL, NULL, objectDump);
+    classAdd(TYPE_CORAL, NULL, removeObject, NULL, NULL, objectDump);
 }
 
-void coralRemove(coral c)
-{
-    free(c);
-}
-
-/* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
+/* Funcoes para criar novos corais e adicionar automaticamente na objectTable. */
 coral coralAddNewToTable(int verbose)
 {
     coral c =
@@ -45,7 +40,7 @@ coral coralAddNewToTable(int verbose)
     do {
         err = objectTableAddObject(c);
         if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
-            coralRemove(c);
+            removeObject(c);
             return NULL;
         } else if (err == ERROR_OBJECT_IS_COLLIDING) {
             c->pos = coralGeneratePosition();

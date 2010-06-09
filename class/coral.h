@@ -11,12 +11,7 @@ typedef struct Object *coral;
 
 void coralInitializeClass();
 
-/*Nuka um coral*/
-void coralRemove(coral c);
-
-void coralCollide(coral c, object other);
-
-/* Funcoes para criar novas pessoas e adicionar automaticamente na objectTable. */
+/* Funcoes para criar novos corais e adicionar automaticamente na objectTable. */
 coral coralAddNewToTable(int verbose);
 
 #endif                          /* _CORAL_H_ */

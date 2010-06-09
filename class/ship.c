@@ -29,9 +29,3 @@ ship shipNew(texture tex)
         vectorCreate(MAX_X / 4 * randInt(1, 3), MAX_Y / 4 * randInt(1, 3));
     return shipCreate(pos, tex);
 }
-
-
-void shipRemove(ship p)
-{
-    free(p);
-}
