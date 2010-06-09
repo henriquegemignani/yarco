@@ -58,8 +58,8 @@ boat boatNew(texture tex, double speed)
     return b;
 }
 
+/*Funcoes publicas*/
 
-/*Funcao semi-privada, se e que isso ecziste*/
 void boatGetDefaults(double turnRate, double accel, double friction,
                      int lives, double timeStuck)
 {
@@ -70,17 +70,12 @@ void boatGetDefaults(double turnRate, double accel, double friction,
     boatDefaults.timeStuck = timeStuck;
 }
 
-/*Funcoes publicas*/
+
 void boatInitializeClass()
 {
     classAdd(TYPE_BOAT,
              boatUpdate, boatRemove, boatCollide, boatOB, boatDump);
 }
-
-
-
-
-
 
 boat boatCreate(texture tex, point pos, velocity vel)
 {
