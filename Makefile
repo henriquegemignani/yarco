@@ -38,6 +38,7 @@ sandwich :
 cake:
 	@echo Cake not found.
 	@echo Press any key to fill the room with a deadly neurotoxin.
+	@sleep 5
 
 .PHONY : clean
 clean : 
