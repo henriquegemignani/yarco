@@ -98,10 +98,14 @@ void boatUpdate(boat b, int keepDir, double timedif)
         b->tex.color = b->extra->color / 2;     /*Torna o bote mais escuro - note que
                                                    os valores para R e G sempre sao pares para lidar com isso */
         if (b->extra->timeStuckLeft <= 0) {
-            b->extra->life = b->extra->defaultLives;
+	  if(b->extra->lives >= 0){
+	  //      b->extra->life = b->extra->defaultLives;
             boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
             b->tex.color = b->extra->color;     /*Retornando a cor original,
-                                                   ja que o bote muda de cor quando encalhado */
+						  ja que o bote muda de cor quando encalhado */
+	  }
+	  else
+	    boatRemove(b);
         }
         return;
     }
@@ -129,6 +133,12 @@ void boatRemove(boat b)
     free(b);
 }
 
+void boatCrash(boat b){
+  b->extra->life--;
+  boatPersonFree(b);
+  b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
+}
+
 void boatCollide(boat b, object o, double timediff)
 {
     double objectSide;          /*Variavel que guarda o tamanho de um dos lados do outro objeto, caso seja o Asimov ou um coral */
@@ -143,35 +153,41 @@ void boatCollide(boat b, object o, double timediff)
         }
         break;
     case TYPE_CORAL:
-        if (b->extra->life > 0) {
-            objectSide = o->radius * SQRT_2 / 2;        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao */
+      // if (b->extra->life > 0) {
+      //    objectSide = o->radius * SQRT_2 / 2;        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao */
             /*Note que nem sempre que uma colisao e detectada algo acontece. Isso ocorre porque e possivel que o circulo
              * de colisao dos dois objetos estejam colidindo sem que os objetos em si estejam*/
             /*Se estiver batendo por cima ou por baixo */
-            if (abs(b->pos.x - o->pos.x) <= objectSide
-                && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
-                b->vel.y *= -1;
-                b->extra->life--;
+      //    if (abs(b->pos.x - o->pos.x) <= objectSide
+      //        && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
+      //        b->vel.y *= -1;
+      //        b->extra->life--;
                 /*Se estiver batendo pela direita ou esquerda */
-            } else if (abs(b->pos.y - o->pos.y) <= objectSide
-                       && abs(b->pos.x - o->pos.x) <=
-                       (objectSide + b->radius)) {
-                b->vel.x *= -1;
-                b->extra->life--;
+      //    } else if (abs(b->pos.y - o->pos.y) <= objectSide
+      //               && abs(b->pos.x - o->pos.x) <=
+      //               (objectSide + b->radius)) {
+      //        b->vel.x *= -1;
+      //        b->extra->life--;
                 /*Se estiver batendo na quina */
-            } else if (abs(b->pos.x - o->pos.x) >= objectSide
-                       && abs(b->pos.y - o->pos.y) >= objectSide) {
-                b->vel.x *= -1;
-                b->vel.y *= -1;
-                b->extra->life--;
-            }
+      //    } else if (abs(b->pos.x - o->pos.x) >= objectSide
+      //               && abs(b->pos.y - o->pos.y) >= objectSide) {
+      //        b->vel.x *= -1;
+      //        b->vel.y *= -1;
+      //        b->extra->life--;
+      //    }
             /*Se apos essa colisao, encalhou */
-            if (b->extra->life <= 0) {
-                b->vel.x = 0;
-                b->vel.y = 0;
-                b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
-            }
-        }
+      //    if (b->extra->life <= 0) {
+      //        b->vel.x = 0;
+      //        b->vel.y = 0;
+      //        b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
+      //    }
+      // }
+       if (abs(b->pos.x - o->pos.x) <= objectSide
+            && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius) ||abs(b->pos.y - o->pos.y) <= objectSide
+                    && abs(b->pos.x - o->pos.x) <=
+                     (objectSide + b->radius) || else if (abs(b->pos.x - o->pos.x) >= objectSide
+                  && abs(b->pos.y - o->pos.y) >= objectSide)  )
+	 boatCrash(b);
         break;
     case TYPE_SHIP:
         objectSide = o->radius / SQRT_5;        /*Note que o retangulo e um retangulo
