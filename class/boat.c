@@ -8,8 +8,18 @@
 #include "../lib/objecttable.h"
 #include "../lib/vector.h"
 #include <math.h>
+#include <allegro.h>
 
 #define MAXSPEED 50
+#define PLAYER_ONE 0
+#define PLAYER_TWO 1
+#define ACCEL_BUTTON 0
+#define BRAKE_BUTTON 1
+#define TURN_RIGHT_BUTTON 2
+#define TURN_LEFT_BUTTON 3
+#define ANCHOR_BUTTON 4
+
+
 
 struct Extra {
     int isAccel;                /*Verifica se esta acelerando, e em qual direcao: 1 para frente, -1 para tras e 0 caso nao acelere */
@@ -19,12 +29,13 @@ struct Extra {
     int isTurning;              /*Verifica se esta virando, e para qual lado -  -1: sentido horario, 1: sentido anti-horario */
     double turnRate;            /*Quanto o bote pode virar em um segundo, em radianos */
     velocity prevVel;           /*Velocidade anterior, para colisoes com outros botes */
-    int life;                   /*Quantas vezes ele pode bater num coral antes de encalhar
-                                   Ja que a chance de encalhar e arbitraria, definimos como 0, se bateu um numero de vezes menor
-                                   que o numero de vidas, e 1 caso contrario. */
-    int defaultLives;           /*Numero padrao de vidas */
+    int life;
+    //int defaultLives;           /*Numero padrao de vidas */ /*Nao sera mais necessario, ja que uma vez que o barquinho morre, nunca mais volta*/
     double timeStuckLeft;       /*Quanto tempo falta para o barquinho encalhado dar respawn */
     double defaultTimeStuck;    /*Tempo que ele demora para dar respawn apos encalhar */
+    int isAnchored;
+    int player;
+    int keyLayout[];
 } Extra;
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -35,6 +46,8 @@ static struct boatDefaults {
     int lives;
     double timeStuck;
 } boatDefaults;
+
+static int curPlayer = PLAYER_ONE; /*<_<*//*Guarda qual jogador esta sendo criado no momento*/
 
 /*Funcoes privadas*/
 void boatGeneratePosAndVelInBorder(double speed, point * pos,
@@ -47,14 +60,34 @@ void boatGeneratePosAndVelInBorder(double speed, point * pos,
                                dir + PI / 4 * randInt(0, 4));
 }
 
+void boatGetControls(boat b, int player)
+{
+    //TempCode
+    b->extra->keyLayout[ACCEL_BUTTON] = KEY_W;
+    b->extra->keyLayout[BRAKE_BUTTON] = KEY_S;
+    b->extra->keyLayout[TURN_RIGHT_BUTTON] = KEY_A;
+    b->extra->keyLayout[TURN_LEFT_BUTTON] = KEY_D;
+    b->extra->keyLayout[ANCHOR_BUTTON] = KEY_Q;
+
+}
+
 boat boatNew(texture tex, double speed)
 {
     point pos;
     velocity vel;
     boat b;
-    boatGeneratePosAndVelInBorder(speed, &pos, &vel);
+
+    //boatGeneratePosAndVelInBorder(speed, &pos, &vel);
     b = boatCreate(tex, pos, vel);
-    b->dir = vectorAngle(b->vel);
+    b->pos.y = (double)MAX_Y/2;
+    b->pos.x = (double)MAX_X/4 + (double)curPlayer * (double)MAX_X/2;
+    b->dir = PI/2;
+    b->extra->player = curPlayer;
+    boatGetControls(b, curPlayer);
+    if(curPlayer == PLAYER_ONE)
+        curPlayer = PLAYER_TWO;
+    //else
+    //    genError("Erro: Mais de dois botes gerados!\n");
     return b;
 }
 
@@ -83,12 +116,32 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b = objectCreate(TYPE_BOAT, 0, pos, vel, BOAT_RADIUS, tex);
     AUTOMALLOC(b->extra);
     b->extra->accel = boatDefaults.accel;
-    b->extra->life = b->extra->defaultLives = boatDefaults.lives;
+    b->extra->life = /*b->extra->defaultLives =*/ boatDefaults.lives;
     b->extra->friction = boatDefaults.friction;
     b->extra->turnRate = boatDefaults.turnRate;
     b->extra->defaultTimeStuck = boatDefaults.timeStuck;
     b->extra->color = b->tex.color;
+    b->extra->isAnchored = 0;
+    b->extra->isTurning = 0;
+    b->extra->isAccel = 0;
     return b;
+}
+
+void boatReadKeyboard(boat b)
+{
+ //pisseudo codigo ahead. TODO: Diferenciar botes
+    b->extra->isAccel = 0;
+    b->extra->isTurning = 0;
+    if(key[b->extra->keyLayout[ACCEL_BUTTON]])
+        b->extra->isAccel++;
+    if(key[b->extra->keyLayout[BRAKE_BUTTON]])
+        b->extra->isAccel--;
+    if(key[b->extra->keyLayout[TURN_RIGHT_BUTTON]])
+        b->extra->isTurning++;
+    if(key[b->extra->keyLayout[TURN_LEFT_BUTTON]])
+        b->extra->isTurning--;
+    if(key[b->extra->keyLayout[ANCHOR_BUTTON]])
+        b->extra->isAnchored = !b->extra->isAnchored;
 }
 
 void boatUpdate(boat b, int keepDir, double timedif)
@@ -98,7 +151,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
         b->tex.color = b->extra->color / 2;     /*Torna o bote mais escuro - note que
                                                    os valores para R e G sempre sao pares para lidar com isso */
         if (b->extra->timeStuckLeft <= 0) {
-	  if(b->extra->lives >= 0){
+	  if(b->extra->life >= 0){
 	  //      b->extra->life = b->extra->defaultLives;
             boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
             b->tex.color = b->extra->color;     /*Retornando a cor original,
@@ -109,15 +162,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
         }
         return;
     }
-    if (!keepDir) {
-        b->extra->isTurning = randInt(0, 2) - 1;        /*Feito dessa forma uma vez que randInt buga para valores negativos */
-        b->extra->isAccel = randInt(0, 2) - 1;
-    }
-    if (b->extra->isAccel) {
-        b->acc.x = -cos(b->dir) * b->extra->accel * b->extra->isAccel;
-        b->acc.y = -sin(b->dir) * b->extra->accel * b->extra->isAccel;
-    } else
-        b->acc = vectorCreate(0, 0);
+    boatReadKeyboard(b);
     b->acc.x = b->acc.x - b->vel.x * b->extra->friction;
     b->acc.y = b->acc.y - b->vel.y * b->extra->friction;
 
@@ -131,6 +176,10 @@ void boatRemove(boat b)
 {
     free(b->extra);
     free(b);
+}
+
+void boatPersonFree(boat b){
+    return;
 }
 
 void boatCrash(boat b){
@@ -153,39 +202,10 @@ void boatCollide(boat b, object o, double timediff)
         }
         break;
     case TYPE_CORAL:
-      // if (b->extra->life > 0) {
-      //    objectSide = o->radius * SQRT_2 / 2;        /*Uma vez que coral e um quadrado inscrito ao circulo de colisao */
-            /*Note que nem sempre que uma colisao e detectada algo acontece. Isso ocorre porque e possivel que o circulo
-             * de colisao dos dois objetos estejam colidindo sem que os objetos em si estejam*/
-            /*Se estiver batendo por cima ou por baixo */
-      //    if (abs(b->pos.x - o->pos.x) <= objectSide
-      //        && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
-      //        b->vel.y *= -1;
-      //        b->extra->life--;
-                /*Se estiver batendo pela direita ou esquerda */
-      //    } else if (abs(b->pos.y - o->pos.y) <= objectSide
-      //               && abs(b->pos.x - o->pos.x) <=
-      //               (objectSide + b->radius)) {
-      //        b->vel.x *= -1;
-      //        b->extra->life--;
-                /*Se estiver batendo na quina */
-      //    } else if (abs(b->pos.x - o->pos.x) >= objectSide
-      //               && abs(b->pos.y - o->pos.y) >= objectSide) {
-      //        b->vel.x *= -1;
-      //        b->vel.y *= -1;
-      //        b->extra->life--;
-      //    }
-            /*Se apos essa colisao, encalhou */
-      //    if (b->extra->life <= 0) {
-      //        b->vel.x = 0;
-      //        b->vel.y = 0;
-      //        b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
-      //    }
-      // }
        if (abs(b->pos.x - o->pos.x) <= objectSide
-            && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius) ||abs(b->pos.y - o->pos.y) <= objectSide
+            && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius) || abs(b->pos.y - o->pos.y) <= objectSide
                     && abs(b->pos.x - o->pos.x) <=
-                     (objectSide + b->radius) || else if (abs(b->pos.x - o->pos.x) >= objectSide
+                     (objectSide + b->radius) || (abs(b->pos.x - o->pos.x) >= objectSide
                   && abs(b->pos.y - o->pos.y) >= objectSide)  )
 	 boatCrash(b);
         break;
@@ -224,7 +244,7 @@ void boatOB(boat b)
         b->vel.y = -b->vel.y;
         b->pos.y = (b->pos.y < 0 ? 0 : MAX_Y);
     }
-    objectQuadUpdate(b);
+    objectQuadUpdate    (b);
 }
 
 boat boatAddNewToTable(int color)

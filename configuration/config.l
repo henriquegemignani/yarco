@@ -15,7 +15,15 @@ extern YYSTYPE yylval;
 "true"|"TRUE"	{ yylval.val = 1; return NUM; }
 "false"|"FALSE"	{ yylval.val = 0; return NUM; }
 
-[a-zA-Z]+ {
+[a-zA-Z]+ {//  if (!keepDir) {
+    //    b->extra->isTurning = randInt(0, 2) - 1;        /*Feito dessa forma uma vez que randInt buga para valores negativos */
+      //  b->extra->isAccel = randInt(0, 2) - 1;
+   // }
+    //if (b->extra->isAccel)     {
+      //  b->acc.x = -cos(b->dir) * b->extra->accel * b->extra->isAccel;
+        //b->acc.y = -sin(b->dir) * b->extra->accel * b->extra->isAccel;
+ //  } else         
+   //     b->acc = vectorCreate(0, 0);
 	sscanf(yytext, "%s", yylval.str);
 	return STRING;
 }

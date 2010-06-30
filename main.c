@@ -84,7 +84,10 @@ int main(int argc, char **argv)
     if (defaults->graphic) {
         discoInterval = defaults->disco;
         graphicInitialize(WINDOWED_MODE);       /*pode ser FULLSCREEN_MODE */
+        /*TODO: Dar a opcao de fullscreen?*/
     }
+    if(install_keyboard())
+        genError("Falha ao incializar teclado!\n");
 
     i = 0;
     while (timeElapsed < defaults->duration) {
