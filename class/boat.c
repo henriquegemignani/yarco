@@ -147,27 +147,32 @@ void boatReadKeyboard(boat b)
 
 void boatUpdate(boat b, int keepDir, double timedif)
 {
-    if (b->extra->life <= 0) {  /*Se o barco esta encalhado */
+    if (b->extra->timeStuckLeft > 0) {  /*Se o barco esta encalhado */
         b->extra->timeStuckLeft -= timedif;
         b->tex.color = b->extra->color / 2;     /*Torna o bote mais escuro - note que
                                                    os valores para R e G sempre sao pares para lidar com isso */
         if (b->extra->timeStuckLeft <= 0) {
-	  if(b->extra->life >= 0){
+        	if(b->extra->life >= 0){
+        		b->extra->timeStuckLeft = 0;
 	  //      b->extra->life = b->extra->defaultLives;
-            boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
-            b->tex.color = b->extra->color;     /*Retornando a cor original,
+        		boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
+        		b->tex.color = b->extra->color;     /*Retornando a cor original,
 						  ja que o bote muda de cor quando encalhado */
 	  }
 	  else
-	    boatRemove(b);
+	    b->toBeRemoved = 1;
         }
         return;
     }
     boatReadKeyboard(b);
+    if(b->extra->isAccel){
+    	b->acc.x = -b->extra->accel * cos (b->dir) * b->extra->isAccel;
+    	b->acc.y = -b->extra->accel * sin (b->dir) * b->extra->isAccel;
+    }
+    else
+    	b->acc = vectorCreate(0,0);
     b->acc.x = b->acc.x - b->vel.x * b->extra->friction;
     b->acc.y = b->acc.y - b->vel.y * b->extra->friction;
-    if(b->extra->isAnchored)
-    	vectorMulDouble(b->acc, 10);
     b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
     b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
     b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
@@ -204,11 +209,12 @@ void boatCollide(boat b, object o, double timediff)
         }
         break;
     case TYPE_CORAL:
-       if (abs(b->pos.x - o->pos.x) <= objectSide
-            && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius) || abs(b->pos.y - o->pos.y) <= objectSide
+    	objectSide = o->radius * SQRT_2/2;
+       if (((abs(b->pos.x - o->pos.x) <= objectSide
+            && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) ||( abs(b->pos.y - o->pos.y) <= objectSide
                     && abs(b->pos.x - o->pos.x) <=
-                     (objectSide + b->radius) || (abs(b->pos.x - o->pos.x) >= objectSide
-                  && abs(b->pos.y - o->pos.y) >= objectSide)  )
+                     (objectSide + b->radius)) ||( (abs(b->pos.x - o->pos.x) >= objectSide
+                  && abs(b->pos.y - o->pos.y) >= objectSide) ) ) && b->extra->timeStuckLeft == 0 )
 	 boatCrash(b);
         break;
     case TYPE_SHIP:
