@@ -1,7 +1,9 @@
-/* Infix notation calculator */
-/* Time-stamp: <98/09/15 16:06:18 ronaldo> calc.l */
+/*******************************************************************/
+/** MAC0211 - Laboratorio de Programacao I                        **/
+/** Projeto de Jogo                                               **/
+/*******************************************************************/
 %{
-# include "config_bison.h"
+#include "config_bison.h"
 extern YYSTYPE yylval;
 %}
 
@@ -10,35 +12,37 @@ extern YYSTYPE yylval;
 "/*"([^\*]|[^\/])*"*/"	;/* Comentarios deste formato sao ignorados. */
 (;|"//"|\#)[^\n]*		;/* ";" ou "#" ou "//" podem ser utilizados para comentar o resto da linha. */
 
-^\[[^\]]+\]$			;/* separador de secao do formato "[TEXTO]". Atualmente aje como comentario. */
+^\[[^\]]+\]$	{
+	sscanf(yytext, "[%s", yylval.str);
+	yylval.str[strlen(yylval.str)-1] = '\0';
+	return GROUP;
+}/* separador de secao do formato "[TEXTO]". */
 
-"true"|"TRUE"	{ yylval.val = 1; return NUM; }
-"false"|"FALSE"	{ yylval.val = 0; return NUM; }
+"true"|"TRUE"	{ yylval.num = 1; return NUM; }
+"false"|"FALSE"	{ yylval.num = 0; return NUM; }
 
-[a-zA-Z]+ {//  if (!keepDir) {
-    //    b->extra->isTurning = randInt(0, 2) - 1;        /*Feito dessa forma uma vez que randInt buga para valores negativos */
-      //  b->extra->isAccel = randInt(0, 2) - 1;
-   // }
-    //if (b->extra->isAccel)     {
-      //  b->acc.x = -cos(b->dir) * b->extra->accel * b->extra->isAccel;
-        //b->acc.y = -sin(b->dir) * b->extra->accel * b->extra->isAccel;
- //  } else         
-   //     b->acc = vectorCreate(0, 0);
+[a-zA-Z]+ {
 	sscanf(yytext, "%s", yylval.str);
 	return STRING;
 }
 
+[0-9]*\.[0-9]+f? {
+	sscanf(yytext, "%f", &yylval.real);
+	return REAL;
+}
+
 [0-9]+ {
-	sscanf(yytext, "%d", &yylval.val);
+	sscanf(yytext, "%d", &yylval.num);
 	return NUM;
 }
 
 [ \t]*          ;
 
-.|\n            { return *yytext; }
+.|\n            { return yytext[0]; }
 
 %%
 
-int main (void) {
-  yyparse();
+void configurationInit(FILE* source) {
+	yyin = source;
+	yyparse();
 }

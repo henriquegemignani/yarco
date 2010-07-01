@@ -16,4 +16,4 @@ config_bison.c : config.y
 
 .PHONY: clean
 clean   :
-	rm $(objects) *.c *.h exec_config
+	rm $(objects) config_flex.c config_bison.c config_bison.h exec_config
