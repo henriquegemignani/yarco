@@ -9,11 +9,11 @@
 #include "../lib/vector.h"
 #include <math.h>
 #include <allegro.h>
-#include <allegro/keyboard.h>
 
 #define MAXSPEED 50
 #define PLAYER_ONE 0
 #define PLAYER_TWO 1
+#define NUM_BUTTONS 5
 #define ACCEL_BUTTON 0
 #define BRAKE_BUTTON 1
 #define TURN_RIGHT_BUTTON 2
@@ -36,7 +36,7 @@ struct Extra {
     double defaultTimeStuck;    /*Tempo que ele demora para dar respawn apos encalhar */
     int isAnchored;
     int player;
-    int keyLayout[];
+    int keyLayout[NUM_BUTTONS];
 } Extra;
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -66,8 +66,8 @@ void boatGetControls(boat b, int player)
     //TempCode
     b->extra->keyLayout[ACCEL_BUTTON] = KEY_W;
     b->extra->keyLayout[BRAKE_BUTTON] = KEY_S;
-    b->extra->keyLayout[TURN_RIGHT_BUTTON] = KEY_A;
-    b->extra->keyLayout[TURN_LEFT_BUTTON] = KEY_D;
+    b->extra->keyLayout[TURN_RIGHT_BUTTON] = KEY_D;
+    b->extra->keyLayout[TURN_LEFT_BUTTON] = KEY_A;
     b->extra->keyLayout[ANCHOR_BUTTON] = KEY_Q;
 
 }

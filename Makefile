@@ -2,7 +2,7 @@ VPATH = ./lib/:./class/
 objects = graphics.o common.o object.o person.o objecttable.o configuration.o class.o ship.o coral.o boat.o vector.o
 objectmain = main.o
 CC = gcc
-CFLAGS = -Wall -g -pedantic -ansi -D_POSIX_C_SOURCE=199309L
+CFLAGS = -Wall -g # -pedantic -ansi -D_POSIX_C_SOURCE=199309L
 
 yarco :      $(objects) $(objectmain)
 	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lm -o $@   
