@@ -9,6 +9,7 @@
 #include "../lib/vector.h"
 #include <math.h>
 #include <allegro.h>
+#include <allegro/keyboard.h>
 
 #define MAXSPEED 50
 #define PLAYER_ONE 0
@@ -133,13 +134,13 @@ void boatReadKeyboard(boat b)
     b->extra->isAccel = 0;
     b->extra->isTurning = 0;
     if(key[b->extra->keyLayout[ACCEL_BUTTON]])
-        b->extra->isAccel++;
+        b->extra->isAccel +=1;
     if(key[b->extra->keyLayout[BRAKE_BUTTON]])
-        b->extra->isAccel--;
+        b->extra->isAccel -= 1;
     if(key[b->extra->keyLayout[TURN_RIGHT_BUTTON]])
-        b->extra->isTurning++;
+        b->extra->isTurning += 1;
     if(key[b->extra->keyLayout[TURN_LEFT_BUTTON]])
-        b->extra->isTurning--;
+        b->extra->isTurning -= 1;
     if(key[b->extra->keyLayout[ANCHOR_BUTTON]])
         b->extra->isAnchored = !b->extra->isAnchored;
 }
@@ -165,7 +166,8 @@ void boatUpdate(boat b, int keepDir, double timedif)
     boatReadKeyboard(b);
     b->acc.x = b->acc.x - b->vel.x * b->extra->friction;
     b->acc.y = b->acc.y - b->vel.y * b->extra->friction;
-
+    if(b->extra->isAnchored)
+    	vectorMulDouble(b->acc, 10);
     b->vel = vectorSum(b->vel, vectorMulDouble(b->acc, timedif));
     b->pos = vectorSum(b->pos, vectorMulDouble(b->vel, timedif));
     b->dir += b->extra->isTurning * b->extra->turnRate * timedif;

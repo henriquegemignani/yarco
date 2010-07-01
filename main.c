@@ -19,6 +19,8 @@
 #include "class/boat.h"
 #include <time.h>
 #include <sys/time.h>
+#include <allegro.h>
+#include <allegro/keyboard.h>
 
 #define NUM_PLAYERS 2
 
