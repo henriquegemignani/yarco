@@ -95,6 +95,15 @@ object objectTableSearchObject(unsigned int id)
     return NULL;
 }
 
+int objectTableSearchPosition(unsigned int id)
+{
+    int i;
+    for (i = 0; i < table->curMax; i++)
+        if (objectGetID(table->list[i]) == id)
+            return i;
+    return -1;
+}
+
 int objectTableRemoveObject(object obj)
 {
     return objectTableRemoveObjectByID(objectGetID(obj));
@@ -123,7 +132,7 @@ void objectTableUpdate(double timedif, int newIteraction)
     /* Verificando colisoes. */
     for (i = 0; i < table->curMax; i++)
         for (j = i + 1; j < table->curMax; j++)
-            if (quadNear
+            if (table->list[i] != NULL && table->list[j] != NULL && quadNear
                 (objectGetQuad(table->list[i]),
                  objectGetQuad(table->list[j]))
                 && table->list[i]->toBeRemoved == 0
@@ -202,6 +211,21 @@ void objectTableFinish()
     free(table);
 }
 
+void objectTableLeave(unsigned int id)
+{
+    //unsigned int i;
+    int pos;
+    if((pos = objectTableSearchPosition(id)) == -1)
+        genError("Erro: Pessoa nao encontrada!\n");
+    /*for(i = 0; i < table->curMax; i++)
+        if(table->list[i] == o)
+            break;
+    if(table->list[i] != o)
+        genError("Busca deu merda!\n");*/
+    table->list[pos] = NULL;
+    objectTableSort();
+}
+
 void objectTableRandColor()
 {
     int i;
@@ -209,3 +233,4 @@ void objectTableRandColor()
         if (table->list[i] != NULL)
             table->list[i]->tex.color = randInt(0x000000, 0xFFFFFF);
 }
+

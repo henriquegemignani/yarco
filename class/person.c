@@ -11,6 +11,9 @@
 #include "../lib/class.h"
 #include "../lib/configuration.h"
 
+void boatRetrievePerson(object b, person p);
+int boatFullOrCrashed(object b);
+
 /* Funcoes privadas. */
 
 vector newDirection(vector v)
@@ -167,7 +170,17 @@ void personCollide(person per, object other, double timedif)
         }
         break;
     case TYPE_BOAT:
-        objectTableRemoveObject(per);
+        //objectTableRemoveObject(per);
+        debugMsg("Lolpersonboatcollision");
+        if(!boatFullOrCrashed(other)){
+            boatRetrievePerson(other, per);
+            objectTableLeave(per->id);
+        }
+        else{
+            per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius), per->pos);
+            per->vel.x *=-1;
+            per->vel.y *=-1;
+        }
         break;
     default:
         genWarning

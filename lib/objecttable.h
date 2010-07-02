@@ -54,4 +54,6 @@ void objectTableFinish();
 /*...?*/
 void objectTableRandColor();
 
+void objectTableLeave(unsigned int id);
+
 #endif                          /* _OBJECTTABLE_H_ */
