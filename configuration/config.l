@@ -18,21 +18,16 @@ extern YYSTYPE yylval;
 	return GROUP;
 }/* separador de secao do formato "[TEXTO]". */
 
-"true"|"TRUE"	{ yylval.num = 1; return NUM; }
-"false"|"FALSE"	{ yylval.num = 0; return NUM; }
+"true"|"TRUE"	{ yylval.num = 1.0f; return NUM; }
+"false"|"FALSE"	{ yylval.num = 0.0f; return NUM; }
 
 [a-zA-Z]+ {
 	sscanf(yytext, "%s", yylval.str);
 	return STRING;
 }
 
-[0-9]*\.[0-9]+f? {
-	sscanf(yytext, "%f", &yylval.real);
-	return REAL;
-}
-
-[0-9]+ {
-	sscanf(yytext, "%d", &yylval.num);
+[0-9]*\.?[0-9]+f? {
+	sscanf(yytext, "%lf", &yylval.num);
 	return NUM;
 }
 
