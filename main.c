@@ -179,7 +179,7 @@ int main(int argc, char **argv)
         graphicFinish();
 	free(players);
     objectTableFinish();
-    configurationFinish();
+    configurationFinish("config.ini");
     classFinish();
     return 0;
 }

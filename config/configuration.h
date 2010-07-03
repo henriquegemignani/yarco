@@ -12,7 +12,7 @@ void configInitializeDefaults();
 void configurationInit(char* config_file);
 void configurationRead(FILE* source);
 void configurationWrite(FILE* target);
-void configurationFinish();
+void configurationFinish(char* config_file);
 
 
 configValue configGetValue(char* group, char* config);

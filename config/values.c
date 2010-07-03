@@ -83,8 +83,15 @@ void configurationWrite(FILE* target) {
 	}
 }
 
-void configurationFinish() {
+void configurationFinish(char* config_file) {
 	int group;
+	FILE* fp = NULL;
+	if(config_file != NULL)
+		fp = fopen(config_file, "w");
+	if(fp != NULL) {
+		configurationWrite(fp);
+		fclose(fp);
+	}
 	for(group = 0; group < NUM_CONFIG_GROUPS; ++group)
 		free(config_list[group].list);
 	LEGACY_configurationFinish();
