@@ -17,22 +17,22 @@ Possiveis objetos no mundo:
 
 Mais ideias ou alterar essas?
 
-------------
-
-Separar MAX de ScreenSize?
-
-Deixando ambos valores independentes n„o usa a tela inteira. Talvez devessemos fazer algo em  relaÁ„o a isso? usar uma proporÁ„o?
-
 
 -----------
 Arrumar CFLAGS. >_>
----------------------->Seguir algum padr„o ANSI(Vide PACA)***NEWEST!!!***
-
 -----------
 Limpar TODO. <_<
 
 -----------
-Main de testes, mesmo que a atual ja seja extremamente configuravel? ***NEWEST!***
+Main de testes, mesmo que a atual ja seja extremamente configuravel? 
 
------------
-Arrumar Objecttabledum pra usar as funÁıes de cada classe? ***NEWEST!!!***
+---->Algo de teste TEM que ser feito ***NEWEST!***
+
+------------
+Matar alguns defines de constantes em favor de algo configuravel ***NEWEST!***
+
+------------
+Tela de inicio! HighScores! Uso de nomes! Tela de Game Over! E display, for fuck's sake! ***NEWEST!***
+
+------------
+Autoconf, documenta√ß√£o ***NEWEST!***
