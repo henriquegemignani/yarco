@@ -145,10 +145,12 @@ void objectTableUpdate(double timedif, int newIteraction)
                 && table->list[i]->toBeRemoved == 0
                 && table->list[j]->toBeRemoved == 0)
                 if (objectIsColliding(table->list[i], table->list[j])) {
-                    OBJECT_COLLIDE(table->list[i], table->list[j],
-                                   timedif);
-                    OBJECT_COLLIDE(table->list[j], table->list[i],
-                                   timedif);
+                    if(table->list[i]!=NULL && table->list[j]!=NULL)
+                        OBJECT_COLLIDE(table->list[i], table->list[j],
+                                timedif);
+                    if(table->list[i]!=NULL && table->list[j]!=NULL)
+                        OBJECT_COLLIDE(table->list[j], table->list[i],
+                                timedif);
                 }
 
     objectTableRemovePending();

@@ -13,6 +13,7 @@
 
 void boatRetrievePerson(object b, person p);
 int boatFullOrCrashed(object b);
+void boatPointAdd(boat b, int point);
 
 /* Funcoes privadas. */
 
@@ -175,6 +176,7 @@ void personCollide(person per, object other, double timedif)
         if(!boatFullOrCrashed(other)){
             boatRetrievePerson(other, per);
             objectTableLeave(per->id);
+            boatAddPoint(other, 10);
         }
         else{
             per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius), per->pos);

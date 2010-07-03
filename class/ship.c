@@ -28,7 +28,7 @@ void shipInitializeClass()
 ship shipNew(texture tex)
 {
     point pos =
-        vectorCreate(MAX_X / 4 * randInt(1, 3), MAX_Y / 4 * randInt(1, 3));
+        vectorCreate((double)MAX_X / 2, (double)MAX_Y / 2);
     getShipPos(pos);
     return shipCreate(pos, tex);
 }

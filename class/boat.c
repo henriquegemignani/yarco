@@ -55,6 +55,7 @@ struct Extra {
     int peopleHeld;
     int points;
     double unloadTimeLeft;
+    point respawnPoint;
 };
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -110,10 +111,32 @@ boat boatNew(int player)
     b->dir = PI/2;
     b->extra->player = player;
     boatGetControls(b, player);
+    b->extra->respawnPoint = b->pos;
     return b;
 }
 
 /*Funcoes publicas*/
+
+int boatFullOrCrashed(boat b)
+{
+    return (b->extra->peopleHeld >= BOAT_PEOPLE_LIMIT || b->extra->timeStuckLeft > 0);
+}
+
+void boatPointAdd(boat b, int point)
+{
+    b->extra->points += point;
+}
+
+void boatRetrievePerson(boat b, object o)
+{
+    listLink newLink;
+    AUTOMALLOC(newLink);
+    newLink->person = o;
+    newLink->next = b->extra->personList;
+    b->extra->personList = newLink;
+    b->extra->peopleHeld++;
+    debugMsg("entra em retireve person");
+}
 
 void boatInitializeClass()
 {
@@ -196,7 +219,10 @@ void boatUpdate(boat b, int keepDir, double timedif)
         	if(b->extra->life >= 0){
         		b->extra->timeStuckLeft = 0;
 	  //      b->extra->life = b->extra->defaultLives;
-        		boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
+        		//boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
+        		b->pos = b->extra->respawnPoint;
+        		b->vel = vectorCreate(0,0);
+        		b->acc = vectorCreate(0,0);
         		b->tex.color = b->extra->color;     /*Retornando a cor original,
 						  ja que o bote muda de cor quando encalhado */
 	  }
@@ -317,7 +343,11 @@ void boatCollide(boat b, object o, double timediff)
         }
         break;
     case TYPE_PERSON:
-        b->extra->points += 10;
+        if(!boatFullOrCrashed(b)){
+            boatRetrievePerson(b, o);
+            b->extra->points += 10;
+            objectTableLeave(o->id);
+        }
         break;
     default:
         genWarning("Colisao de barco com tipo desconhecido!\n");
@@ -363,18 +393,3 @@ void boatDump(boat b)
     printf("Vida: %d\n", b->extra->life);
 }
 
-int boatFullOrCrashed(boat b)
-{
-    return (b->extra->peopleHeld >= BOAT_PEOPLE_LIMIT || b->extra->timeStuckLeft > 0);
-}
-
-void boatRetrievePerson(boat b, object o)
-{
-    listLink newLink;
-    AUTOMALLOC(newLink);
-    newLink->person = o;
-    newLink->next = b->extra->personList;
-    b->extra->personList = newLink;
-    b->extra->peopleHeld++;
-    debugMsg("entra em retireve person");
-}
