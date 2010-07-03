@@ -28,9 +28,16 @@ extern YYSTYPE yylval;
 	return NUM;
 }
 
-[a-zA-Z]+ {
+[a-zA-Z][a-zA-Z 0-9]* {
 	sscanf(yytext, "%s", yylval.str);
 	return STRING;
+}
+
+[0-9]*,[0-9]+f? {
+	for(yylval.temp_int = 0; yytext[yylval.temp_int] != ','; ++yylval.temp_int);
+	yytext[yylval.temp_int] = '.';
+	sscanf(yytext, "%lf", &yylval.num);
+	return NUM;
 }
 
 [0-9]*\.?[0-9]+f? {
