@@ -3,6 +3,7 @@
 
 AC_PREREQ(2.61)
 AC_INIT(Yarco, 1.0)
+AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([main.c])
 AC_CONFIG_HEADER([config.h])
 
