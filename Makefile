@@ -1,17 +1,17 @@
-VPATH = ./lib/:./class/
-objects = graphics.o common.o object.o person.o objecttable.o configuration.o class.o ship.o coral.o boat.o vector.o
+VPATH = ./lib/:./class/:./config/
+objects = graphics.o common.o object.o person.o objecttable.o class.o ship.o coral.o boat.o vector.o config_flex.o config_bison.o values.o command_line.o
 objectmain = main.o
 CC = gcc
 CFLAGS = -Wall -g # -pedantic -ansi -D_POSIX_C_SOURCE=199309L
 
 yarco :      $(objects) $(objectmain)
-	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lm -o $@   
+	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lfl -lm -o $@
 
 main.o :		common.h object.h objecttable.h configuration.h graphics.h class.h person.h ship.h coral.h boat.h main.c
 common.o :      common.h common.c
 object.o :      common.h object.h vector.h object.c
 graphics.o :    common.h object.h objecttable.h graphics.h graphics.c
-configuration.o: common.h configuration.h configuration.c
+command_line.o: common.h configuration.h command_line.c
 objecttable.o : common.h object.h class.h objecttable.h configuration.h objecttable.c
 class.o :       common.h object.h class.h class.c
 person.o :      common.h object.h class.h objecttable.h vector.h person.h person.c
@@ -19,6 +19,18 @@ ship.o :		common.h object.h class.h objecttable.h ship.h ship.c
 coral.o :		common.h object.h class.h objecttable.h coral.h coral.c
 boat.o :		common.h object.h class.h objecttable.h vector.h boat.h boat.c
 vector.o :		common.h vector.h vector.c
+
+values.o : 		common.h configuration.h values.c
+
+config_flex.o  : config_flex.c config_bison.c configuration.h
+	$(CC) -c -o config_flex.o config/config_flex.c
+config_bison.o : config_bison.c configuration.h
+	$(CC) -c -o config_bison.o config/config_bison.c
+
+config_flex.c  : config.l
+	flex -o config/config_flex.c config/config.l
+config_bison.c : config.y
+	bison -o config/config_bison.c -d config/config.y
 
 .PHONY : believe
 believe : 
@@ -40,7 +52,7 @@ clean :
 
 .PHONY : moreclean
 moreclean : clean
-	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ class/\#*\# class/*~ 
+	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ class/\#*\# class/*~ config/config_*.[ch]
 
 .PHONY : realclean
 realclean : moreclean

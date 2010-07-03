@@ -108,6 +108,7 @@ void configurationFinish() {
 	int group;
 	for(group = 0; group < NUM_CONFIG_GROUPS; ++group)
 		free(config_list[group].list);
+	LEGACY_configurationFinish();
 }
 
 

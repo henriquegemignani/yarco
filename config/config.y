@@ -50,10 +50,10 @@ int yyerror (char *err) {
 	return 0;
 }
 
-int main (void) { 
+/* int main (void) { 
 	configInitializeDefaults();
 	configurationInit(stdin);
 	configurationWrite(stdout);
 	configurationFinish();
 	return 0;
-}
+} */

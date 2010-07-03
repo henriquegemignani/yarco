@@ -3,14 +3,14 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#include "common.h"
+#include "../lib/common.h"
 #include "configuration.h"
 #include <time.h>
 #include <string.h>
 
 static configuration config = NULL;
 
-configuration configurationInit()
+configuration LEGACY_configurationInit()
 {
     configuration config;
     AUTOMALLOC(config);
@@ -41,11 +41,11 @@ configuration configurationInit()
 configuration configurationGet()
 {
     if (config == NULL)
-        config = configurationInit();
+        config = LEGACY_configurationInit();
     return config;
 }
 
-void configurationFinish()
+void LEGACY_configurationFinish()
 {
     free(config);
     config = NULL;
