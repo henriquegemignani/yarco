@@ -21,54 +21,6 @@ struct ConfigGroup {
 	int list_size;
 };
 
-static void AddConfig(ConfigItem* target, int* id, char* config, float val, char* comment, int type);
-
-
-#define NUM_CONFIG_GROUPS 3
-static struct ConfigGroup config_list[NUM_CONFIG_GROUPS] = {
-	{"General",		NULL, 0},
-	{"Gameplay",	NULL, 0},
-	{"Highscore",	NULL, 0}
-};
-
-#define ADD_CONFIG(str, val, comment, type) AddConfig(config_list[group].list, &id, str, val, comment, type)
-void configInitializeDefaults() {
-	int id, group;
-	
-	static int initialized = 0;
-	if(initialized != 0) return;
-	initialized = 1;
-	
-	id = 0, group = 0; /* General */
-	AUTOMALLOCV(config_list[group].list, 13);
-	config_list[group].list_size = 13;
-	
-	ADD_CONFIG("MaximumFPS",			  30, NULL, 1);
-	ADD_CONFIG("ResolutionX",			1024, NULL, 1);
-	ADD_CONFIG("ResolutionY",			 768, NULL, 1);
-	ADD_CONFIG("LimitObject",			 150, NULL, 1);
-	ADD_CONFIG("LimitCoral",			  12, NULL, 1);
-	ADD_CONFIG("LimitPerson",			 100, NULL, 1);
-	
-	ADD_CONFIG("PersonInitialAmmount",	  30, NULL, 1);
-	ADD_CONFIG("PersonCreateRate",		   5, NULL, 1);
-	ADD_CONFIG("PersonAverageSpeed",	  10, NULL, 1);
-	
-	ADD_CONFIG("RadiusPerson",			   5, NULL, 1);
-	ADD_CONFIG("RadiusShip",			  50, NULL, 1);
-	ADD_CONFIG("RadiusCoral",			  10, NULL, 1);
-	ADD_CONFIG("RadiusBoat",			  10, NULL, 1);
-	
-	id = 0, group = 1; /* Gameplay */
-	AUTOMALLOCV(config_list[group].list, 5);
-	config_list[group].list_size = 5;
-	ADD_CONFIG("TurnRate", 			    PI/2, NULL, 2);
-	ADD_CONFIG("Acceleration",			  50, NULL, 1);
-	ADD_CONFIG("Friction",				 0.5, NULL, 2);
-	ADD_CONFIG("TimesStuck",			   5, NULL, 1);
-	ADD_CONFIG("InitialLives",			   3, NULL, 1);
-}
-
 static void AddConfig(ConfigItem* target, int* id, char* config, float val, char* comment, int type) {
 	target[*id].name = config;
 	target[*id].val.num = (int)val;
@@ -78,6 +30,17 @@ static void AddConfig(ConfigItem* target, int* id, char* config, float val, char
 	++(*id);
 }
 
+void configSort(ConfigItem* target, int size) {
+	/* TODO: inserir uma ordenacao aqui. */
+}
+
+#define ADD_CONFIG(str, val, comment, type) AddConfig(config_list[group].list, &id, str, val, comment, type)
+#define INIT_GROUP(str, size) id=0, group = getGroupID(str); \
+	AUTOMALLOCV(config_list[group].list, config_list[group].list_size = size);
+#define CLOSE_GROUP() configSort(config_list[group].list, config_list[group].list_size)
+	
+#include "values_default.c"
+	
 void configurationWrite(FILE* target) {
 	int group, i;
 	for(group = 0; group < NUM_CONFIG_GROUPS; ++group) {
@@ -110,7 +73,6 @@ void configurationFinish() {
 		free(config_list[group].list);
 	LEGACY_configurationFinish();
 }
-
 
 /* Setters */
 static int config_currentGroup = -1;

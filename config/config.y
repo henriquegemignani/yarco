@@ -44,16 +44,16 @@ exp
 
 int yyerror (char *err) {
 	if(strcasecmp(err, "syntax error") == 0)
-		printf("Erro de sintaxe ao ler o arquivo de configuracao!\n");
+		fprintf(stderr, "Erro de sintaxe ao ler o arquivo de configuracao!\n");
 	else
-		printf("%s\n", err);
+		fprintf(stderr, "%s\n", err);
 	return 0;
 }
 
-/* int main (void) { 
+int main (void) { 
 	configInitializeDefaults();
 	configurationInit(stdin);
 	configurationWrite(stdout);
 	configurationFinish();
 	return 0;
-} */
+}

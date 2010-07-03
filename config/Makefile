@@ -7,7 +7,7 @@ exec_config    : $(objects)
 
 config_flex.o  : config_flex.c config_bison.c configuration.h
 config_bison.o : config_bison.c configuration.h
-values.o : configuration.h common.o
+values.o : configuration.h common.o values_default.c
 command_line.o: configuration.h command_line.c
 
 common.o : ../lib/common.h
