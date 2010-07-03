@@ -12,8 +12,9 @@
 
 /* bison declarations */
 %union {
-  double num;
-  char str[256]; /* == MAXIMUM_CONFIG_NAME_SIZE. Define nao foi... */
+	int temp_int;
+	double num;
+	char str[256]; /* == MAXIMUM_CONFIG_NAME_SIZE. Define nao foi... */
 }
 %token <str> STRING
 %token <str> GROUP
@@ -50,10 +51,10 @@ int yyerror (char *err) {
 	return 0;
 }
 
-int main (void) { 
+/* int main (void) { 
 	configInitializeDefaults();
-	configurationInit(stdin);
+	configurationRead(stdin);
 	configurationWrite(stdout);
 	configurationFinish();
 	return 0;
-}
+} */

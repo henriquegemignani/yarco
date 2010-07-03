@@ -22,6 +22,12 @@ extern YYSTYPE yylval;
 "true"|"TRUE"	{ yylval.num = 1.0f; return NUM; }
 "false"|"FALSE"	{ yylval.num = 0.0f; return NUM; }
 
+"0x"[0-9a-fA-F]+ {
+	sscanf(yytext, "%x", &yylval.temp_int);
+	yylval.num = (double) yylval.temp_int; 
+	return NUM;
+}
+
 [a-zA-Z]+ {
 	sscanf(yytext, "%s", yylval.str);
 	return STRING;
@@ -38,7 +44,7 @@ extern YYSTYPE yylval;
 
 %%
 
-void configurationInit(FILE* source) {
+void configurationRead(FILE* source) {
 	configInitializeDefaults();
 	yyin = source;
 	yyparse();

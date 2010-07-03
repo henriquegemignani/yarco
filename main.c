@@ -9,7 +9,7 @@
 /*******************************************************************/
 
 #include "lib/common.h"
-#include "lib/configuration.h"
+#include "config/configuration.h"
 #include "lib/graphics.h"
 #include "lib/objecttable.h"
 #include "lib/class.h"
@@ -35,19 +35,24 @@ long timeInMicrosecond()
 int main(int argc, char **argv)
 {
     configuration defaults = configurationGet();
-    int i, numFrame = 0;
+    int i, numFrame = 0, max;
     objectTable table;
     double
         timeElapsed = 0,
-        timeDifference = 0, timeSinceLastIteration =
-        0, newPersonInterval, discoInterval /*...? */ ;
+        timeDifference = 0, 
+		timeSinceLastIteration = 0, 
+		newPersonInterval,
+		val,
+		discoInterval /*...? */ ;
     ship asimov;
-    boat players[NUM_PLAYERS];
+    boat* players;
 
     struct timespec sleepTime, sleepErrorRemaining;
     long frameTimeStart, timeToOffset = 0;
     sleepTime.tv_sec = 0;       /* Tempo entre frames eh sempre menor que 1s */
 
+	configurationInit("config.ini");
+	
     argRead(argc, argv, defaults);
 
     srand(defaults->randomSeed);
@@ -58,27 +63,29 @@ int main(int argc, char **argv)
     coralInitializeClass();
     boatInitializeClass();
 
-    boatGetDefaults(defaults->turnRate, defaults->accel,
-                    defaults->friction, defaults->lives,
-                    defaults->timeStuck);
-
     /* Inicializa tabela de objetos */
     table = objectTableGet();
 
-    players[0] = boatAddNewToTable(0xFE0000);
-    players[1] = boatAddNewToTable(0x00FEFF);
+	max = configGetValue("General", "NumPlayers").num;
+	AUTOMALLOCV(players, max);
+	for(i = 0; i < max; ++i) {
+		players[i] = boatAddNewToTable(i);
+	}
 
     asimov = shipNew(createTexture(80, 80, 80, TEX_HORIZONTAL_RETANGLE));
     objectTableAddObject(asimov);
 
-    for (i = 0; i < defaults->numPeople; i++)
-        if (personAddNewToTable(defaults->defaultSpeed, defaults->verbose)
-            == NULL)
+	max = configGetValue("General", "PersonInitialAmmount").num;
+	val = configGetValue("General", "PersonAverageSpeed").real;
+    for (i = 0; i < max; i++)
+        if (personAddNewToTable(val, defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
-    newPersonInterval = randomizeAround(defaults->createRate, STD_DIST);
+    newPersonInterval = randomizeAround(
+		configGetValue("General", "PersonCreatePeriod").real, STD_DIST);
 
-    for (i = 0; i < defaults->numCorals; i++)
+	max = configGetValue("General", "CoralInitialAmount").num;
+    for (i = 0; i < max; i++)
         if (coralAddNewToTable(defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
 
@@ -100,9 +107,8 @@ int main(int argc, char **argv)
 
         if ((newPersonInterval -= timeDifference) < 0
             && defaults->createRate > 0) {
-            newPersonInterval +=
-                randomizeAround(defaults->createRate, STD_DIST);
-            personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
+            newPersonInterval += randomizeAround(configGetValue("General", "PersonCreatePeriod").real, STD_DIST);
+            personAddNewToTable(configGetValue("General", "PersonAverageSpeed").real, defaults->verbose);
         }
 
         objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
@@ -171,6 +177,7 @@ int main(int argc, char **argv)
     }
     if (defaults->graphic)
         graphicFinish();
+	free(players);
     objectTableFinish();
     configurationFinish();
     classFinish();

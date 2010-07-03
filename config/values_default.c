@@ -3,12 +3,14 @@
 /** Projeto de Jogo                                               **/
 /*******************************************************************/
 
-#define NUM_CONFIG_GROUPS 4
+#define NUM_CONFIG_GROUPS 6
 static struct ConfigGroup config_list[NUM_CONFIG_GROUPS] = {
 	{"General",		NULL, 0},
 	{"Gameplay",	NULL, 0},
-	{"Highscore",	NULL, 0},
-	{"Radius",		NULL, 0}
+	{"Radius",		NULL, 0},
+	{"Player1",		NULL, 0},
+	{"Player2",		NULL, 0},
+	{"Highscore",	NULL, 0}
 };
 
 void configInitializeDefaults() {
@@ -19,33 +21,55 @@ void configInitializeDefaults() {
 	if(initialized != 0) return;
 	initialized = 1;
 	
-	INIT_GROUP("General", 10);
-	ADD_CONFIG("MaximumFPS",			  30, NULL, 1);
-	ADD_CONFIG("ResolutionX",			1024, NULL, 1);
-	ADD_CONFIG("ResolutionY",			 768, NULL, 1);
-	ADD_CONFIG("DebugMode",				   0, NULL, 3);
+	INIT_GROUP("General", 12);
+	ADD_CONFIG("MaximumFPS",			  30, TYPE_INT, NULL);
+	ADD_CONFIG("ResolutionX",			1024, TYPE_INT, NULL);
+	ADD_CONFIG("ResolutionY",			 768, TYPE_INT, NULL);
+	ADD_CONFIG("NumPlayers",			   2, TYPE_INT, "Hardcoded maximum: 2");
+	ADD_CONFIG("DebugMode",				   0, TYPE_BOOLEAN, NULL);
 	
-	ADD_CONFIG("LimitObject",			 150, NULL, 1);
-	ADD_CONFIG("LimitCoral",			  12, NULL, 1);
-	ADD_CONFIG("LimitPerson",			 100, NULL, 1);
+	ADD_CONFIG("LimitObject",			 150, TYPE_INT, NULL);
+	ADD_CONFIG("LimitCoral",			  12, TYPE_INT, NULL);
+	ADD_CONFIG("LimitPerson",			 100, TYPE_INT, NULL);
 	
-	ADD_CONFIG("PersonInitialAmmount",	  30, NULL, 1);
-	ADD_CONFIG("PersonCreateRate",		   5, NULL, 1);
-	ADD_CONFIG("PersonAverageSpeed",	  10, NULL, 1);
+	ADD_CONFIG("PersonInitialAmmount",	  30, TYPE_INT, NULL);
+	ADD_CONFIG("PersonCreatePeriod",	   5, TYPE_FLOAT, NULL);
+	ADD_CONFIG("PersonAverageSpeed",	  10, TYPE_FLOAT, NULL);
+
+	ADD_CONFIG("CoralInitialAmount",  	  12, TYPE_INT, NULL);
 	CLOSE_GROUP();
 	
 	INIT_GROUP("Radius", 4);
-	ADD_CONFIG("Person",				   5, NULL, 1);
-	ADD_CONFIG("Ship",					  50, NULL, 1);
-	ADD_CONFIG("Coral",					  10, NULL, 1);
-	ADD_CONFIG("Boat",					  10, NULL, 1);
+	ADD_CONFIG("Person",				   5, TYPE_INT, NULL);
+	ADD_CONFIG("Ship",					  50, TYPE_INT, NULL);
+	ADD_CONFIG("Coral",					  10, TYPE_INT, NULL);
+	ADD_CONFIG("Boat",					  10, TYPE_INT, NULL);
 	CLOSE_GROUP();
 	
-	INIT_GROUP("Gameplay", 5);
-	ADD_CONFIG("TurnRate", 			    PI/2, NULL, 2);
-	ADD_CONFIG("Acceleration",			  50, NULL, 1);
-	ADD_CONFIG("Friction",				 0.5, "Valores negativos geram resultados imprevisiveis.", 2);
-	ADD_CONFIG("TimesStuck",			   5, NULL, 1);
-	ADD_CONFIG("InitialLives",			   3, NULL, 1);
+	INIT_GROUP("Gameplay", 8);
+	ADD_CONFIG("TurnRate", 			    PI/2, TYPE_FLOAT, NULL);
+	ADD_CONFIG("Acceleration",			  50, TYPE_FLOAT, NULL);
+	ADD_CONFIG("Friction",				 0.5, TYPE_FLOAT, "Valores negativos geram resultados imprevisiveis.");
+	ADD_CONFIG("TimeStuck",				   5, TYPE_INT, NULL);
+	ADD_CONFIG("InitialLives",			   3, TYPE_INT, NULL);
+	ADD_CONFIG("UnloadTime",			   1, TYPE_INT, NULL);
+	ADD_CONFIG("BoatCapacity",			  10, TYPE_INT, NULL);
+	ADD_CONFIG("AnchorFrictionMultiplier",10, TYPE_FLOAT, NULL);
+	CLOSE_GROUP();
+	
+	INIT_GROUP("Highscore", 5);
+	ADD_CONFIG("Rank1Score",			   0, TYPE_INT, NULL);
+	ADD_CONFIG("Rank2Score",			   0, TYPE_INT, NULL);
+	ADD_CONFIG("Rank3Score",			   0, TYPE_INT, NULL);
+	ADD_CONFIG("Rank4Score",			   0, TYPE_INT, NULL);
+	ADD_CONFIG("Rank5Score",			   0, TYPE_INT, NULL);
+	CLOSE_GROUP();
+	
+	INIT_GROUP("Player1", 1);
+	ADD_CONFIG("Color",			    0xFE0000, TYPE_HEXADECIMAL, NULL);
+	CLOSE_GROUP();
+	
+	INIT_GROUP("Player2", 1);
+	ADD_CONFIG("Color",			    0x00FEFF, TYPE_HEXADECIMAL, NULL);
 	CLOSE_GROUP();
 }

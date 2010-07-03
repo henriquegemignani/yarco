@@ -7,12 +7,13 @@
 #include "configuration.h"
 #include <string.h>
 
+enum configValueType { TYPE_INT, TYPE_FLOAT, TYPE_BOOLEAN, TYPE_HEXADECIMAL };
+
 typedef struct {
 	char* name;
 	configValue val;
 	char* comment;
-	int type; /* 1 == Int, 2 == Float, 3 == Boolean */
-	
+	enum configValueType type;
 } ConfigItem;
 
 struct ConfigGroup {
@@ -21,7 +22,8 @@ struct ConfigGroup {
 	int list_size;
 };
 
-static void AddConfig(ConfigItem* target, int* id, char* config, float val, char* comment, int type) {
+static void AddConfig(ConfigItem* target, int* id, char* config, float val, 
+		enum configValueType type, char* comment) {
 	target[*id].name = config;
 	target[*id].val.num = (int)val;
 	target[*id].val.real = val;
@@ -40,7 +42,18 @@ void configSort(ConfigItem* target, int size) {
 #define CLOSE_GROUP() configSort(config_list[group].list, config_list[group].list_size)
 	
 #include "values_default.c"
-	
+
+
+void configurationInit(char* config_file) {
+	FILE* source = fopen(config_file, "r");
+	configInitializeDefaults();
+	if(source) {
+		configurationRead(source);
+		fclose(source);
+	}
+	configurationGet();
+}
+
 void configurationWrite(FILE* target) {
 	int group, i;
 	for(group = 0; group < NUM_CONFIG_GROUPS; ++group) {
@@ -48,14 +61,17 @@ void configurationWrite(FILE* target) {
 		for(i = 0; i < config_list[group].list_size; ++i) {
 			fprintf(target, "%s = ", config_list[group].list[i].name);
 			switch(config_list[group].list[i].type) {
-			case 1:
+			case TYPE_INT:
 				fprintf(target, "%d", config_list[group].list[i].val.num);
 				break;
-			case 2:
+			case TYPE_FLOAT:
 				fprintf(target, "%f", config_list[group].list[i].val.real);
 				break;
-			case 3:
+			case TYPE_BOOLEAN:
 				fprintf(target, "%s", config_list[group].list[i].val.num != 0 ? "true" : "false");
+				break;
+			case TYPE_HEXADECIMAL:
+				fprintf(target, "%#.6x", config_list[group].list[i].val.num);
 				break;
 			default: break;
 			}

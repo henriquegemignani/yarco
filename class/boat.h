@@ -10,9 +10,6 @@ typedef struct Object *boat;
 
 /*Inicializa a classe*/
 void boatInitializeClass();
-/*Pega os valores definidos pela linha de comando*/
-void boatGetDefaults(double turnRate, double accel, double friction,
-                     int lives, double timeStuck);
 /*Cria um bote*/
 boat boatCreate(texture tex, point pos, velocity vel);
 /*Atualiza o bote*/

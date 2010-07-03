@@ -7,6 +7,7 @@
 #include "../lib/object.h"
 #include "../lib/objecttable.h"
 #include "../lib/vector.h"
+#include "../config/configuration.h"
 #include <math.h>
 #include <allegro.h>
 
@@ -64,7 +65,6 @@ static struct boatDefaults {
     int lives;
     double timeStuck;
 } boatDefaults;
-static int curPlayer = PLAYER_ONE; /*<_<*//*Guarda qual jogador esta sendo criado no momento*/
 
 void getShipPos(point p)
 {
@@ -93,43 +93,38 @@ void boatGetControls(boat b, int player)
 
 }
 
-boat boatNew(texture tex, double speed)
+boat boatNew(int player)
 {
-    point pos;
-    velocity vel;
+    point pos = vectorCreate((double)MAX_X/4 + (double)player * (double)MAX_X/2, (double)MAX_Y/2);
+    velocity vel = vectorCreate(0,0);
     boat b;
+	texture tex;
 
-    //boatGeneratePosAndVelInBorder(speed, &pos, &vel);
+	char confgroup[8];
+	strcpy(confgroup, "PlayerX");
+	confgroup[6] = '1' + player;
+	
+    tex.color = configGetValue(confgroup, "Color").num;
+    tex.type = TEX_TRIANGLE;
     b = boatCreate(tex, pos, vel);
-    b->pos.y = (double)MAX_Y/2;
-    b->pos.x = (double)MAX_X/4 + (double)curPlayer * (double)MAX_X/2;
     b->dir = PI/2;
-    b->extra->player = curPlayer;
-    boatGetControls(b, curPlayer);
-    if(curPlayer == PLAYER_ONE)
-        curPlayer = PLAYER_TWO;
-    //else
-    //    genError("Erro: Mais de dois botes gerados!\n");
+    b->extra->player = player;
+    boatGetControls(b, player);
     return b;
 }
 
 /*Funcoes publicas*/
 
-void boatGetDefaults(double turnRate, double accel, double friction,
-                     int lives, double timeStuck)
-{
-    boatDefaults.turnRate = turnRate;
-    boatDefaults.accel = accel;
-    boatDefaults.friction = friction;
-    boatDefaults.lives = lives;
-    boatDefaults.timeStuck = timeStuck;
-}
-
-
 void boatInitializeClass()
 {
     classAdd(TYPE_BOAT,
              boatUpdate, boatRemove, boatCollide, boatOB, boatDump);
+	
+    boatDefaults.turnRate = configGetValue("Gameplay", "TurnRate").real;
+    boatDefaults.accel = 	configGetValue("Gameplay", "Acceleration").real;
+    boatDefaults.friction = configGetValue("Gameplay", "Friction").real;
+    boatDefaults.lives =    configGetValue("Gameplay", "InitialLives").num;
+    boatDefaults.timeStuck = configGetValue("Gameplay", "TimeStuck").num;
 }
 
 boat boatCreate(texture tex, point pos, velocity vel)
@@ -343,15 +338,10 @@ void boatOB(boat b)
     objectQuadUpdate    (b);
 }
 
-boat boatAddNewToTable(int color)
+boat boatAddNewToTable(int player)
 {
-    texture tex;
-    boat b;
-    int err;
-    tex.color = color;
-    tex.type = TEX_TRIANGLE;
-    b = boatNew(tex, randDouble(0, MAXSPEED));
-    err = objectTableAddObject(b);
+    boat b = boatNew(player);
+    int err = objectTableAddObject(b);
     if (err == ERROR_OBJECT_LIMIT_EXCEEDED) {
         boatRemove(b);
         return NULL;

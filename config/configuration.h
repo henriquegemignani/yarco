@@ -8,8 +8,9 @@
 
 typedef struct{int num; float real;} configValue;
 
-void configInitializeDefaults(); /* Chamada automaticamente por configurationInit */
-void configurationInit(FILE* source);
+void configInitializeDefaults();
+void configurationInit(char* config_file);
+void configurationRead(FILE* source);
 void configurationWrite(FILE* target);
 void configurationFinish();
 

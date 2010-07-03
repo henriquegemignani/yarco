@@ -129,7 +129,7 @@ void argRead(int argc, char **argv, configuration defaults)
     if ((argValue = argVal(argc, argv, "--corals", "-c")))
         defaults->numCorals = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--disco", NULL)))
-        config->disco = atof(argValue);
+        defaults->disco = atof(argValue);
 }
 
 int argFind(int argc, char **argv, char *argLong, char *argShort)
