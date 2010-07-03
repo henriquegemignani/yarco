@@ -4,6 +4,7 @@
 /*******************************************************************/
 %{
 #include "config_bison.h"
+#include "configuration.h"
 extern YYSTYPE yylval;
 %}
 
@@ -38,6 +39,8 @@ extern YYSTYPE yylval;
 %%
 
 void configurationInit(FILE* source) {
+	configInitializeDefaults();
 	yyin = source;
 	yyparse();
+	yylex_destroy();
 }
