@@ -8,10 +8,8 @@
 
 typedef struct GraphicEngine *graphicEngine;
 
-#define SCREEN_SIZE_X 1024
-#define SCREEN_SIZE_Y 768
-#define WINDOWED_MODE 1
-#define FULLSCREEN_MODE 2
+#define WINDOWED_MODE 0
+#define FULLSCREEN_MODE 1
 
 /*Inicializa parte grafica. uniquePerson define se deve usar um caracter diferente 
 para cada pessoa desenhada.*/

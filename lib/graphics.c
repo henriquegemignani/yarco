@@ -7,33 +7,38 @@
 #include "common.h"
 #include "object.h"
 #include "objecttable.h"
+#include "../config/configuration.h"
 
 #include <math.h>
 #include <allegro.h>
 
 #define SEA_COLOR 0x001770
-#define SCREEN_RATIO_X ((double)(SCREEN_SIZE_X+1)/MAX_X)
-#define SCREEN_RATIO_Y ((double)(SCREEN_SIZE_Y+1)/MAX_Y)
+#define SCREEN_RATIO_X ((double)(screenSizeX+1)/MAX_X)
+#define SCREEN_RATIO_Y ((double)(screenSizeY+1)/MAX_Y)
 
 BITMAP *buffer;
+static int screenSizeX, screenSizeY;
 
 void graphicUpdateObject(object per);
-
 void graphicInitialize(int mode)
 {
     if (allegro_init())
         genError
             ("Erro em inicializar o allegro. Se voce esta utilizando modo texto, tente --nographic\n");
-    set_color_depth(32);
+    
+	screenSizeX = configGetValue("General", "ResolutionX").num;
+	screenSizeY = configGetValue("General", "ResolutionY").num;
+	
+	set_color_depth(32);
     if (mode == WINDOWED_MODE)
-        set_gfx_mode(GFX_AUTODETECT_WINDOWED, SCREEN_SIZE_X, SCREEN_SIZE_Y, //TODO: Tornar tamanhop da tela variavel. POG solution: #define SCREEN_SIZE [Nome da variavel]
+        set_gfx_mode(GFX_AUTODETECT_WINDOWED, screenSizeX, screenSizeY, //TODO: Tornar tamanhop da tela variavel. POG solution: #define SCREEN_SIZE [Nome da variavel]
                      0, 0);
     else if (mode == FULLSCREEN_MODE)
-        set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, SCREEN_SIZE_X,
-                     SCREEN_SIZE_Y, 0, 0);
+        set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, screenSizeX,
+                     screenSizeY, 0, 0);
 
-    buffer = create_bitmap(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-    rectfill(buffer, 0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, SEA_COLOR);
+    buffer = create_bitmap(screenSizeX, screenSizeY);
+    rectfill(buffer, 0, 0, screenSizeX, screenSizeY, SEA_COLOR);
 }
 
 void graphicUpdateObject(object per)
@@ -101,14 +106,14 @@ void graphicUpdateObject(object per)
 void graphicUpdate()
 {
     clear(buffer);
-    rectfill(buffer, 0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y, SEA_COLOR);
+    rectfill(buffer, 0, 0, screenSizeX, screenSizeY, SEA_COLOR);
     objectTableExecute(graphicUpdateObject);
 }
 
 
 void graphicDraw()
 {
-    blit(buffer, screen, 0, 0, 0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y);
+    blit(buffer, screen, 0, 0, 0, 0, screenSizeX, screenSizeY);
 }
 
 void graphicFinish()

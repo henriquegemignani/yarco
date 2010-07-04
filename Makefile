@@ -20,7 +20,7 @@ coral.o :		common.h object.h class.h objecttable.h coral.h coral.c
 boat.o :		common.h object.h class.h objecttable.h vector.h boat.h boat.c
 vector.o :		common.h vector.h vector.c
 
-values.o : 		common.h configuration.h values.c
+values.o : 		common.h configuration.h values.c values_default.c
 
 config_flex.o  : config_flex.c config_bison.c configuration.h
 	$(CC) -c -o config_flex.o config/config_flex.c

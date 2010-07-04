@@ -27,7 +27,7 @@ int configSet( char* name, configValue);
 /* LEGACY! */
 struct Configuration {
     double defaultSpeed;
-    double createRate;
+    double createPeriod;
     int debugMode;
     double duration;
     int pause;

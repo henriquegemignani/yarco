@@ -34,7 +34,7 @@ long timeInMicrosecond()
 
 int main(int argc, char **argv)
 {
-    configuration defaults = configurationGet();
+    configuration defaults;
     int i, numFrame = 0, max;
     objectTable table;
     double
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
     sleepTime.tv_sec = 0;       /* Tempo entre frames eh sempre menor que 1s */
 
 	configurationInit("config.ini");
-	
+	defaults = configurationGet();
     argRead(argc, argv, defaults);
 
     srand(defaults->randomSeed);
@@ -75,25 +75,21 @@ int main(int argc, char **argv)
     asimov = shipNew(createTexture(80, 80, 80, TEX_HORIZONTAL_RETANGLE));
     objectTableAddObject(asimov);
 
-	max = configGetValue("General", "PersonInitialAmmount").num;
 	val = configGetValue("General", "PersonAverageSpeed").real;
-    for (i = 0; i < max; i++)
+    for (i = 0; i < defaults->numPeople; i++)
         if (personAddNewToTable(val, defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
-    newPersonInterval = randomizeAround(
-		configGetValue("General", "PersonCreatePeriod").real, STD_DIST);
+    newPersonInterval = randomizeAround(defaults->createPeriod, STD_DIST);
 
-	max = configGetValue("General", "CoralInitialAmount").num;
-    for (i = 0; i < max; i++)
+    for (i = 0; i < defaults->numCorals; i++)
         if (coralAddNewToTable(defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
 
     /* Inicializa parte grafica */
     if (defaults->graphic) {
         discoInterval = defaults->disco;
-        graphicInitialize(WINDOWED_MODE);       /*pode ser FULLSCREEN_MODE */
-        /*TODO: Dar a opcao de fullscreen?*/
+        graphicInitialize(configGetValue("General", "Fullscreen").num);
     }
     if(install_keyboard())
         genError("Falha ao incializar teclado!\n");
@@ -105,9 +101,8 @@ int main(int argc, char **argv)
 
         frameTimeStart = timeInMicrosecond();
 
-        if ((newPersonInterval -= timeDifference) < 0
-            && defaults->createRate > 0) {
-            newPersonInterval += randomizeAround(configGetValue("General", "PersonCreatePeriod").real, STD_DIST);
+        if ((newPersonInterval -= timeDifference) < 0 && defaults->createPeriod > 0) {
+            newPersonInterval += randomizeAround(defaults->createPeriod, STD_DIST);
             personAddNewToTable(configGetValue("General", "PersonAverageSpeed").real, defaults->verbose);
         }
 

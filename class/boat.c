@@ -12,13 +12,6 @@
 #include <allegro.h>
 
 #define MAXSPEED 50
-#define ANCHOR_MULTIPLIER 10
-#define BOAT_PEOPLE_LIMIT 10
-#define UNLOAD_TIME 1
-#define BOAT_RESCUE_DIST 120
-#define PERSON_UNLOAD_TIME 1
-#define PLAYER_ONE 0
-#define PLAYER_TWO 1
 #define NUM_BUTTONS 5
 #define ACCEL_BUTTON 0
 #define BRAKE_BUTTON 1
@@ -54,7 +47,7 @@ struct Extra {
     listLink personList;
     int peopleHeld;
     int points;
-    double unloadTimeLeft;
+    double unloadTimeSpent;
     point respawnPoint;
 };
 
@@ -63,7 +56,11 @@ static struct boatDefaults {
     double turnRate;
     double accel;
     double friction;
+	double anchorMultiplier;
+	double unloadDistance;
+	double unloadTime;
     int lives;
+	int boatCapacity;
     double timeStuck;
 } boatDefaults;
 
@@ -85,12 +82,15 @@ void boatGeneratePosAndVelInBorder(double speed, point * pos,
 
 void boatGetControls(boat b, int player)
 {
-    //TempCode
-    b->extra->keyLayout[ACCEL_BUTTON] = KEY_W;
-    b->extra->keyLayout[BRAKE_BUTTON] = KEY_S;
-    b->extra->keyLayout[TURN_RIGHT_BUTTON] = KEY_D;
-    b->extra->keyLayout[TURN_LEFT_BUTTON] = KEY_A;
-    b->extra->keyLayout[ANCHOR_BUTTON] = KEY_Q;
+	char confgroup[8];
+	strcpy(confgroup, "PlayerX");
+	confgroup[6] = '1' + player;
+	
+    b->extra->keyLayout[ACCEL_BUTTON]		= configGetValue(confgroup, "ButtonAccel").num;
+    b->extra->keyLayout[BRAKE_BUTTON]		= configGetValue(confgroup, "ButtonBrake").num;
+    b->extra->keyLayout[TURN_RIGHT_BUTTON]	= configGetValue(confgroup, "ButtonTurnRight").num;
+    b->extra->keyLayout[TURN_LEFT_BUTTON]	= configGetValue(confgroup, "ButtonTurnLeft").num;
+    b->extra->keyLayout[ANCHOR_BUTTON]		= configGetValue(confgroup, "ButtonAnchor").num;
 
 }
 
@@ -119,7 +119,7 @@ boat boatNew(int player)
 
 int boatFullOrCrashed(boat b)
 {
-    return (b->extra->peopleHeld >= BOAT_PEOPLE_LIMIT || b->extra->timeStuckLeft > 0);
+    return (b->extra->peopleHeld >= boatDefaults.boatCapacity || b->extra->timeStuckLeft > 0);
 }
 
 void boatScoreAdd(boat b, int point)
@@ -146,8 +146,12 @@ void boatInitializeClass()
     boatDefaults.turnRate = configGetValue("Gameplay", "TurnRate").real;
     boatDefaults.accel = 	configGetValue("Gameplay", "Acceleration").real;
     boatDefaults.friction = configGetValue("Gameplay", "Friction").real;
-    boatDefaults.lives =    configGetValue("Gameplay", "InitialLives").num;
     boatDefaults.timeStuck = configGetValue("Gameplay", "TimeStuck").num;
+    boatDefaults.lives =    configGetValue("Gameplay", "InitialLives").num;
+	boatDefaults.unloadDistance = configGetValue("Gameplay", "UnloadDistance").real;
+	boatDefaults.unloadTime = configGetValue("Gameplay", "UnloadTime").real;
+	boatDefaults.boatCapacity = configGetValue("Gameplay", "BoatCapacity").num;
+	boatDefaults.anchorMultiplier = configGetValue("Gameplay", "AnchorFrictionMultiplier").real;
 }
 
 boat boatCreate(texture tex, point pos, velocity vel)
@@ -167,7 +171,7 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->anchorButtonHeld = 0;
     b->extra->peopleHeld = 0;
     b->extra->points = 0;
-    b->extra->unloadTimeLeft = UNLOAD_TIME;
+    b->extra->unloadTimeSpent = boatDefaults.unloadTime;
     b->extra->personList = NULL;
     return b;
 }
@@ -239,7 +243,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
     else
     	b->acc = vectorCreate(0,0);
     if(b->extra->isAnchored)
-        anchorRatio = ANCHOR_MULTIPLIER;
+        anchorRatio = boatDefaults.anchorMultiplier;
     else
         anchorRatio = 1;
     b->acc.x = b->acc.x - b->vel.x * b->extra->friction * anchorRatio;
@@ -249,18 +253,17 @@ void boatUpdate(boat b, int keepDir, double timedif)
     if(!b->extra->isAnchored)
         b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
     objectQuadUpdate(b);
-    if(b->extra->isAnchored){
-        if(distanceBetweenPoints(b->pos, shipPos) <= BOAT_RESCUE_DIST)
-            while(b->extra->personList != NULL)
-                if(b->extra->unloadTimeLeft <= 0){
-                    rescuePerson(b);
-                    b->extra->unloadTimeLeft = UNLOAD_TIME;
-                }
-                else
-                    b->extra->unloadTimeLeft -= timedif;
+    if(b->extra->isAnchored && distanceBetweenPoints(b->pos, shipPos) <= boatDefaults.unloadDistance){
+        while(b->extra->personList != NULL)
+            if(b->extra->unloadTimeSpent > boatDefaults.unloadTime){
+                rescuePerson(b);
+                b->extra->unloadTimeSpent -= boatDefaults.unloadTime;
+            }
+            else
+                b->extra->unloadTimeSpent += timedif;
     }
     else
-        b->extra->unloadTimeLeft = UNLOAD_TIME;
+        b->extra->unloadTimeSpent = 0;
 }
 
 void boatRemove(boat b)

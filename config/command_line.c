@@ -16,24 +16,29 @@ configuration LEGACY_configurationInit()
     AUTOMALLOC(config);
 
     /* Valores padrao. */
-    config->defaultSpeed = PERSON_SPEED_DEFAULT;
-    config->createRate = PERSON_CREATE_RATE_DEFAULT;
     config->debugMode = 0;
-    config->duration = DURATION_DEFAULT;
+    
     config->pause = 0;
     config->graphic = 1;
     config->randomSeed = time(NULL);
     config->keepSpeed = 0;
-    config->fps = DEFAULT_FPS;
+	config->verbose = 0;
+	config->disco = 0;
+	config->fps = configGetValue("General", "MaximumFPS").num;
+	if(config->fps <= 0)
+		config->noSleep = 1;
+	
+	config->defaultSpeed = PERSON_SPEED_DEFAULT;
+	config->createPeriod = configGetValue("General", "PersonCreatePeriod").real;
+	config->duration = DURATION_DEFAULT;
     config->accel = DEFAULT_ACCEL;
     config->friction = DEFAULT_FRICTION;
     config->turnRate = DEFAULT_TURNRATE;
     config->lives = DEFAULT_LIVES;
     config->timeStuck = DEFAULT_TIME_STUCK;
-    config->verbose = 0;
-    config->numPeople = PERSON_NUM_INIT;
-    config->numCorals = CORAL_NUM_INIT;
-    config->disco = 0;
+    config->numPeople = configGetValue("General", "PersonInitialAmmount").num;
+    config->numCorals = configGetValue("General", "CoralInitialAmount").num;
+    
 
     return config;
 }
@@ -62,7 +67,7 @@ void argRead(int argc, char **argv, configuration defaults)
              "  -r\t--rate\t\tDetermina o periodo entre 2 novos passageiros. Padrao: %3.2f\n"
              "  -c\t--corals\t\tDetermina o numero de corais. Padrao: %d\n"
              "  -p\t--people\t\tDeermina o numero inicial de pessoas. Padrao: %d\n",
-             defaults->defaultSpeed, defaults->createRate,
+             defaults->defaultSpeed, defaults->createPeriod,
              defaults->numCorals, defaults->numPeople);
         printf
             ("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
@@ -105,7 +110,7 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->disco = 0.1;
     free(argValue);
     if ((argValue = argVal(argc, argv, "--rate", "-r")))
-        defaults->createRate = atof(argValue);
+        defaults->createPeriod = atof(argValue);
     if ((argValue = argVal(argc, argv, "--speed", "-s")))
         defaults->defaultSpeed = atof(argValue);
     if ((argValue = argVal(argc, argv, "--duration", "-T")))
