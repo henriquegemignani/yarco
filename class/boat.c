@@ -122,7 +122,7 @@ int boatFullOrCrashed(boat b)
     return (b->extra->peopleHeld >= BOAT_PEOPLE_LIMIT || b->extra->timeStuckLeft > 0);
 }
 
-void boatPointAdd(boat b, int point)
+void boatScoreAdd(boat b, int point)
 {
     b->extra->points += point;
 }
