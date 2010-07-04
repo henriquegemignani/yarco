@@ -9,6 +9,7 @@
 #include "../lib/objecttable.h"
 #include "../lib/class.h"
 #include "../lib/objecttable.h"
+#include "../config/configuration.h"
 
 /* Funcoes privadas. */
 point coralGeneratePosition()

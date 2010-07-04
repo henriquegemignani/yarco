@@ -7,6 +7,7 @@
 #include "../lib/common.h"
 #include "../lib/class.h"
 #include "../lib/objecttable.h"
+#include "../config/configuration.h"
 
 void getShipPos(point p);
 

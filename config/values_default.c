@@ -48,7 +48,7 @@ void configInitializeDefaults() {
 	ADD_CONFIG("Boat",					  10, TYPE_FLOAT, NULL);
 	CLOSE_GROUP();
 	
-	INIT_GROUP("Gameplay", 9);
+	INIT_GROUP("Gameplay", 10);
 	ADD_CONFIG("TurnRate", 			    PI/2, TYPE_FLOAT, NULL);
 	ADD_CONFIG("Acceleration",			  50, TYPE_FLOAT, NULL);
 	ADD_CONFIG("Friction",				 0.5, TYPE_FLOAT, "Valores negativos geram resultados imprevisiveis.");
@@ -58,6 +58,7 @@ void configInitializeDefaults() {
 	ADD_CONFIG("UnloadTime",			   1, TYPE_FLOAT, NULL);
 	ADD_CONFIG("BoatCapacity",			  10, TYPE_INT, NULL);
 	ADD_CONFIG("AnchorFrictionMultiplier",10, TYPE_FLOAT, NULL);
+	ADD_CONFIG("ExtraLifeScore",		 500, TYPE_INT, NULL);
 	CLOSE_GROUP();
 	
 	INIT_GROUP("Highscore", 5);

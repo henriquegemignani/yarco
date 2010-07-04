@@ -54,6 +54,7 @@ struct Extra {
     double unloadDistance;
     point respawnPoint;
     int extraLivesCount;
+    int extraLifeScore;
 };
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -67,6 +68,7 @@ static struct boatDefaults {
     int lives;
 	int boatCapacity;
     double timeStuck;
+    int extraLifeScore;
 } boatDefaults;
 
 void getShipPos(point p)
@@ -157,6 +159,7 @@ void boatInitializeClass()
 	boatDefaults.unloadTime = configGetValue("Gameplay", "UnloadTime").real;
 	boatDefaults.boatCapacity = configGetValue("Gameplay", "BoatCapacity").num;
 	boatDefaults.anchorMultiplier = configGetValue("Gameplay", "AnchorFrictionMultiplier").real;
+	boatDefaults.extraLifeScore = configGetValue("Gameplay", "ExtraLifeScore").num;
 }
 
 boat boatCreate(texture tex, point pos, velocity vel)
@@ -175,6 +178,7 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->defaultTimeStuck = boatDefaults.timeStuck;
     b->extra->unloadTime = boatDefaults.unloadTime;
     b->extra->unloadDistance = boatDefaults.unloadDistance;
+    b->extra->extraLifeScore = boatDefaults.extraLifeScore;
     b->extra->color = b->tex.color;
     b->extra->isAnchored = 0;
     b->extra->isTurning = 0;
@@ -247,7 +251,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
         }
         return;
     }
-    if(b->extra->points >= b->extra->extraLivesCount * SCORE_NEW_LIFE){
+    if(b->extra->points >= b->extra->extraLivesCount * b->extra->extraLifeScore){
     	b->extra->life++;
     	b->extra->extraLivesCount++;
     }
