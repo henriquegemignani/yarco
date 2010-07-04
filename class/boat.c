@@ -221,6 +221,7 @@ void rescuePerson(boat b)
     free (aux);
     b->extra->peopleHeld--;
     b->extra->points += 50;
+    debugMsg("I IS IN RESCUEEEEEEEE");
 }
 
 void boatUpdate(boat b, int keepDir, double timedif)
@@ -269,16 +270,20 @@ void boatUpdate(boat b, int keepDir, double timedif)
         b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
     objectQuadUpdate(b);
     if(b->extra->isAnchored && distanceBetweenPoints(b->pos, shipPos) <= b->extra->unloadDistance){
-        while(b->extra->personList != NULL)
-            if(b->extra->unloadTimeLeft <= 0){
+    	//debugDouble("b->extra->unloadtimeleft", b->extra->unloadTimeLeft);
+        if(b->extra->personList != NULL){
+            if(b->extra->unloadTimeLeft <= 0.0){
+            	debugDouble("b->extra->unloadtimeleft", b->extra->unloadTimeLeft);
                 rescuePerson(b);
                 b->extra->unloadTimeLeft = b->extra->unloadTime;
             }
             else
-                b->extra->unloadTimeLeft -= timedif;
-    }
+                b->extra->unloadTimeLeft = b->extra->unloadTimeLeft - timedif;
+        }
+	}
     else
         b->extra->unloadTimeLeft = b->extra->unloadTime;
+    //debugDouble("dtime", timedif);
 }
 
 void boatRemove(boat b)
