@@ -21,11 +21,7 @@ static int screenSizeX, screenSizeY;
 
 void graphicUpdateObject(object per);
 void graphicInitialize(int mode)
-{
-    if (allegro_init())
-        genError
-            ("Erro em inicializar o allegro. Se voce esta utilizando modo texto, tente --nographic\n");
-    
+{   
 	screenSizeX = configGetValue("General", "ResolutionX").num;
 	screenSizeY = configGetValue("General", "ResolutionY").num;
 	
@@ -119,5 +115,4 @@ void graphicDraw()
 void graphicFinish()
 {
     destroy_bitmap(buffer);
-    allegro_exit();
 }

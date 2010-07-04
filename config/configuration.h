@@ -31,7 +31,6 @@ struct Configuration {
     int debugMode;
     double duration;
     int pause;
-    int graphic;
     int randomSeed;
     int keepSpeed;
     int fps;

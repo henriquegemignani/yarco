@@ -16,10 +16,9 @@ configuration LEGACY_configurationInit()
     AUTOMALLOC(config);
 
     /* Valores padrao. */
-    config->debugMode = 0;
+    config->debugMode = configGetValue("General", "DebugMode").num;
     
     config->pause = 0;
-    config->graphic = 1;
     config->randomSeed = time(NULL);
     config->keepSpeed = 0;
 	config->verbose = 0;
@@ -67,7 +66,6 @@ void argRead(int argc, char **argv, configuration defaults)
         printf
             ("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
              "  -v\t--verbose\t\tFala mais coisas\n"
-             "  -g\t--nographic\tIgnora parte grafica\n"
              "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
              defaults->duration);
         printf
@@ -88,18 +86,16 @@ void argRead(int argc, char **argv, configuration defaults)
            ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dPgknv");
+    argValue = argShortFlags(argc, argv, "dPknv");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
     if (argFind(argc, argv, "--pause", "-P") || argValue[1])
         defaults->pause = 1;
-    if (argFind(argc, argv, "--nographic", "-g") || argValue[2])
-        defaults->graphic = 0;
-    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[3])
+    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[2])
         defaults->keepSpeed = 1;
-    if (argFind(argc, argv, "--nosleep", "-n") || argValue[4])
+    if (argFind(argc, argv, "--nosleep", "-n") || argValue[3])
         defaults->noSleep = 1;
-    if (argFind(argc, argv, "--verbose", "-v") || argValue[5])
+    if (argFind(argc, argv, "--verbose", "-v") || argValue[4])
         defaults->verbose = 1;
     if (argFind(argc, argv, "--christmas", NULL))
         defaults->disco = 0.1;
