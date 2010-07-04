@@ -239,7 +239,7 @@ void objectTableLeave(unsigned int id)
     if(table->list[i] != o)
         genError("Busca deu merda!\n");*/
     table->list[pos] = NULL;
-    objectTableSort();
+   // objectTableSort();
 }
 
 void objectTableRandColor()

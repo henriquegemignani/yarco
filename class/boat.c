@@ -18,6 +18,7 @@
 #define TURN_RIGHT_BUTTON 2
 #define TURN_LEFT_BUTTON 3
 #define ANCHOR_BUTTON 4
+#define SCORE_NEW_LIFE 500
 
 typedef struct objectList *listLink;
 
@@ -33,6 +34,7 @@ struct Extra {
     int color;                  /*Cor usual do bote - guardado uma vez que boat->tex.color nao e constante */
     double accel;               /*Aceleracao do bote, seja para frente ou para tras */
     double friction;            /*Desaceleracao devida ao atrito */
+    double anchorMultiplier;
     int isTurning;              /*Verifica se esta virando, e para qual lado -  -1: sentido horario, 1: sentido anti-horario */
     double turnRate;            /*Quanto o bote pode virar em um segundo, em radianos */
     velocity prevVel;           /*Velocidade anterior, para colisoes com outros botes */
@@ -47,8 +49,11 @@ struct Extra {
     listLink personList;
     int peopleHeld;
     int points;
-    double unloadTimeSpent;
+    double unloadTimeLeft;
+    double unloadTime;
+    double unloadDistance;
     point respawnPoint;
+    int extraLivesCount;
 };
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -162,8 +167,11 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->accel = boatDefaults.accel;
     b->extra->life = /*b->extra->defaultLives =*/ boatDefaults.lives;
     b->extra->friction = boatDefaults.friction;
+    b->extra->anchorMultiplier = boatDefaults.anchorMultiplier;
     b->extra->turnRate = boatDefaults.turnRate;
     b->extra->defaultTimeStuck = boatDefaults.timeStuck;
+    b->extra->unloadTime = boatDefaults.unloadTime;
+    b->extra->unloadDistance = boatDefaults.unloadDistance;
     b->extra->color = b->tex.color;
     b->extra->isAnchored = 0;
     b->extra->isTurning = 0;
@@ -171,14 +179,14 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->anchorButtonHeld = 0;
     b->extra->peopleHeld = 0;
     b->extra->points = 0;
-    b->extra->unloadTimeSpent = boatDefaults.unloadTime;
+    b->extra->unloadTimeLeft = b->extra->unloadTime;
     b->extra->personList = NULL;
+    b->extra->extraLivesCount = 1;
     return b;
 }
 
 void boatReadKeyboard(boat b)
 {
- //TODO: Diferenciar botes
     b->extra->isAccel = 0;
     b->extra->isTurning = 0;
     if(key[b->extra->keyLayout[ACCEL_BUTTON]])
@@ -235,6 +243,10 @@ void boatUpdate(boat b, int keepDir, double timedif)
         }
         return;
     }
+    if(b->extra->points >= b->extra->extraLivesCount * SCORE_NEW_LIFE){
+    	b->extra->life++;
+    	b->extra->extraLivesCount++;
+    }
     boatReadKeyboard(b);
     if(b->extra->isAccel && !b->extra->isAnchored){
     	b->acc.x = -b->extra->accel * cos (b->dir) * b->extra->isAccel;
@@ -243,7 +255,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
     else
     	b->acc = vectorCreate(0,0);
     if(b->extra->isAnchored)
-        anchorRatio = boatDefaults.anchorMultiplier;
+        anchorRatio = b->extra->anchorMultiplier;
     else
         anchorRatio = 1;
     b->acc.x = b->acc.x - b->vel.x * b->extra->friction * anchorRatio;
@@ -253,17 +265,17 @@ void boatUpdate(boat b, int keepDir, double timedif)
     if(!b->extra->isAnchored)
         b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
     objectQuadUpdate(b);
-    if(b->extra->isAnchored && distanceBetweenPoints(b->pos, shipPos) <= boatDefaults.unloadDistance){
+    if(b->extra->isAnchored && distanceBetweenPoints(b->pos, shipPos) <= b->extra->unloadDistance){
         while(b->extra->personList != NULL)
-            if(b->extra->unloadTimeSpent > boatDefaults.unloadTime){
+            if(b->extra->unloadTimeLeft <= 0){
                 rescuePerson(b);
-                b->extra->unloadTimeSpent -= boatDefaults.unloadTime;
+                b->extra->unloadTimeLeft = b->extra->unloadTime;
             }
             else
-                b->extra->unloadTimeSpent += timedif;
+                b->extra->unloadTimeLeft -= timedif;
     }
     else
-        b->extra->unloadTimeSpent = 0;
+        b->extra->unloadTimeLeft = b->extra->unloadTime;
 }
 
 void boatRemove(boat b)
@@ -287,7 +299,7 @@ void boatPersonFree(boat b)
                 genWarning("Nao foi possivel fazer a pessoa cair do bote!\n");
             if(errorCode == ERROR_OBJECT_IS_COLLIDING){
                 do{
-                   aux->person->pos = vectorSum(aux->person->pos, vectorMulDouble(vectorSub(aux->person->pos, b->pos), 1.5));
+                   aux->person->pos = vectorSum(aux->person->pos, vectorMulDouble(vectorSub(aux->person->pos, b->pos), 1.1));
                 }while(objectTableAddObject(aux->person) == ERROR_OBJECT_IS_COLLIDING);
             }
         }
@@ -318,6 +330,7 @@ void boatCollide(boat b, object o, double timediff)
             b->extra->prevVel = b->vel;
             b->vel = o->vel;
         }
+        b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius), o->pos);
         break;
     case TYPE_CORAL:
     	objectSide = o->radius * SQRT_2/2;
@@ -335,14 +348,19 @@ void boatCollide(boat b, object o, double timediff)
         if (abs(b->pos.x - o->pos.x) <= 2 * objectSide
             && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
             b->vel.y *= -1;
+            (b->pos.y >= o->pos.y)? (b->pos.y = o->pos.y + objectSide + b->radius): (b->pos.y = o->pos.y - objectSide - b->radius);
         } else if (abs(b->pos.y - o->pos.y) <= objectSide
                    && abs(b->pos.x - o->pos.x) <=
                    (2 * objectSide + b->radius)) {
             b->vel.x *= -1;
+            (b->pos.x >= o->pos.x)? (b->pos.x = o->pos.x + objectSide*2 + b->radius): (b->pos.x = o->pos.x - objectSide*2 -b->radius);
         } else if (abs(b->pos.x - o->pos.x) >= 2 * objectSide
                    && abs(b->pos.y - o->pos.y) >= objectSide) {
             b->vel.x *= -1;
+            //(b->pos.x >= o->pos.x)? (b->pos.x = o->pos.x + objectSide*2 + b->radius): (b->pos.x = o->pos.x - objectSide*2 - b->radius);
             b->vel.y *= -1;
+            //(b->pos.y >= o->pos.y)? (b->pos.y = o->pos.y + objectSide + b->radius): (b->pos.y = o->pos.y - objectSide - b->radius);
+            b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius), o->pos);
         }
         break;
     case TYPE_PERSON:

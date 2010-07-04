@@ -16,7 +16,7 @@
 #define SCREEN_RATIO_X ((double)(screenSizeX+1)/MAX_X)
 #define SCREEN_RATIO_Y ((double)(screenSizeY+1)/MAX_Y)
 
-BITMAP *buffer;
+static BITMAP *buffer;
 static int screenSizeX, screenSizeY;
 
 void graphicUpdateObject(object per);
@@ -31,7 +31,7 @@ void graphicInitialize(int mode)
 	
 	set_color_depth(32);
     if (mode == WINDOWED_MODE)
-        set_gfx_mode(GFX_AUTODETECT_WINDOWED, screenSizeX, screenSizeY, //TODO: Tornar tamanhop da tela variavel. POG solution: #define SCREEN_SIZE [Nome da variavel]
+        set_gfx_mode(GFX_AUTODETECT_WINDOWED, screenSizeX, screenSizeY,
                      0, 0);
     else if (mode == FULLSCREEN_MODE)
         set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, screenSizeX,
