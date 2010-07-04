@@ -42,10 +42,10 @@ void configInitializeDefaults() {
 	CLOSE_GROUP();
 	
 	INIT_GROUP("Radius", 4);
-	ADD_CONFIG("Person",				   5, TYPE_INT, NULL);
-	ADD_CONFIG("Ship",					  50, TYPE_INT, NULL);
-	ADD_CONFIG("Coral",					  10, TYPE_INT, NULL);
-	ADD_CONFIG("Boat",					  10, TYPE_INT, NULL);
+	ADD_CONFIG("Person",				   5, TYPE_FLOAT, NULL);
+	ADD_CONFIG("Ship",					  50, TYPE_FLOAT, NULL);
+	ADD_CONFIG("Coral",					  10, TYPE_FLOAT, NULL);
+	ADD_CONFIG("Boat",					  10, TYPE_FLOAT, NULL);
 	CLOSE_GROUP();
 	
 	INIT_GROUP("Gameplay", 9);

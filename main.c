@@ -42,7 +42,6 @@ int main(int argc, char **argv)
         timeDifference = 0, 
 		timeSinceLastIteration = 0, 
 		newPersonInterval,
-		val,
 		discoInterval /*...? */ ;
     ship asimov;
     boat* players;
@@ -75,9 +74,8 @@ int main(int argc, char **argv)
     asimov = shipNew(createTexture(80, 80, 80, TEX_HORIZONTAL_RETANGLE));
     objectTableAddObject(asimov);
 
-	val = configGetValue("General", "PersonAverageSpeed").real;
     for (i = 0; i < defaults->numPeople; i++)
-        if (personAddNewToTable(val, defaults->verbose) == NULL)
+        if (personAddNewToTable(defaults->defaultSpeed, defaults->verbose) == NULL)
             genError("Erro: limite de objetos atingido!\n");
     /* AVISO: genError sai do programa */
     newPersonInterval = randomizeAround(defaults->createPeriod, STD_DIST);
@@ -103,7 +101,7 @@ int main(int argc, char **argv)
 
         if ((newPersonInterval -= timeDifference) < 0 && defaults->createPeriod > 0) {
             newPersonInterval += randomizeAround(defaults->createPeriod, STD_DIST);
-            personAddNewToTable(configGetValue("General", "PersonAverageSpeed").real, defaults->verbose);
+            personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
         }
 
         objectTableUpdate(timeDifference, timeSinceLastIteration > 1);

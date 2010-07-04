@@ -24,16 +24,7 @@
 #define SQRT_2 1.414213562
 #define SQRT_5 2.236067977
 
-#define PERSON_NUM_LIMIT            100
-#define PERSON_NUM_INIT             30
-#define CORAL_NUM_INIT				12
-#define OBJECT_NUM_LIMIT			150
-#define PERSON_CREATE_RATE_DEFAULT  5
 #define PERSON_SPEED_DEFAULT        10
-#define PERSON_RADIUS               5
-#define SHIP_RADIUS					50
-#define CORAL_RADIUS                10
-#define BOAT_RADIUS					10
 #define MAX_X                       1023
 #define MAX_Y                       767
 #define DURATION_DEFAULT            50.0
@@ -41,13 +32,6 @@
 #define NUM_CLASS                   4
 #define QUAD_SIZE_X                 100
 #define QUAD_SIZE_Y                 100
-#define DEFAULT_FPS 				30
-
-#define DEFAULT_TURNRATE   			(PI/2)
-#define DEFAULT_ACCEL 				50
-#define DEFAULT_FRICTION 			0.5
-#define DEFAULT_TIME_STUCK 			5
-#define DEFAULT_LIVES 				3
 
 #include <stdio.h>              /* Agora nenhum arquivo precisa incluir essa biblioteca */
 #include <stdlib.h>

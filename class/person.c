@@ -9,7 +9,7 @@
 #include "../lib/vector.h"
 #include "../lib/objecttable.h"
 #include "../lib/class.h"
-#include "../lib/configuration.h"
+#include "../config/configuration.h"
 
 void boatRetrievePerson(object b, person p);
 int boatFullOrCrashed(object b);
@@ -27,7 +27,9 @@ vector newDirection(vector v)
 
 person personCreate(texture tex, point pos, velocity vel)
 {
-    return objectCreate(TYPE_PERSON, 0, pos, vel, PERSON_RADIUS, tex);
+	static double personRadius = -1;
+	if(personRadius == -1) personRadius = configGetValue("Radius", "Person").real;
+    return objectCreate(TYPE_PERSON, 0, pos, vel, personRadius, tex);
 }
 
 void personGeneratePosAndVelInBorder(double speed, point * pos,

@@ -28,14 +28,9 @@ configuration LEGACY_configurationInit()
 	if(config->fps <= 0)
 		config->noSleep = 1;
 	
-	config->defaultSpeed = PERSON_SPEED_DEFAULT;
+	config->defaultSpeed = configGetValue("General", "PersonAverageSpeed").real;
 	config->createPeriod = configGetValue("General", "PersonCreatePeriod").real;
 	config->duration = DURATION_DEFAULT;
-    config->accel = DEFAULT_ACCEL;
-    config->friction = DEFAULT_FRICTION;
-    config->turnRate = DEFAULT_TURNRATE;
-    config->lives = DEFAULT_LIVES;
-    config->timeStuck = DEFAULT_TIME_STUCK;
     config->numPeople = configGetValue("General", "PersonInitialAmmount").num;
     config->numCorals = configGetValue("General", "CoralInitialAmount").num;
     

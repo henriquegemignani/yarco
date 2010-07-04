@@ -162,7 +162,10 @@ void boatInitializeClass()
 boat boatCreate(texture tex, point pos, velocity vel)
 {
     boat b;
-    b = objectCreate(TYPE_BOAT, 0, pos, vel, BOAT_RADIUS, tex);
+	static double boatRadius = -1;
+	if(boatRadius == -1) boatRadius = configGetValue("Radius", "Boat").real;
+	
+    b = objectCreate(TYPE_BOAT, 0, pos, vel, boatRadius, tex);
     AUTOMALLOC(b->extra);
     b->extra->accel = boatDefaults.accel;
     b->extra->life = /*b->extra->defaultLives =*/ boatDefaults.lives;

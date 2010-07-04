@@ -18,8 +18,10 @@ point coralGeneratePosition()
 
 coral coralCreate(texture tex, point pos)
 {
+	static double coralRadius = -1;
+	if(coralRadius == -1) coralRadius = configGetValue("Radius", "Coral").real;
     return objectCreate(TYPE_CORAL, 0, pos, vectorCreate(0, 0),
-                        randomizeAround(CORAL_RADIUS, STD_DIST), tex);
+                        randomizeAround(coralRadius, STD_DIST), tex);
 }
 
 /* Funcoes publicas. */
