@@ -209,6 +209,7 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->timeStuckLeft = 0;
     b->extra->personList = NULL;
     b->extra->extraLivesCount = 1;
+    b->extra->prevVel = vectorCreate(0,0);
     return b;
 }
 
@@ -386,10 +387,12 @@ void boatCollide(boat b, object o, double timediff)
             b->extra->prevVel = b->vel;
             b->vel = o->vel;
         }
+
         b->pos =
             vectorSum(vectorLengthSet
                       (vectorSub(b->pos, o->pos),
                        b->radius + o->radius + 1), o->pos);
+
         break;
     case TYPE_CORAL:
         objectSide = o->radius * SQRT_2 / 2;
