@@ -11,9 +11,8 @@
 #include "../lib/class.h"
 #include "../config/configuration.h"
 
-void boatRetrievePerson(object b, person p);
 int boatFullOrCrashed(object b);
-void boatScoreAdd(object b, int point);
+//void personBoatCollision(object b, object o); /*Funcao que trata colisao de pessoa e bote, caso o bote nao esteja cheio*/
 
 /* Funcoes privadas. */
 
@@ -218,11 +217,7 @@ void personCollide(person per, object other, double timedif)
     case TYPE_BOAT:
         //objectTableRemoveObject(per);
         debugMsg("Lolpersonboatcollision");
-        if (!boatFullOrCrashed(other)) {
-            boatRetrievePerson(other, per);
-            objectTableLeave(per->id);
-            boatScoreAdd(other, 10);
-        } else {
+        if (boatFullOrCrashed(other)) {
             per->pos =
                 vectorSum(vectorLengthSet
                           (vectorSub(per->pos, other->pos),

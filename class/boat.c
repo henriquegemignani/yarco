@@ -130,12 +130,12 @@ int boatFullOrCrashed(boat b)
     return (b->extra->peopleHeld >= boatDefaults.boatCapacity
             || b->extra->timeStuckLeft > 0);
 }
-
+/*
 void boatScoreAdd(boat b, int point)
 {
     b->extra->points += point;
 }
-
+*/
 void boatRetrievePerson(boat b, object o) /*Move a pessoa pro bote*/
 {
     listLink newLink;
@@ -367,6 +367,13 @@ void boatCrash(boat b)
     b->extra->timeStuckLeft = b->extra->defaultTimeStuck;
 }
 
+void personBoatCollision(boat b, object o)
+{
+    boatRetrievePerson(b, o);
+    b->extra->points += 10;
+    objectTableLeave(o->id);
+}
+
 void boatCollide(boat b, object o, double timediff)
 {
     double objectSide;          /*Variavel que guarda o tamanho de um dos lados do outro objeto, caso seja o Asimov ou um coral */
@@ -430,11 +437,8 @@ void boatCollide(boat b, object o, double timediff)
         }
         break;
     case TYPE_PERSON:
-        if (!boatFullOrCrashed(b)) {
-            boatRetrievePerson(b, o);
-            b->extra->points += 10;
-            objectTableLeave(o->id);
-        }
+        if (!boatFullOrCrashed(b))
+            personBoatCollision(b, o);
         break;
     default:
         genWarning("Colisao de barco com tipo desconhecido!\n");
