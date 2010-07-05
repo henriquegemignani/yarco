@@ -47,11 +47,3 @@ int yyerror (char *err) {
 		fprintf(stderr, "%s\n", err);
 	return 0;
 }
-
-/* int main (void) { 
-	configInitializeDefaults();
-	configurationRead(stdin);
-	configurationWrite(stdout);
-	configurationFinish();
-	return 0;
-} */

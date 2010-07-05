@@ -245,7 +245,10 @@ void logicLoopRunning(double timeDifference)
 void logicLoopHighScore(double timeDifference)
 {
 	static int highscore_size = -1;
-	/* TODO: terminar isso lololol */
+	if(highscore_size == -1)
+		highscore_size = configGetValue("General", "NumPlayers").num + 5;
+	if(scoretable == NULL)
+		logicCreateScoreTable();
 	graphicDrawHighScore(scoretable, highscore_size);
 }
 
