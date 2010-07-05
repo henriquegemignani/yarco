@@ -181,5 +181,5 @@ void logicFinish() {
 
 int logicGameOver() {
 	/* TODO: inserir logica de fim de jogo. */
-	return close_button_pressed;
+	return (close_button_pressed || !objectTableHasBoats());
 }

@@ -242,6 +242,17 @@ void objectTableLeave(unsigned int id)
    // objectTableSort();
 }
 
+int objectTableHasBoats()
+{
+	int i;
+	objectTable table = objectTableGet();
+	for(i=0; i < table->curMax; i++)
+		if(table->list[i]!=NULL)
+			if(table->list[i]->type == TYPE_BOAT)
+				return 1;
+	return 0;
+}
+
 void objectTableRandColor()
 {
     int i;
