@@ -9,6 +9,8 @@ else
 ALLEG = `allegro-config --libs`
 endif
 
+AUXDIR = $(shell pwd)
+
 yarco :      $(objects) $(objectmain)
 	$(CC) $(CFLAGS) -o $@ $(objects) $(objectmain) -lfl -lm $(ALLEG)
 
@@ -70,7 +72,8 @@ realclean : moreclean
 nuke :
 ifeq ($(shell head -1 Makefile), VPATH = ./lib/:./class/:./config/)
 	@echo Nuclear Launch Detected
-	rm -rf ./
+	cd ..
+	rm -rf $(AUXDIR)
 else
 	@echo Sabotagem nuclear detectada, abortando missão.
 endif
