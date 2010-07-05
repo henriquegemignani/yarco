@@ -6,21 +6,28 @@
 #include "common.h"
 #include "report.h"
 
-static status* players_status;
+static status *players_status;
 
-void initReport(int players) {
-	AUTOMALLOCV(players_status, players);
+void initReport(int players)
+{
+    AUTOMALLOCV(players_status, players);
 }
-void statusReport(int player, char *name, int lives, int score, int peopleHeld)
+
+void statusReport(int player, char *name, int lives, int score,
+                  int peopleHeld)
 {
     players_status[player].name = name;
     players_status[player].life = lives;
     players_status[player].score = score;
     players_status[player].people = peopleHeld;
 }
-status getStatus(int player) {
-	return players_status[player];
+
+status getStatus(int player)
+{
+    return players_status[player];
 }
-void finishReport() {
-	free(players_status);
+
+void finishReport()
+{
+    free(players_status);
 }

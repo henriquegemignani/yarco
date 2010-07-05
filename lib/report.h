@@ -16,7 +16,8 @@ typedef struct {
 } status;
 
 void initReport(int players);
-void statusReport(int player, char *name, int lives, int score, int peopleHeld);
+void statusReport(int player, char *name, int lives, int score,
+                  int peopleHeld);
 status getStatus(int player);
 void finishReport();
 

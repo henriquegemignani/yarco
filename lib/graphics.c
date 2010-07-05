@@ -26,6 +26,7 @@
 #define LIFE_DISPLAY_Y 40
 #define SCORE_DISPLAY_Y 30
 #define PEOPLE_DISPLAY_Y 20
+#define GAMEOVER_MSG_Y (screenSizeY/2 - 80)
 #define HIGHSCORE_OFFSET_Y (screenSizeY/2 - 30)
 #define HIGHSCORE_DIST_Y 10
 
@@ -165,7 +166,17 @@ void graphicDrawHighScore( /*struct HighScore* scoretable, */ int ammount)
 {
     int i;
     double yRatio = SCREEN_RATIO_Y;
+	static char* gameOverMsg = NULL;
+	
+	if(gameOverMsg == NULL)
+		gameOverMsg = configGetValue("General", "GameOver").str;
+	
     rectfill(buffer, 0, 0, screenSizeX, screenSizeY, BLACK);
+	
+	textprintf_centre_ex(buffer, font, screenSizeX / 2,
+                         GAMEOVER_MSG_Y * yRatio, WHITE, BLACK,
+                         gameOverMsg);
+	
     textprintf_centre_ex(buffer, font, screenSizeX / 2,
                          HIGHSCORE_OFFSET_Y * yRatio, WHITE, BLACK,
                          "HIGHSCORES!");
