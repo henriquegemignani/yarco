@@ -8,6 +8,7 @@
 #include "../lib/objecttable.h"
 #include "../lib/vector.h"
 #include "../config/configuration.h"
+#include "../lib/report.h"
 #include <math.h>
 #include <allegro.h>
 
@@ -54,9 +55,6 @@ struct Extra {
     int extraLifeScore;
     char *name;
 };
-
-void graphicStatusReport(char *name, int player, int lives, int score,
-                         int peopleHeld);
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
 static struct boatDefaults {
@@ -313,7 +311,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
     } else
         b->extra->unloadTimeLeft = b->extra->unloadTime;
 
-    graphicStatusReport(b->extra->name, b->extra->player, b->extra->life,
+    statusReport(b->extra->player, b->extra->name, b->extra->life,
                         b->extra->points, b->extra->peopleHeld);
 }
 

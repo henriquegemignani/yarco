@@ -1,5 +1,5 @@
 VPATH = ./lib/:./class/:./config/
-objects = graphics.o common.o object.o person.o objecttable.o class.o ship.o coral.o boat.o vector.o config_flex.o config_bison.o values.o command_line.o logic.o
+objects = graphics.o common.o object.o person.o objecttable.o class.o ship.o coral.o boat.o vector.o config_flex.o config_bison.o values.o command_line.o logic.o report.o
 objectmain = main.o
 CC = gcc
 CFLAGS = -Wall -g # -pedantic -ansi -D_POSIX_C_SOURCE=199309L
@@ -15,16 +15,17 @@ yarco :      $(objects) $(objectmain)
 main.o :		common.h logic.h main.c
 common.o :      common.h common.c
 object.o :      common.h object.h vector.h object.c
-graphics.o :    common.h object.h objecttable.h graphics.h graphics.c
+graphics.o :    common.h object.h objecttable.h report.h graphics.h graphics.c
 command_line.o: common.h configuration.h command_line.c
 objecttable.o : common.h object.h class.h objecttable.h configuration.h objecttable.c
 class.o :       common.h object.h class.h class.c
 person.o :      common.h object.h class.h objecttable.h vector.h person.h person.c
 ship.o :		common.h object.h class.h objecttable.h ship.h ship.c
 coral.o :		common.h object.h class.h objecttable.h coral.h coral.c
-boat.o :		common.h object.h class.h objecttable.h vector.h boat.h boat.c
+boat.o :		common.h object.h class.h objecttable.h vector.h report.h boat.h boat.c
 vector.o :		common.h vector.h vector.c
-logic.o :		common.h object.h objecttable.h configuration.h graphics.h class.h person.h ship.h coral.h boat.h logic.c
+logic.o :		common.h object.h objecttable.h configuration.h graphics.h class.h person.h ship.h coral.h boat.h report.h logic.c
+report.o :		common.h report.h report.c
 
 values.o : 		common.h configuration.h values.c values_default.c
 
@@ -58,7 +59,7 @@ clean :
 
 .PHONY : moreclean
 moreclean : clean
-	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ class/\#*\# class/*~  yarco*
+	rm -f autoTODO.txt \#*\# *~ */\#*\# */*~ yarco*
 
 .PHONY : realclean
 realclean : moreclean
@@ -71,12 +72,12 @@ ifeq ($(shell head -1 Makefile), VPATH = ./lib/:./class/:./config/)
 	@echo Nuclear Launch Detected
 	rm -rf ./
 else
-	@echo Sabotagem nuclear detectando, abortando missão.
+	@echo Sabotagem nuclear detectada, abortando missão.
 endif
 
 .PHONY : TODO
 TODO : 
-	grep TODO *.[ch] lib/*.[ch] class/*.[ch] > autoTODO.txt
+	grep TODO *.[ch] */* > autoTODO.txt
 
 .PHONY: publish
 publish : moreclean yarco

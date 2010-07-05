@@ -8,6 +8,7 @@
 #include "lib/graphics.h"
 #include "lib/objecttable.h"
 #include "lib/class.h"
+#include "lib/report.h"
 #include "class/person.h"
 #include "class/ship.h"
 #include "class/coral.h"
@@ -86,7 +87,7 @@ void logicInitialize(int argc, char *argv[])
     max = configGetValue("General", "NumPlayers").num;
     for (i = 0; i < max; ++i)
         boatAddNewToTable(i);
-
+	initReport(max);
     /* Asimov */
     objectTableAddObject(shipNew
                          (createTexture
@@ -180,11 +181,38 @@ double logicLoop(double timeDifference)
     return timeDifference;
 }
 
+struct highscore {
+	char* name;
+	int score;
+};
+
 void logicFinish()
 {
+	struct highscore* score;
+	char rankScore[11], rankName[10];
+	int i, player, numplayers = configGetValue("General", "NumPlayers").num;
+	
     graphicFinish();
     allegro_exit();
     objectTableFinish();
+	
+	strcpy(rankScore, "RankNScore");
+	strcpy(rankName,  "RankNName");
+	AUTOMALLOCV(score, 5 + numplayers);
+	for(i = 0; i < 5; ++i) {
+		rankScore[4] = i;
+		rankName[4] = i;
+		score[i].score = configGetValue("Highscore", rankScore).num;
+		score[i].name = configGetValue("Highscore", rankName).str;
+	}
+	for(player = 0; player < numplayers; ++player) {
+		score[5 + player].score = getStatus(player).score;
+		score[5 + player].name = getStatus(player).name;
+	}
+	
+	free(score);
+		
+	finishReport();
     configurationFinish("config.ini");
     classFinish();
 }

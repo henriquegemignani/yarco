@@ -8,6 +8,7 @@
 #include "object.h"
 #include "objecttable.h"
 #include "../config/configuration.h"
+#include "report.h"
 
 #include <math.h>
 #include <allegro.h>
@@ -30,25 +31,14 @@
 
 static BITMAP *buffer;          ///*, *blueBoat, *redBoat*/;
 static int screenSizeX, screenSizeY, screenGameArea, screenDisplayArea;
-
-static struct {
-    char *name;
-    int life;
-    int score;
-    int people;
-} *players_status;
-
 void graphicUpdateObject(object per);
 void graphicInitialize(int mode)
 {
-    int numplayers = configGetValue("General", "NumPlayers").num;
     screenSizeX = configGetValue("General", "ResolutionX").num;
     screenSizeY = configGetValue("General", "ResolutionY").num;
 
     screenGameArea = floor(GAME_SCREEN_PROPORTION * screenSizeY);
     screenDisplayArea = screenSizeY - screenGameArea;
-
-    AUTOMALLOCV(players_status, numplayers);
 
     set_color_depth(32);
     if (mode == WINDOWED_MODE)
@@ -59,7 +49,6 @@ void graphicInitialize(int mode)
                      screenSizeY, 0, 0);
 
     buffer = create_bitmap(screenSizeX, screenSizeY);
-    //blueBoat =
     rectfill(buffer, 0, 0, screenSizeX, screenGameArea, SEA_COLOR);
     rectfill(buffer, 0, screenGameArea, screenSizeX, screenSizeY, WHITE);
 }
@@ -132,43 +121,36 @@ void graphicUpdateObject(object per)
     destroy_bitmap(tmp);
 }
 
-void graphicStatusReport(char *name, int player, int lives, int score,
-                         int peopleHeld)
-{
-    players_status[player].name = name;
-    players_status[player].life = lives;
-    players_status[player].score = score;
-    players_status[player].people = peopleHeld;
-}
-
 void graphicDisplayUpdate()
 {
     static int numplayers = -1;
     char buf[50];
     double screenRatioX = SCREEN_RATIO_X, screenRatioY = SCREEN_RATIO_Y;
     int i, offsetX;
+	status players_status;
     if (numplayers == -1)
         numplayers = configGetValue("General", "NumPlayers").num;
     rectfill(buffer, 0, screenGameArea, screenSizeX, screenSizeY, WHITE);
 
     for (i = 0; i < numplayers; ++i) {
+		players_status = getStatus(i);
         offsetX =
             (PLAYER_MULTIPLAYER_DISPLAY_X * i +
              PLAYER_OFFSET_DISPLAY_X) * screenRatioX;
         textout_ex(buffer, font,
-                   players_status[i].name ==
-                   NULL ? "" : players_status[i].name, offsetX,
+                   players_status.name ==
+                   NULL ? "" : players_status.name, offsetX,
                    screenSizeY - (PLAYER_DISPLAY_Y * screenRatioY), BLACK,
                    WHITE);
-        snprintf(buf, 50, "VIDAS: %d", players_status[i].life);
+        snprintf(buf, 50, "VIDAS: %d", players_status.life);
         textout_ex(buffer, font, buf, offsetX,
                    screenSizeY - (LIFE_DISPLAY_Y * screenRatioY), BLACK,
                    WHITE);
-        snprintf(buf, 50, "PONTOS: %d", players_status[i].score);
+        snprintf(buf, 50, "PONTOS: %d", players_status.score);
         textout_ex(buffer, font, buf, offsetX,
                    screenSizeY - (SCORE_DISPLAY_Y * screenRatioY), BLACK,
                    WHITE);
-        snprintf(buf, 50, "PASSAGEIROS: %d", players_status[i].people);
+        snprintf(buf, 50, "PASSAGEIROS: %d", players_status.people);
         textout_ex(buffer, font, buf, offsetX,
                    screenSizeY - (PEOPLE_DISPLAY_Y * screenRatioY), BLACK,
                    WHITE);
@@ -190,6 +172,5 @@ void graphicDraw()
 
 void graphicFinish()
 {
-    free(players_status);
     destroy_bitmap(buffer);
 }
