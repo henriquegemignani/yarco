@@ -34,12 +34,9 @@ line
 	;
 
 exp
-: STRING '=' NUM { 
-	configValue val;
-	val.num = (int) $3;
-	val.real = (float) $3;
-	configSet($1, val); 
-};
+: STRING '=' NUM	{ configSet($1, createConfigValue($3, NULL)); }
+| STRING '=' STRING	{ configSet($1, createConfigValue(-1, $3)); }
+;
 
 %%
 

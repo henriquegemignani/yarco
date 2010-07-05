@@ -52,9 +52,10 @@ struct Extra {
     point respawnPoint;
     int extraLivesCount;
     int extraLifeScore;
+	char* name;
 };
 
-void graphicStatusReport(int player, int lives, int score, int peopleHeld);
+void graphicStatusReport(char* name, int player, int lives, int score, int peopleHeld);
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
 static struct boatDefaults {
@@ -102,7 +103,9 @@ void boatGetControls(boat b, int player)
 
 boat boatNew(int player)
 {
-    point pos = vectorCreate((double)MAX_X/4 + (double)player * (double)MAX_X/2, (double)MAX_Y/2);
+	int numPlayers = configGetValue("General", "NumPlayers").num;
+	double startAngle = PI - player * 2*PI / numPlayers;
+    point pos = vectorCreate(MAX_X/2 + MAX_X/8 * cos(startAngle), MAX_Y/2 + MAX_Y/8 * sin(startAngle));
     velocity vel = vectorCreate(0,0);
     boat b;
 	texture tex;
@@ -118,6 +121,7 @@ boat boatNew(int player)
     b->extra->player = player;
     boatGetControls(b, player);
     b->extra->respawnPoint = b->pos;
+	b->extra->name = configGetValue(confgroup, "Name").str;
     return b;
 }
 
@@ -186,6 +190,7 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->peopleHeld = 0;
     b->extra->points = 0;
     b->extra->unloadTimeLeft = b->extra->unloadTime;
+	b->extra->timeStuckLeft = 0;
     b->extra->personList = NULL;
     b->extra->extraLivesCount = 1;
     return b;
@@ -210,8 +215,7 @@ void boatReadKeyboard(boat b)
         }
     }
     else
-        if(b->extra->anchorButtonHeld)
-            b->extra->anchorButtonHeld = 0;
+        b->extra->anchorButtonHeld = 0;
 
 }
 
@@ -232,20 +236,21 @@ void boatUpdate(boat b, int keepDir, double timedif)
     double anchorRatio;
     if (b->extra->timeStuckLeft > 0) {  /*Se o barco esta encalhado */
         b->extra->timeStuckLeft -= timedif;
-        b->tex.color = b->extra->color / 2;     /*Torna o bote mais escuro - note que
-                                                   os valores para R e G sempre sao pares para lidar com isso */
+        b->tex.color = b->extra->color / 2;     
+		/* Torna o bote mais escuro - note que os valores para R e G sempre sao pares para lidar com isso */
+		
         if (b->extra->timeStuckLeft <= 0) {
-        	if(b->extra->life >= 0){
+        	if(b->extra->life >= 0) {
         		b->extra->timeStuckLeft = 0;
         		b->pos = b->extra->respawnPoint;
         		b->vel = vectorCreate(0,0);
         		b->acc = vectorCreate(0,0);
         		b->dir = 0;
-        		b->tex.color = b->extra->color;     /*Retornando a cor original,
-						  ja que o bote muda de cor quando encalhado */
-	  }
-	  else
-	    b->toBeRemoved = 1;
+        		b->tex.color = b->extra->color;     
+				/* Retornando a cor original, ja que o bote muda de cor quando encalhado */
+            }
+            else
+                b->toBeRemoved = 1;
         }
         return;
     }
@@ -285,7 +290,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
     else
         b->extra->unloadTimeLeft = b->extra->unloadTime;
 
-   graphicStatusReport(b->extra->player, b->extra->life, b->extra->points, b->extra->peopleHeld);
+   graphicStatusReport(b->extra->name, b->extra->player, b->extra->life, b->extra->points, b->extra->peopleHeld);
 }
 
 void boatRemove(boat b)

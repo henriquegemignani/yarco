@@ -7,7 +7,13 @@
 #include "configuration.h"
 #include <string.h>
 
-enum configValueType { TYPE_INT, TYPE_FLOAT, TYPE_BOOLEAN, TYPE_HEXADECIMAL };
+enum configValueType { 
+	TYPE_INT, 
+	TYPE_FLOAT, 
+	TYPE_BOOLEAN, 
+	TYPE_HEXADECIMAL, 
+	TYPE_STRING 
+};
 
 typedef struct {
 	char* name;
@@ -22,11 +28,10 @@ struct ConfigGroup {
 	int list_size;
 };
 
-static void AddConfig(ConfigItem* target, int* id, char* config, float val, 
-		enum configValueType type, char* comment) {
+static void AddConfig(ConfigItem* target, int* id, char* config, float val,
+		char* str, enum configValueType type, char* comment) {
 	target[*id].name = config;
-	target[*id].val.num = (int)val;
-	target[*id].val.real = val;
+	target[*id].val = createConfigValue(val, str);
 	target[*id].comment = comment;
 	target[*id].type = type;
 	++(*id);
@@ -36,7 +41,8 @@ void configSort(ConfigItem* target, int size) {
 	/* TODO: inserir uma ordenacao aqui. */
 }
 
-#define ADD_CONFIG(str, val, comment, type) AddConfig(config_list[group].list, &id, str, val, comment, type)
+#define ADD_CONFIG(str, val, type, comment) AddConfig(config_list[group].list, &id, str, val, NULL, type, comment)
+#define ADD_CONFIGSTRING(str, val, comment) AddConfig(config_list[group].list, &id, str, -1, val, TYPE_STRING, comment)
 #define INIT_GROUP(str, size) id=0, group = getGroupID(str); \
 	AUTOMALLOCV(config_list[group].list, config_list[group].list_size = size);
 #define CLOSE_GROUP() configSort(config_list[group].list, config_list[group].list_size)
@@ -73,10 +79,12 @@ void configurationWrite(FILE* target) {
 			case TYPE_HEXADECIMAL:
 				fprintf(target, "%#.6x", config_list[group].list[i].val.num);
 				break;
+			case TYPE_STRING:
+				fprintf(target, "\"%s\"", config_list[group].list[i].val.str);
 			default: break;
 			}
 			if(config_list[group].list[i].comment != NULL)
-				fprintf(target, " // %s", config_list[group].list[i].comment);
+				fprintf(target, " # %s", config_list[group].list[i].comment);
 			fprintf(target, "\n");
 		}
 		fprintf(target, "\n");
@@ -84,7 +92,7 @@ void configurationWrite(FILE* target) {
 }
 
 void configurationFinish(char* config_file) {
-	int group;
+	int group, i;
 	FILE* fp = NULL;
 	if(config_file != NULL)
 		fp = fopen(config_file, "w");
@@ -92,9 +100,25 @@ void configurationFinish(char* config_file) {
 		configurationWrite(fp);
 		fclose(fp);
 	}
-	for(group = 0; group < NUM_CONFIG_GROUPS; ++group)
+	for(group = 0; group < NUM_CONFIG_GROUPS; ++group) {
+		for(i = 0; i < config_list[group].list_size; ++i)
+			if(config_list[group].list[i].val.str != NULL)
+				free(config_list[group].list[i].val.str);
 		free(config_list[group].list);
+	}
 	LEGACY_configurationFinish();
+}
+
+configValue createConfigValue(double real, char* str) {
+	configValue val;
+	val.num = (int) real;
+	val.real = (float) real;
+	if(str != NULL) {
+		AUTOMALLOCV(val.str, strlen(str) + 1);
+		strcpy(val.str, str);
+	} else
+		val.str = NULL;
+	return val;
 }
 
 /* Setters */
@@ -107,6 +131,8 @@ int configSet(char* str, configValue val) {
 	int i;
 	for(i = 0; i < config_list[config_currentGroup].list_size; ++i) {
 		if(strcasecmp(config_list[config_currentGroup].list[i].name, str) == 0 ) {
+			if(config_list[config_currentGroup].list[i].val.str != NULL)
+				free(config_list[config_currentGroup].list[i].val.str);
 			config_list[config_currentGroup].list[i].val = val;
 			return 0;
 		}

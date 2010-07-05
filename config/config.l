@@ -29,8 +29,18 @@ extern YYSTYPE yylval;
 	return NUM;
 }
 
-[a-zA-Z][a-zA-Z 0-9]* {
-	sscanf(yytext, "%s", yylval.str);
+\"[a-zA-Z 0-9]+\" {
+	strncpy(yylval.str, yytext + 1, 255);
+	if(strlen(yytext + 1) < 255)
+		yylval.str[strlen(yytext + 1) - 1] = '\0';
+	else
+		yylval.str[255] = '\0';
+	return STRING;
+}
+
+[a-zA-Z][a-zA-Z0-9]* {
+	strncpy(yylval.str, yytext, 255);
+	yylval.str[255] = '\0';
 	return STRING;
 }
 

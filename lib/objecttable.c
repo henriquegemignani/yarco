@@ -6,7 +6,7 @@
 #include "objecttable.h"
 #include "common.h"
 #include "class.h"
-#include "configuration.h"
+#include "../config/configuration.h"
 
 struct ObjectTable {
     object* list;
