@@ -63,7 +63,7 @@ void graphicUpdateObject(object per)
     BITMAP *tmp =
         create_bitmap(per->radius * 3 * xRatio, per->radius * 3 * yRatio);
     point aux1, aux2, aux3, p = objectGetPos(per);
-    xRatio = SCREEN_RATIO_X;    /*Economizar processamento, ja que vai ser feito muitas vezes*/
+    xRatio = SCREEN_RATIO_X;    /*Economizar processamento, ja que vai ser feito muitas vezes */
     yRatio = SCREEN_RATIO_Y;
     p.x *= xRatio;
     p.y *= yRatio;
@@ -131,13 +131,13 @@ void graphicDisplayUpdate()
     char buf[50];
     double screenRatioX = SCREEN_RATIO_X, screenRatioY = SCREEN_RATIO_Y;
     int i, offsetX;
-	status players_status;
+    status players_status;
     if (numplayers == -1)
         numplayers = configGetValue("General", "NumPlayers").num;
     rectfill(buffer, 0, screenGameArea, screenSizeX, screenSizeY, WHITE);
 
     for (i = 0; i < numplayers; ++i) {
-		players_status = getStatus(i);
+        players_status = getStatus(i);
         offsetX =
             (PLAYER_MULTIPLAYER_DISPLAY_X * i +
              PLAYER_OFFSET_DISPLAY_X) * screenRatioX;
@@ -161,14 +161,20 @@ void graphicDisplayUpdate()
     }
 }
 
-void graphicDrawHighScore(/*struct HighScore* scoretable,*/ int ammount) {
+void graphicDrawHighScore( /*struct HighScore* scoretable, */ int ammount)
+{
     int i;
     double yRatio = SCREEN_RATIO_Y;
     rectfill(buffer, 0, 0, screenSizeX, screenSizeY, BLACK);
-    textprintf_centre_ex(buffer, font, screenSizeX/2, HIGHSCORE_OFFSET_Y*yRatio, WHITE, BLACK, "HIGHSCORES!");
-    for (i=0; i<ammount; i++)
-        textprintf_centre_ex(buffer, font, screenSizeX/2, (HIGHSCORE_OFFSET_Y + HIGHSCORE_DIST_Y * (i+1))*yRatio, WHITE, BLACK, 
-			"%-32s %12d", logicGetPlayerName(i), logicGetScore(i));
+    textprintf_centre_ex(buffer, font, screenSizeX / 2,
+                         HIGHSCORE_OFFSET_Y * yRatio, WHITE, BLACK,
+                         "HIGHSCORES!");
+    for (i = 0; i < ammount; i++)
+        textprintf_centre_ex(buffer, font, screenSizeX / 2,
+                             (HIGHSCORE_OFFSET_Y +
+                              HIGHSCORE_DIST_Y * (i + 1)) * yRatio, WHITE,
+                             BLACK, "%-32s %12d", logicGetPlayerName(i),
+                             logicGetScore(i));
     graphicDraw();
 }
 

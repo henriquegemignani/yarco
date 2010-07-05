@@ -101,7 +101,7 @@ void genError(char *msg);
 void genWarning(char *msg);
 
 /* Da malloc numa string de strlen(source) + 1 e depois chama strcpy */
-char* strcpyWithMalloc(char* source);
+char *strcpyWithMalloc(char *source);
 
 
 /* WARNING AND ERROR CODES */

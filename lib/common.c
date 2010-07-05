@@ -113,11 +113,12 @@ void genWarning(char *msg)
     fprintf(stderr, "%s", msg);
 }
 
-char* strcpyWithMalloc(char* source) {
-	char* str;
-	AUTOMALLOCV(str, (strlen(source) + 1));
-	strcpy(str, source);
-	return str;
+char *strcpyWithMalloc(char *source)
+{
+    char *str;
+    AUTOMALLOCV(str, (strlen(source) + 1));
+    strcpy(str, source);
+    return str;
 }
 
 void MALLOC_DIE()

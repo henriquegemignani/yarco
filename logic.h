@@ -8,6 +8,7 @@
 
 typedef enum {
 	GAME_NOT_STARTED,
+	GAME_TITLE_SCREEN,
 	GAME_RUNNING,
 	GAME_HIGHSCORE,
 	GAME_DONE
@@ -28,6 +29,7 @@ void logicSleep();
 void logicInitialize(int argc, char* argv[]);
 
 double logicLoop(double timeDifference);
+void logicLoopTitleScreen(double timeDifference);
 void logicLoopRunning(double timeDifference);
 void logicLoopHighScore(double timeDifference);
 

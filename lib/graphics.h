@@ -17,7 +17,7 @@ typedef struct GraphicEngine *graphicEngine;
 para cada pessoa desenhada.*/
 void graphicInitialize(int mode);
 
-void graphicDrawHighScore(/*struct HighScore* scoretable,*/ int ammount);
+void graphicDrawHighScore( /*struct HighScore* scoretable, */ int ammount);
 
 /*Atualiza os buffers*/
 void graphicUpdate();
