@@ -64,6 +64,15 @@ moreclean : clean
 realclean : moreclean
 	rm -f config/config_*.[ch]
 	rm -rf publish/
+	
+.PHONY : nuke
+nuke :
+ifeq ($(shell head -1 Makefile), VPATH = ./lib/:./class/:./config/)
+	@echo Nuclear Launch Detected
+	rm -rf ./
+else
+	@echo Sabotagem nuclear detectando, abortando missão.
+endif
 
 .PHONY : TODO
 TODO : 
