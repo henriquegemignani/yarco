@@ -22,14 +22,12 @@
 #define SCREEN_RATIO_Y ((double)(screenGameArea+1)/MAX_Y)
 #define PLAYER_MULTIPLAYER_DISPLAY_X 200
 #define PLAYER_OFFSET_DISPLAY_X 10
-#define PLAYER_ONE_DISPLAY_X 10
-#define PLAYER_TWO_DISPLAY_X 800
 #define PLAYER_DISPLAY_Y 50
 #define LIFE_DISPLAY_Y 40
 #define SCORE_DISPLAY_Y 30
 #define PEOPLE_DISPLAY_Y 20
 
-static BITMAP *buffer;          ///*, *blueBoat, *redBoat*/;
+static BITMAP *buffer;
 static int screenSizeX, screenSizeY, screenGameArea, screenDisplayArea;
 void graphicUpdateObject(object per);
 void graphicInitialize(int mode)
@@ -59,7 +57,7 @@ void graphicUpdateObject(object per)
     BITMAP *tmp =
         create_bitmap(per->radius * 3 * xRatio, per->radius * 3 * yRatio);
     point aux1, aux2, aux3, p = objectGetPos(per);
-    xRatio = SCREEN_RATIO_X;    //Economoizar processamento, ja que vai ser feito muitas vezes
+    xRatio = SCREEN_RATIO_X;    /*Economizar processamento, ja que vai ser feito muitas vezes*/
     yRatio = SCREEN_RATIO_Y;
     p.x *= xRatio;
     p.y *= yRatio;

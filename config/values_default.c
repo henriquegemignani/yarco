@@ -55,7 +55,7 @@ void configInitializeDefaults()
     ADD_CONFIG("Boat", 10, TYPE_FLOAT, NULL);
     CLOSE_GROUP();
     
-    INIT_GROUP("Gameplay", 11);
+    INIT_GROUP("Gameplay", 12);
     ADD_CONFIG("Difficulty", 3, TYPE_FLOAT,
                 "]-Inf,3[ = Mais facil. ]3,+Inf[ = Mais dificil. (O valor em si influencia e nao apenas o intervalo)");
     ADD_CONFIG("TurnRate", PI / 2, TYPE_FLOAT, NULL);
@@ -69,6 +69,7 @@ void configInitializeDefaults()
     ADD_CONFIG("BoatCapacity", 10, TYPE_INT, NULL);
     ADD_CONFIG("AnchorFrictionMultiplier", 10, TYPE_FLOAT, NULL);
     ADD_CONFIG("ExtraLifeScore", 500, TYPE_INT, NULL);
+    ADD_CONFIG("MaxAnchorSpeed", 20, TYPE_FLOAT, NULL);
     CLOSE_GROUP();
     
     INIT_GROUP("Highscore", 10);

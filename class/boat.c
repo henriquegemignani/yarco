@@ -34,7 +34,7 @@ struct Extra {
     double accel;               /*Aceleracao do bote, seja para frente ou para tras */
     double friction;            /*Desaceleracao devida ao atrito */
     double anchorMultiplier;
-    int isTurning;              /*Verifica se esta virando, e para qual lado -  -1: sentido horario, 1: sentido anti-horario */
+    int isTurning;              /*Verifica se esta virando, e para qual lado ;  1: sentido horario, -1: sentido anti-horario */
     double turnRate;            /*Quanto o bote pode virar em um segundo, em radianos */
     velocity prevVel;           /*Velocidade anterior, para colisoes com outros botes */
     int life;
@@ -42,18 +42,19 @@ struct Extra {
     double defaultTimeStuck;    /*Tempo que ele demora para dar respawn apos encalhar */
     int isAnchored;
     int player;
-    int keyLayout[NUM_BUTTONS];
-    int anchorButtonHeld;
-    listLink personList;
-    int peopleHeld;
+    int keyLayout[NUM_BUTTONS]; /*Vetor que representa qual tecla faz qual cosia*/
+    int anchorButtonHeld;       /*Verifica se o botao de ancora esta pressionado, para ninguem ter que apretar por exatamente um frame*/
+    listLink personList;        /*Lista de passageiros no bote*/
+    int peopleHeld;             /*Numero de pessoas no bote*/
     int points;
     double unloadTimeLeft;
     double unloadTime;
     double unloadDistance;
-    point respawnPoint;
-    int extraLivesCount;
-    int extraLifeScore;
-    char *name;
+    point respawnPoint;         /*Onde o bote volta pro mapa*/
+    int extraLivesCount;        /*Quantas vidas extras o jogador ja ganhou*/
+    int extraLifeScore;         /*Pontuacao base para ganhar mais vidas*/
+    char *name;                 /*Nome do jogador*/
+    double maxAnchorSpeed;      /*Velocidade maxima na qual o jogador pode ancorar*/
 };
 
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
@@ -68,25 +69,17 @@ static struct boatDefaults {
     int boatCapacity;
     double timeStuck;
     int extraLifeScore;
+    double maxAnchorSpeed;
 } boatDefaults;
 
-void getShipPos(point p)
+void getShipPos(point p) /*Para saber onde esta o navio para verificar se esta na distancia de desembarque*/
 {
     shipPos = p;
 }
 
 /*Funcoes privadas*/
-void boatGeneratePosAndVelInBorder(double speed, point * pos,
-                                   velocity * vel)
-{
-    double dir;
-    generatePosInBorder(pos, &dir);
-    *vel =
-        vectorPolarToCartesian(randDouble(0, speed),
-                               dir + PI / 4 * randInt(0, 4));
-}
 
-void boatGetControls(boat b, int player)
+void boatGetControls(boat b, int player) /*Inicializa os controles do bote*/
 {
     char confgroup[8];
     strcpy(confgroup, "PlayerX");
@@ -143,7 +136,7 @@ void boatScoreAdd(boat b, int point)
     b->extra->points += point;
 }
 
-void boatRetrievePerson(boat b, object o)
+void boatRetrievePerson(boat b, object o) /*Move a pessoa pro bote*/
 {
     listLink newLink;
     AUTOMALLOC(newLink);
@@ -183,6 +176,7 @@ void boatInitializeClass()
         configGetValue("Gameplay", "AnchorFrictionMultiplier").real;
     boatDefaults.extraLifeScore =
         configGetValue("Gameplay", "ExtraLifeScore").num;
+    boatDefaults.maxAnchorSpeed = configGetValue("Gameplay", "MaxAnchorSpeed").real;
 }
 
 boat boatCreate(texture tex, point pos, velocity vel)
@@ -203,6 +197,7 @@ boat boatCreate(texture tex, point pos, velocity vel)
     b->extra->unloadTime = boatDefaults.unloadTime;
     b->extra->unloadDistance = boatDefaults.unloadDistance;
     b->extra->extraLifeScore = boatDefaults.extraLifeScore;
+    b->extra->maxAnchorSpeed = boatDefaults.maxAnchorSpeed;
     b->extra->color = b->tex.color;
     b->extra->isAnchored = 0;
     b->extra->isTurning = 0;
@@ -230,7 +225,7 @@ void boatReadKeyboard(boat b)
     if (key[b->extra->keyLayout[TURN_LEFT_BUTTON]])
         b->extra->isTurning -= 1;
     if (key[b->extra->keyLayout[ANCHOR_BUTTON]]) {
-        if (!b->extra->anchorButtonHeld) {
+        if (!b->extra->anchorButtonHeld && vectorLength(b->vel) <= b->extra->maxAnchorSpeed) {
             b->extra->isAnchored = !b->extra->isAnchored;
             b->extra->anchorButtonHeld = 1;
         }
@@ -239,7 +234,7 @@ void boatReadKeyboard(boat b)
 
 }
 
-void rescuePerson(boat b)
+void rescuePerson(boat b) /*Resgata definitivamente a pessoa no navio*/
 {
     listLink aux;
     OBJECT_REMOVE(b->extra->personList->person);
@@ -273,11 +268,13 @@ void boatUpdate(boat b, int keepDir, double timedif)
         }
         return;
     }
+    /*Verificando se ja deve ganahr uma vida nova*/
     if (b->extra->points >=
         b->extra->extraLivesCount * b->extra->extraLifeScore) {
         b->extra->life++;
         b->extra->extraLivesCount++;
     }
+    /*Le teclado*/
     boatReadKeyboard(b);
     if (b->extra->isAccel && !b->extra->isAnchored) {
         b->acc.x = -b->extra->accel * cos(b->dir) * b->extra->isAccel;
@@ -295,6 +292,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
     if (!b->extra->isAnchored)
         b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
     objectQuadUpdate(b);
+    /*Resgate de pessoas*/
     if (b->extra->isAnchored
         && distanceBetweenPoints(b->pos,
                                  shipPos) <= b->extra->unloadDistance) {
@@ -310,7 +308,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
         }
     } else
         b->extra->unloadTimeLeft = b->extra->unloadTime;
-
+    /*Fala o que precisa ser mostrado no display*/
     statusReport(b->extra->player, b->extra->name, b->extra->life,
                         b->extra->points, b->extra->peopleHeld);
 }
@@ -321,7 +319,7 @@ void boatRemove(boat b)
     free(b);
 }
 
-void boatPersonFree(boat b)
+void boatPersonFree(boat b) /*Joga as pessoas de volta no oceano*/
 {
     int i, errorCode;
     listLink aux = b->extra->personList;
@@ -347,6 +345,7 @@ void boatPersonFree(boat b)
                                   vectorMulDouble(vectorSub
                                                   (aux->person->pos,
                                                    b->pos), 1.1));
+                    /*Se ele tentar colocar a pessoa num lugar ja ocupado, ele joga ela pra mais longe ate estar num lugar disponivel*/
                 } while (objectTableAddObject(aux->person) ==
                          ERROR_OBJECT_IS_COLLIDING);
             }
@@ -387,6 +386,7 @@ void boatCollide(boat b, object o, double timediff)
         break;
     case TYPE_CORAL:
         objectSide = o->radius * SQRT_2 / 2;
+        /*Note que a colisao so existe caso bata num dos lados do coral, nao se simplesmente estiver no circulo de colisao*/
         if (((abs(b->pos.x - o->pos.x) <= objectSide
               && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius))
              || (abs(b->pos.y - o->pos.y) <= objectSide
