@@ -15,9 +15,11 @@ void getShipPos(point p);
 
 ship shipCreate(point pos, texture tex)
 {
-	static double shipRadius = -1;
-	if(shipRadius == -1) shipRadius = configGetValue("Radius", "Ship").real;
-    return objectCreate(TYPE_SHIP, 0, pos, vectorCreate(0, 0), shipRadius, tex);
+    static double shipRadius = -1;
+    if (shipRadius == -1)
+        shipRadius = configGetValue("Radius", "Ship").real;
+    return objectCreate(TYPE_SHIP, 0, pos, vectorCreate(0, 0), shipRadius,
+                        tex);
 }
 
 /* Funcoes publicas. */
@@ -29,8 +31,7 @@ void shipInitializeClass()
 
 ship shipNew(texture tex)
 {
-    point pos =
-        vectorCreate((double)MAX_X / 2, (double)MAX_Y / 2);
+    point pos = vectorCreate((double) MAX_X / 2, (double) MAX_Y / 2);
     getShipPos(pos);
     return shipCreate(pos, tex);
 }

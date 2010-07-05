@@ -85,9 +85,9 @@ publish : moreclean yarco
 	tar -cvzf publish/yarco.tar.gz yarco* --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish
 
 .PHONY: publish-source
-publish-source : moreclean
-	indent -i4 -kr -nut *.c lib/*.[ch] class/*.[ch]
+publish-source : realclean
+	indent -i4 -kr -nut *.c */*.[ch]
 	mkdir -p publish
 	rm -f publish/source.tar
 	tar -cvzf publish/source.tar.gz * --exclude=scripts --exclude=TODO.txt --exclude=.svn --exclude=publish\
-	 --exclude=*~ --exclude=tests.c --exclude=lib/graphics_terminal.c
+	 --exclude=*~ --exclude=tests.c

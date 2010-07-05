@@ -29,7 +29,7 @@ extern YYSTYPE yylval;
 	return NUM;
 }
 
-\"[a-zA-Z 0-9]+\" {
+\"[^\"]*\" {
 	strncpy(yylval.str, yytext + 1, 255);
 	if(strlen(yytext + 1) < 255)
 		yylval.str[strlen(yytext + 1) - 1] = '\0';

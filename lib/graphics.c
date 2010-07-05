@@ -28,29 +28,29 @@
 #define SCORE_DISPLAY_Y 30
 #define PEOPLE_DISPLAY_Y 20
 
-static BITMAP *buffer;///*, *blueBoat, *redBoat*/;
+static BITMAP *buffer;          ///*, *blueBoat, *redBoat*/;
 static int screenSizeX, screenSizeY, screenGameArea, screenDisplayArea;
 
-static struct{
-	char* name;
-	int life;
-	int score;
-	int people;
-}* players_status;
+static struct {
+    char *name;
+    int life;
+    int score;
+    int people;
+} *players_status;
 
 void graphicUpdateObject(object per);
 void graphicInitialize(int mode)
-{   
-	int numplayers = configGetValue("General", "NumPlayers").num;
-	screenSizeX = configGetValue("General", "ResolutionX").num;
-	screenSizeY = configGetValue("General", "ResolutionY").num;
-	
-	screenGameArea = floor(GAME_SCREEN_PROPORTION*screenSizeY);
-	screenDisplayArea = screenSizeY - screenGameArea;
-	
-	AUTOMALLOCV(players_status, numplayers);
+{
+    int numplayers = configGetValue("General", "NumPlayers").num;
+    screenSizeX = configGetValue("General", "ResolutionX").num;
+    screenSizeY = configGetValue("General", "ResolutionY").num;
 
-	set_color_depth(32);
+    screenGameArea = floor(GAME_SCREEN_PROPORTION * screenSizeY);
+    screenDisplayArea = screenSizeY - screenGameArea;
+
+    AUTOMALLOCV(players_status, numplayers);
+
+    set_color_depth(32);
     if (mode == WINDOWED_MODE)
         set_gfx_mode(GFX_AUTODETECT_WINDOWED, screenSizeX, screenSizeY,
                      0, 0);
@@ -59,7 +59,7 @@ void graphicInitialize(int mode)
                      screenSizeY, 0, 0);
 
     buffer = create_bitmap(screenSizeX, screenSizeY);
-   //blueBoat =
+    //blueBoat =
     rectfill(buffer, 0, 0, screenSizeX, screenGameArea, SEA_COLOR);
     rectfill(buffer, 0, screenGameArea, screenSizeX, screenSizeY, WHITE);
 }
@@ -67,33 +67,40 @@ void graphicInitialize(int mode)
 void graphicUpdateObject(object per)
 {
     double xRatio = SCREEN_RATIO_X, yRatio = SCREEN_RATIO_Y;
-    BITMAP *tmp = create_bitmap(per->radius * 3 * xRatio, per->radius * 3 * yRatio);
+    BITMAP *tmp =
+        create_bitmap(per->radius * 3 * xRatio, per->radius * 3 * yRatio);
     point aux1, aux2, aux3, p = objectGetPos(per);
-    xRatio = SCREEN_RATIO_X; //Economoizar processamento, ja que vai ser feito muitas vezes
+    xRatio = SCREEN_RATIO_X;    //Economoizar processamento, ja que vai ser feito muitas vezes
     yRatio = SCREEN_RATIO_Y;
     p.x *= xRatio;
     p.y *= yRatio;
-    rectfill(tmp, 0, 0, per->radius * 3 * xRatio, per->radius * 3 * yRatio, TRANSPARENT);
+    rectfill(tmp, 0, 0, per->radius * 3 * xRatio, per->radius * 3 * yRatio,
+             TRANSPARENT);
     switch (per->tex.type) {
     case TEX_CIRCLE:
-        ellipsefill(tmp, per->radius*xRatio, per->radius*yRatio, per->radius * xRatio, per->radius * yRatio,
-                   per->tex.color);
+        ellipsefill(tmp, per->radius * xRatio, per->radius * yRatio,
+                    per->radius * xRatio, per->radius * yRatio,
+                    per->tex.color);
         break;
     case TEX_SQUARE:
-        rectfill(tmp, 0, 0, per->radius * SQRT_2 * xRatio, per->radius * SQRT_2 * yRatio,
-                 per->tex.color);
+        rectfill(tmp, 0, 0, per->radius * SQRT_2 * xRatio,
+                 per->radius * SQRT_2 * yRatio, per->tex.color);
         break;
     case TEX_TRIANGLE:
         aux1.x = per->radius - (per->radius * cos((per->dir))) * xRatio;
         aux1.y = per->radius - (per->radius * sin((per->dir))) * yRatio;
         aux2.x =
-            per->radius - (per->radius * cos((per->dir) + (4 * PI / 5))) * xRatio;
+            per->radius -
+            (per->radius * cos((per->dir) + (4 * PI / 5))) * xRatio;
         aux2.y =
-            per->radius - (per->radius * sin((per->dir) + (4 * PI / 5))) * yRatio;
+            per->radius -
+            (per->radius * sin((per->dir) + (4 * PI / 5))) * yRatio;
         aux3.x =
-            per->radius - (per->radius * cos((per->dir) - (4 * PI / 5))) * xRatio;
+            per->radius -
+            (per->radius * cos((per->dir) - (4 * PI / 5))) * xRatio;
         aux3.y =
-            per->radius - (per->radius * sin((per->dir) - (4 * PI / 5))) * yRatio;
+            per->radius -
+            (per->radius * sin((per->dir) - (4 * PI / 5))) * yRatio;
         triangle(tmp, aux1.x, aux1.y, aux2.x, aux2.y, aux3.x, aux3.y,
                  per->tex.color);
         /*Codigo abaixo mantido para a posteridade - DO NOT EXCLUAM */
@@ -125,34 +132,47 @@ void graphicUpdateObject(object per)
     destroy_bitmap(tmp);
 }
 
-void graphicStatusReport(char* name, int player, int lives, int score, int peopleHeld)
+void graphicStatusReport(char *name, int player, int lives, int score,
+                         int peopleHeld)
 {
-	players_status[player].name = name;
-	players_status[player].life = lives;
-	players_status[player].score = score;
-	players_status[player].people = peopleHeld;
+    players_status[player].name = name;
+    players_status[player].life = lives;
+    players_status[player].score = score;
+    players_status[player].people = peopleHeld;
 }
 
 void graphicDisplayUpdate()
 {
-	static int numplayers = -1;
-	char buf[50];
-	double screenRatioX = SCREEN_RATIO_X, screenRatioY = SCREEN_RATIO_Y;
-	int i, offsetX;
-	if(numplayers == -1) numplayers = configGetValue("General", "NumPlayers").num;
-	rectfill(buffer, 0, screenGameArea, screenSizeX, screenSizeY, WHITE);
-	
-	for(i = 0; i < numplayers; ++i ) {
-		offsetX = (PLAYER_MULTIPLAYER_DISPLAY_X*i + PLAYER_OFFSET_DISPLAY_X)*screenRatioX;
-		textout_ex(buffer, font, players_status[i].name == NULL ? "" : players_status[i].name, 
-			offsetX, screenSizeY - (PLAYER_DISPLAY_Y*screenRatioY), BLACK, WHITE);
-		snprintf(buf, 50, "VIDAS: %d", players_status[i].life);
-		textout_ex(buffer, font, buf, offsetX, screenSizeY - (LIFE_DISPLAY_Y*screenRatioY), BLACK, WHITE);
-		snprintf(buf, 50, "PONTOS: %d", players_status[i].score);
-		textout_ex(buffer, font, buf, offsetX, screenSizeY - (SCORE_DISPLAY_Y*screenRatioY), BLACK, WHITE);
-		snprintf(buf, 50, "PASSAGEIROS: %d", players_status[i].people);
-		textout_ex(buffer, font, buf, offsetX, screenSizeY - (PEOPLE_DISPLAY_Y*screenRatioY), BLACK, WHITE);
-	}
+    static int numplayers = -1;
+    char buf[50];
+    double screenRatioX = SCREEN_RATIO_X, screenRatioY = SCREEN_RATIO_Y;
+    int i, offsetX;
+    if (numplayers == -1)
+        numplayers = configGetValue("General", "NumPlayers").num;
+    rectfill(buffer, 0, screenGameArea, screenSizeX, screenSizeY, WHITE);
+
+    for (i = 0; i < numplayers; ++i) {
+        offsetX =
+            (PLAYER_MULTIPLAYER_DISPLAY_X * i +
+             PLAYER_OFFSET_DISPLAY_X) * screenRatioX;
+        textout_ex(buffer, font,
+                   players_status[i].name ==
+                   NULL ? "" : players_status[i].name, offsetX,
+                   screenSizeY - (PLAYER_DISPLAY_Y * screenRatioY), BLACK,
+                   WHITE);
+        snprintf(buf, 50, "VIDAS: %d", players_status[i].life);
+        textout_ex(buffer, font, buf, offsetX,
+                   screenSizeY - (LIFE_DISPLAY_Y * screenRatioY), BLACK,
+                   WHITE);
+        snprintf(buf, 50, "PONTOS: %d", players_status[i].score);
+        textout_ex(buffer, font, buf, offsetX,
+                   screenSizeY - (SCORE_DISPLAY_Y * screenRatioY), BLACK,
+                   WHITE);
+        snprintf(buf, 50, "PASSAGEIROS: %d", players_status[i].people);
+        textout_ex(buffer, font, buf, offsetX,
+                   screenSizeY - (PEOPLE_DISPLAY_Y * screenRatioY), BLACK,
+                   WHITE);
+    }
 }
 
 void graphicUpdate()
@@ -170,6 +190,6 @@ void graphicDraw()
 
 void graphicFinish()
 {
-	free(players_status);
+    free(players_status);
     destroy_bitmap(buffer);
 }

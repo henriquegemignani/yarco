@@ -9,7 +9,7 @@
 #include "../config/configuration.h"
 
 struct ObjectTable {
-    object* list;
+    object *list;
     unsigned int size, curMax, lastID;
 };
 /* Funcoes privadas. */
@@ -48,15 +48,15 @@ objectTable objectTableInit()
 {
     objectTable table;
     AUTOMALLOC(table);
-	table->size = configGetValue("General", "LimitObject").num;
-	AUTOMALLOCV(table->list, table->size);
+    table->size = configGetValue("General", "LimitObject").num;
+    AUTOMALLOCV(table->list, table->size);
     table->curMax = table->lastID = 0;
     return table;
 }
 
 void objectTableRemovePending()
 {
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     int i;
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL && table->list[i]->toBeRemoved == 1) {
@@ -69,7 +69,7 @@ void objectTableRemovePending()
 
 objectTable objectTableGet()
 {
-	static objectTable table = NULL;
+    static objectTable table = NULL;
     if (table == NULL)
         table = objectTableInit();
     return table;
@@ -77,7 +77,7 @@ objectTable objectTableGet()
 
 int objectTableAddObject(object obj)
 {
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     objectQuadUpdate(obj);
     if (objectTableFilled())
         return ERROR_OBJECT_LIMIT_EXCEEDED;
@@ -91,7 +91,7 @@ int objectTableAddObject(object obj)
 object objectTableSearchObject(unsigned int id)
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id)
             return table->list[i];
@@ -101,7 +101,7 @@ object objectTableSearchObject(unsigned int id)
 int objectTableSearchPosition(unsigned int id)
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id)
             return i;
@@ -116,7 +116,7 @@ int objectTableRemoveObject(object obj)
 int objectTableRemoveObjectByID(unsigned int id)
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (objectGetID(table->list[i]) == id) {
             table->list[i]->toBeRemoved = 1;
@@ -127,30 +127,30 @@ int objectTableRemoveObjectByID(unsigned int id)
 
 void objectTableSort()
 {
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     quicksort(table->list, 0, table->curMax - 1);
 }
 
 void objectTableUpdate(double timedif, int newIteraction)
 {
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     int i, j;
     point pos;
     /* Verificando colisoes. */
     for (i = 0; i < table->curMax; i++)
         for (j = i + 1; j < table->curMax; j++)
-            if (table->list[i] != NULL && table->list[j] != NULL && quadNear
-                (objectGetQuad(table->list[i]),
-                 objectGetQuad(table->list[j]))
+            if (table->list[i] != NULL && table->list[j] != NULL
+                && quadNear(objectGetQuad(table->list[i]),
+                            objectGetQuad(table->list[j]))
                 && table->list[i]->toBeRemoved == 0
                 && table->list[j]->toBeRemoved == 0)
                 if (objectIsColliding(table->list[i], table->list[j])) {
-                    if(table->list[i]!=NULL && table->list[j]!=NULL)
+                    if (table->list[i] != NULL && table->list[j] != NULL)
                         OBJECT_COLLIDE(table->list[i], table->list[j],
-                                timedif);
-                    if(table->list[i]!=NULL && table->list[j]!=NULL)
+                                       timedif);
+                    if (table->list[i] != NULL && table->list[j] != NULL)
                         OBJECT_COLLIDE(table->list[j], table->list[i],
-                                timedif);
+                                       timedif);
                 }
 
     objectTableRemovePending();
@@ -177,7 +177,7 @@ void objectTableUpdate(double timedif, int newIteraction)
 void objectTableExecute(void (*func) (object p))
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             func(table->list[i]);
@@ -186,7 +186,7 @@ void objectTableExecute(void (*func) (object p))
 int objectTableIsObjectColliding(object o)
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL && table->list[i] != o)
             if (quadNear(objectGetQuad(o), objectGetQuad(table->list[i])))
@@ -197,7 +197,7 @@ int objectTableIsObjectColliding(object o)
 
 int objectTableFilled()
 {
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     if (table->curMax == table->size) {
         objectTableSort();
         if (table->curMax == table->size)
@@ -209,7 +209,7 @@ int objectTableFilled()
 void objectTableDump()
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             OBJECT_DUMP(table->list[i]);
@@ -218,47 +218,39 @@ void objectTableDump()
 void objectTableFinish()
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             OBJECT_REMOVE(table->list[i]);
-	free(table->list);
+    free(table->list);
     free(table);
 }
 
 void objectTableLeave(unsigned int id)
 {
-    //unsigned int i;
     int pos;
-	objectTable table = objectTableGet();
-    if((pos = objectTableSearchPosition(id)) == -1)
+    objectTable table = objectTableGet();
+    if ((pos = objectTableSearchPosition(id)) == -1)
         genError("Erro: Pessoa nao encontrada!\n");
-    /*for(i = 0; i < table->curMax; i++)
-        if(table->list[i] == o)
-            break;
-    if(table->list[i] != o)
-        genError("Busca deu merda!\n");*/
     table->list[pos] = NULL;
-   // objectTableSort();
 }
 
 int objectTableHasBoats()
 {
-	int i;
-	objectTable table = objectTableGet();
-	for(i=0; i < table->curMax; i++)
-		if(table->list[i]!=NULL)
-			if(table->list[i]->type == TYPE_BOAT)
-				return 1;
-	return 0;
+    int i;
+    objectTable table = objectTableGet();
+    for (i = 0; i < table->curMax; i++)
+        if (table->list[i] != NULL)
+            if (table->list[i]->type == TYPE_BOAT)
+                return 1;
+    return 0;
 }
 
 void objectTableRandColor()
 {
     int i;
-	objectTable table = objectTableGet();
+    objectTable table = objectTableGet();
     for (i = 0; i < table->curMax; i++)
         if (table->list[i] != NULL)
             table->list[i]->tex.color = randInt(0x000000, 0xFFFFFF);
 }
-

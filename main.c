@@ -14,13 +14,13 @@
 int main(int argc, char **argv)
 {
     double timeElapsed = 0, timeDifference = 0;
-	logicInitialize(argc, argv);
-	while(42) {
-		timeDifference = logicLoop(timeDifference);
-		timeElapsed += timeDifference;
-		if(logicGameOver())
-			break;
-	}
-	logicFinish();
+    logicInitialize(argc, argv);
+    while (42) {
+        timeDifference = logicLoop(timeDifference);
+        timeElapsed += timeDifference;
+        if (logicGameOver())
+            break;
+    }
+    logicFinish();
     return 0;
 }

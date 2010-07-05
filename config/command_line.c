@@ -17,22 +17,26 @@ configuration LEGACY_configurationInit()
 
     /* Valores padrao. */
     config->debugMode = configGetValue("General", "DebugMode").num;
-    
+
     config->pause = 0;
     config->randomSeed = time(NULL);
     config->keepSpeed = 0;
-	config->verbose = 0;
-	config->disco = 0;
-	config->fps = configGetValue("General", "MaximumFPS").num;
-	if(config->fps <= 0)
-		config->noSleep = 1;
-	
-	config->defaultSpeed = configGetValue("General", "PersonAverageSpeed").real;
-	config->createPeriod = configGetValue("General", "PersonCreatePeriod").real;
-	config->duration = DURATION_DEFAULT;
-    config->numPeople = configGetValue("General", "PersonInitialAmmount").num;
-    config->numCorals = configGetValue("General", "CoralInitialAmount").num;
-    
+    config->verbose = 0;
+    config->disco = 0;
+    config->fps = configGetValue("General", "MaximumFPS").num;
+    if (config->fps <= 0)
+        config->noSleep = 1;
+
+    config->defaultSpeed =
+        configGetValue("General", "PersonAverageSpeed").real;
+    config->createPeriod =
+        configGetValue("General", "PersonCreatePeriod").real;
+    config->duration = DURATION_DEFAULT;
+    config->numPeople =
+        configGetValue("General", "PersonInitialAmmount").num;
+    config->numCorals =
+        configGetValue("General", "CoralInitialAmount").num;
+
 
     return config;
 }

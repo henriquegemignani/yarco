@@ -66,7 +66,7 @@ vector vectorRotate(vector v, double ang)
 
 double vectorAngle(vector v)
 {
-  return atan2(v.y, v.x);
+    return atan2(v.y, v.x);
 }
 
 vector vectorAngleSet(vector v, double ang)
