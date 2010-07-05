@@ -27,7 +27,6 @@
 #define PERSON_SPEED_DEFAULT        10
 #define MAX_X                       1023.0f
 #define MAX_Y                       691.0f      //767
-#define DURATION_DEFAULT            50.0
 #define STD_DIST                    0.5
 #define NUM_CLASS                   4
 #define QUAD_SIZE_X                 100

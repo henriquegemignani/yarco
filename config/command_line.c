@@ -18,7 +18,6 @@ configuration LEGACY_configurationInit()
     /* Valores padrao. */
     config->debugMode = configGetValue("General", "DebugMode").num;
 
-    config->pause = 0;
     config->randomSeed = time(NULL);
     config->keepSpeed = 0;
     config->verbose = 0;
@@ -31,7 +30,6 @@ configuration LEGACY_configurationInit()
         configGetValue("General", "PersonAverageSpeed").real;
     config->createPeriod =
         configGetValue("General", "PersonCreatePeriod").real;
-    config->duration = DURATION_DEFAULT;
     config->numPeople =
         configGetValue("General", "PersonInitialAmmount").num;
     config->numCorals =
@@ -69,12 +67,9 @@ void argRead(int argc, char **argv, configuration defaults)
              defaults->numCorals, defaults->numPeople);
         printf
             ("  -d\t--debug\t\tMostra posicao, velocidade e aceleracao de cada passageiro\n"
-             "  -v\t--verbose\t\tFala mais coisas\n"
-             "  -T\t--duration\t\tDefine por quanto tempo o programa rodara'. Padrao: %f\n",
-             defaults->duration);
+             "  -v\t--verbose\t\tFala mais coisas\n");
         printf
             ("  -F\t--fps\t\tControla quantos frames sao exibidos por segundo.\n"
-             "  -P\t--pause\t\tDetermina que o programa pausara a cada iteracao. Implica --nosleep.\n"
              "  -S\t--randomseed\tDefine qual vai ser a semente usada para o RNG. Padrao: hora atual\n"
              "  -k\t--keepspeed\t\tPassageiros nao mudam de direcao sem colisoes\n"
              "  -n\t--nosleep\t\tIgnora o sleep, rodando o maximo de frames por segundo possivel.\n");
@@ -90,16 +85,14 @@ void argRead(int argc, char **argv, configuration defaults)
            ./lib/configuration.c:62: warning: string length �791� is greater than the length �509� ISO C90 compilers are required to support */
         exit(0);
     }
-    argValue = argShortFlags(argc, argv, "dPknv");
+    argValue = argShortFlags(argc, argv, "dknv");
     if (argFind(argc, argv, "--debug", "-d") || argValue[0])
         defaults->debugMode = 1;
-    if (argFind(argc, argv, "--pause", "-P") || argValue[1])
-        defaults->pause = 1;
-    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[2])
+    if (argFind(argc, argv, "--keepspeed", "-k") || argValue[1])
         defaults->keepSpeed = 1;
-    if (argFind(argc, argv, "--nosleep", "-n") || argValue[3])
+    if (argFind(argc, argv, "--nosleep", "-n") || argValue[2])
         defaults->noSleep = 1;
-    if (argFind(argc, argv, "--verbose", "-v") || argValue[4])
+    if (argFind(argc, argv, "--verbose", "-v") || argValue[3])
         defaults->verbose = 1;
     if (argFind(argc, argv, "--christmas", NULL))
         defaults->disco = 0.1;
@@ -108,8 +101,6 @@ void argRead(int argc, char **argv, configuration defaults)
         defaults->createPeriod = atof(argValue);
     if ((argValue = argVal(argc, argv, "--speed", "-s")))
         defaults->defaultSpeed = atof(argValue);
-    if ((argValue = argVal(argc, argv, "--duration", "-T")))
-        defaults->duration = atof(argValue);
     if ((argValue = argVal(argc, argv, "--randomseed", "-S")))
         defaults->randomSeed = atoi(argValue);
     if ((argValue = argVal(argc, argv, "--fps", "-F")))

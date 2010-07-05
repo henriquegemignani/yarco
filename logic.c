@@ -13,6 +13,7 @@
 #include "class/ship.h"
 #include "class/coral.h"
 #include "class/boat.h"
+#include "logic.h"
 #include <time.h>
 #include <sys/time.h>
 #include <allegro.h>
@@ -62,6 +63,47 @@ void logicSleep()
 #endif
 }
 
+static struct HighScore* scoretable = NULL;
+void logicCreateScoreTable()
+{
+	status player_status;
+	char rankScore[11], rankName[10];
+	int i, player, numplayers = configGetValue("General", "NumPlayers").num;
+	
+		strcpy(rankScore, "RankNScore");
+		strcpy(rankName,  "RankNName");
+		AUTOMALLOCV(scoretable, 5 + numplayers);
+		for(i = 0; i < 5; ++i) {
+			rankScore[4] = '1' + i;
+			rankName[4] = '1' + i;
+			scoretable[i].score = configGetValue("Highscore", rankScore).num;
+			scoretable[i].name = strcpyWithMalloc(configGetValue("Highscore", rankName).str);
+		}
+		for(player = 0; player < numplayers; ++player) {
+			player_status = getStatus(player);
+			for(i = 5 + player; i >= 0; --i) {
+				if(scoretable[i-1].score > player_status.score) {
+					scoretable[i].score = player_status.score;
+					scoretable[i].name = strcpyWithMalloc(player_status.name);
+					break;
+				} else {
+					scoretable[i].score = scoretable[i-1].score;
+					scoretable[i].name = scoretable[i-1].name;
+				}
+			}
+		}
+}
+
+void logicDestroyScoreTable()
+{
+	int i, numplayers = configGetValue("General", "NumPlayers").num;
+	for(i = 0; i < 5 + numplayers; ++i)
+		free(scoretable[i].name);
+	free(scoretable);
+	scoretable = NULL;
+}
+
+static GameState gameState = GAME_NOT_STARTED;
 
 void logicInitialize(int argc, char *argv[])
 {
@@ -113,26 +155,16 @@ void logicInitialize(int argc, char *argv[])
 
     LOCK_FUNCTION(loginAllegroCloseButtonHandler);
     set_close_button_callback(loginAllegroCloseButtonHandler);
+	
+	gameState = GAME_RUNNING;
 }
 
 double logicLoop(double timeDifference)
 {
-    static double
-        timeSinceLastIteration = 0,
-        newPersonInterval = 0, discoInterval = 0, timeLeftToClose = 0;
-    static int closeButton = -1, closePressed = 0;
-    configuration defaults = configurationGet();
-    long frameTimeStart = timeInMicrosecond();
-
-    if ((newPersonInterval -= timeDifference) < 0
-        && defaults->createPeriod > 0) {
-        newPersonInterval +=
-            randomizeAround(defaults->createPeriod, STD_DIST);
-        personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
-    }
-
-    objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
-
+	static int closeButton = -1, closePressed = 0;
+	long frameTimeStart = timeInMicrosecond();
+	static double timeLeftToClose = 0;
+	
     if (closeButton == -1)
         closeButton = configGetValue("General", "ButtonExit").num;
     if (key[closeButton]) {
@@ -146,6 +178,45 @@ double logicLoop(double timeDifference)
         closePressed = 0;
         timeLeftToClose -= timeDifference;
     }
+	
+	if(close_button_pressed)
+		gameState = GAME_DONE;
+		
+	switch(gameState) {
+		case GAME_RUNNING:
+			logicLoopRunning(timeDifference);
+			break;
+			
+		case GAME_HIGHSCORE:
+			logicLoopHighScore(timeDifference);
+			break;
+			
+		default:
+			break;
+	}
+	
+    timeDifference = (timeInMicrosecond() - frameTimeStart);
+    timeToOffset += 1.0e9 / configurationGet()->fps - timeDifference * 1.0e3;
+    /* E agora em segundos. */
+    timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
+	return timeDifference;
+}
+
+void logicLoopRunning(double timeDifference)
+{
+    static double
+        timeSinceLastIteration = 0,
+        newPersonInterval = 0, discoInterval = 0;
+    configuration defaults = configurationGet();
+
+    if ((newPersonInterval -= timeDifference) < 0
+        && defaults->createPeriod > 0) {
+        newPersonInterval +=
+            randomizeAround(defaults->createPeriod, STD_DIST);
+        personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
+    }
+
+    objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
 
     if (defaults->disco > 0) {
         discoInterval -= timeDifference;
@@ -157,69 +228,41 @@ double logicLoop(double timeDifference)
     graphicUpdate();
     graphicDraw();
 
-
-
     if (defaults->debugMode && timeSinceLastIteration > 1)
         objectTableDump();
 
     if (!defaults->noSleep)
         logicSleep();
 
-    if (timeSinceLastIteration > 1 && defaults->pause) {
-        printf("Aperte Enter para continuar...\n");
-        while (getchar() != '\n');
-    } else {
-        timeDifference = (timeInMicrosecond() - frameTimeStart);
-        timeToOffset += 1.0e9 / defaults->fps - timeDifference * 1.0e3;
-        /* E agora em segundos. */
-        timeDifference = (timeInMicrosecond() - frameTimeStart) / 1.0e6;
-    }
-
     if (timeSinceLastIteration > 1)
         timeSinceLastIteration -= 1;
     timeSinceLastIteration += timeDifference;
-    return timeDifference;
+	
+	if(!objectTableHasBoats())
+		gameState = GAME_HIGHSCORE;
 }
 
-struct highscore {
-	char* name;
-	int score;
-};
+void logicLoopHighScore(double timeDifference)
+{
+	static int highscore_size = -1;
+	/* TODO: terminar isso lololol */
+	graphicDrawHighScore(scoretable, highscore_size);
+}
 
 void logicFinish()
 {
-	struct highscore* scoretable;
-	status player_status;
 	char rankScore[11], rankName[10];
-	int i, player, numplayers = configGetValue("General", "NumPlayers").num;
+	int i;
 	
     graphicFinish();
     allegro_exit();
     objectTableFinish();
 	
+	if(scoretable == NULL)
+		logicCreateScoreTable();
+	
 	strcpy(rankScore, "RankNScore");
 	strcpy(rankName,  "RankNName");
-	AUTOMALLOCV(scoretable, 5 + numplayers);
-	for(i = 0; i < 5; ++i) {
-		rankScore[4] = '1' + i;
-		rankName[4] = '1' + i;
-		scoretable[i].score = configGetValue("Highscore", rankScore).num;
-		scoretable[i].name = strcpyWithMalloc(configGetValue("Highscore", rankName).str);
-	}
-	for(player = 0; player < numplayers; ++player) {
-		player_status = getStatus(player);
-		for(i = 5 + player; i >= 0; --i) {
-			if(scoretable[i-1].score > player_status.score) {
-				scoretable[i].score = player_status.score;
-				scoretable[i].name = strcpyWithMalloc(player_status.name);
-				break;
-			} else {
-				scoretable[i].score = scoretable[i-1].score;
-				scoretable[i].name = scoretable[i-1].name;
-			}
-		}
-	}
-	
 	setCurrentGroup("Highscore");
 	for(i = 0; i < 5; ++i) {
 		rankScore[4] = '1' + i;
@@ -227,10 +270,8 @@ void logicFinish()
 		configSet(rankScore, createConfigValue(scoretable[i].score, NULL));
 		configSet(rankName, createConfigValue(-1, scoretable[i].name));
 	}
-	for(i = 0; i < 5 + numplayers; ++i)
-		free(scoretable[i].name);
-	free(scoretable);
-		
+	logicDestroyScoreTable();
+	
 	finishReport();
     configurationFinish("config.ini");
     classFinish();
@@ -238,5 +279,6 @@ void logicFinish()
 
 int logicGameOver()
 {
-    return (close_button_pressed || !objectTableHasBoats());
+    //return (close_button_pressed || !objectTableHasBoats());
+	return (gameState == GAME_DONE);
 }

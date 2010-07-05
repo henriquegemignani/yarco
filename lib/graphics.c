@@ -155,6 +155,17 @@ void graphicDisplayUpdate()
     }
 }
 
+void graphicDrawHighScore(struct HighScore* scoretable, int ammount) {
+/*
+ * struct HighScore {
+ * 	  char* name;
+ *    int score;
+ * };
+ *    Conforme definido em logic.h
+ */
+ /* TODO: desenhar lol */
+}
+
 void graphicUpdate()
 {
     rectfill(buffer, 0, 0, screenSizeX, screenGameArea, SEA_COLOR);

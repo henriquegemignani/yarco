@@ -34,8 +34,6 @@ struct Configuration {
     double defaultSpeed;
     double createPeriod;
     int debugMode;
-    double duration;
-    int pause;
     int randomSeed;
     int keepSpeed;
     int fps;
