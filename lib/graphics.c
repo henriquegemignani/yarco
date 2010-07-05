@@ -26,9 +26,15 @@
 #define LIFE_DISPLAY_Y 40
 #define SCORE_DISPLAY_Y 30
 #define PEOPLE_DISPLAY_Y 20
+#define HIGHSCORE_OFFSET_Y (screenSizeY/2 - 30)
+#define HIGHSCORE_DIST_Y 10
 
 static BITMAP *buffer;
 static int screenSizeX, screenSizeY, screenGameArea, screenDisplayArea;
+
+int logicGetScore(int player);
+char *logicGetPlayerName(int player);
+
 void graphicUpdateObject(object per);
 void graphicInitialize(int mode)
 {
@@ -155,15 +161,15 @@ void graphicDisplayUpdate()
     }
 }
 
-void graphicDrawHighScore(struct HighScore* scoretable, int ammount) {
-/*
- * struct HighScore {
- * 	  char* name;
- *    int score;
- * };
- *    Conforme definido em logic.h
- */
- /* TODO: desenhar lol */
+void graphicDrawHighScore(/*struct HighScore* scoretable,*/ int ammount) {
+    int i;
+    double yRatio = SCREEN_RATIO_Y;
+    debugMsg("lol i is in drawhighscore");
+    rectfill(buffer, 0, 0, screenSizeX, screenSizeY, BLACK);
+    textprintf_centre_ex(buffer, font, screenSizeX/2, HIGHSCORE_OFFSET_Y*yRatio, WHITE, BLACK, "HIGHSCORES!");
+    for (i=0; i<ammount; i++)
+        textprintf_centre_ex(buffer, font, screenSizeX/2, (HIGHSCORE_OFFSET_Y + HIGHSCORE_DIST_Y * (i+1))*yRatio, WHITE, BLACK, "%s : %d", logicGetPlayerName(/*scoretable,*/ i), logicGetScore(/*scoretable,*/ i));
+    graphicDraw();
 }
 
 void graphicUpdate()

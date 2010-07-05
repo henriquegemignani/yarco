@@ -261,7 +261,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
                 b->pos = b->extra->respawnPoint;
                 b->vel = vectorCreate(0, 0);
                 b->acc = vectorCreate(0, 0);
-                b->dir = 0;
+                b->dir = PI/2;
                 b->tex.color = b->extra->color;
                 /* Retornando a cor original, ja que o bote muda de cor quando encalhado */
             } else

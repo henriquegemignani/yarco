@@ -103,6 +103,16 @@ void logicDestroyScoreTable()
 	scoretable = NULL;
 }
 
+char *logicGetPlayerName(int player)
+{
+    return scoretable[player].name;
+}
+
+int logicGetScore(int player)
+{
+    return scoretable[player].score;
+}
+
 static GameState gameState = GAME_NOT_STARTED;
 
 void logicInitialize(int argc, char *argv[])
@@ -245,11 +255,14 @@ void logicLoopRunning(double timeDifference)
 void logicLoopHighScore(double timeDifference)
 {
 	static int highscore_size = -1;
+	debugMsg("lol i is in loophighscore")
+	/* TODO: terminar isso lololol */
+
 	if(highscore_size == -1)
 		highscore_size = configGetValue("General", "NumPlayers").num + 5;
 	if(scoretable == NULL)
 		logicCreateScoreTable();
-	graphicDrawHighScore(scoretable, highscore_size);
+	graphicDrawHighScore(/*scoretable,*/ highscore_size);
 }
 
 void logicFinish()
@@ -282,6 +295,5 @@ void logicFinish()
 
 int logicGameOver()
 {
-    //return (close_button_pressed || !objectTableHasBoats());
 	return (gameState == GAME_DONE);
 }
