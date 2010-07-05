@@ -132,7 +132,7 @@ void personCollide(person per, object other, double timedif)
             per->prevSpeed = per->vel;
             per->vel = other->vel;
         }
-        per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius), other->pos);
+        per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius +1), other->pos);
         break;
     case TYPE_CORAL:
         objectSide = other->radius * SQRT_2 / 2;
@@ -144,21 +144,21 @@ void personCollide(person per, object other, double timedif)
             && abs(per->pos.y - other->pos.y) <=
             (objectSide + per->radius)){
             per->vel.y *= -1;
-            (per->pos.y >= other->pos.y)? (per->pos.y = other->pos.y + objectSide + per->radius): (per->pos.y = other->pos.y - objectSide - per->radius);
+            (per->pos.y >= other->pos.y)? (per->pos.y = other->pos.y + objectSide + per->radius+1): (per->pos.y = other->pos.y - objectSide - per->radius-1);
         }
         /*Se estiver batendo pela esquerda ou pela direita */
         else if (abs(per->pos.y - other->pos.y) <= objectSide
                  && abs(per->pos.x - other->pos.x) <=
                  (objectSide + per->radius)){
             per->vel.x *= -1;
-            (per->pos.x >= other->pos.x)? (per->pos.x = other->pos.x + objectSide + per->radius): (per->pos.x = other->pos.x - objectSide - per->radius);
+            (per->pos.x >= other->pos.x)? (per->pos.x = other->pos.x + objectSide + per->radius+1): (per->pos.x = other->pos.x - objectSide - per->radius-1);
         }
         /*Se estiver batendo na quina */
         else if (abs(per->pos.x - other->pos.x) >= objectSide
                  && abs(per->pos.y - other->pos.y) >= objectSide) {
             per->vel.x *= -1;
             per->vel.y *= -1;
-            per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius), other->pos);
+            per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius+1), other->pos);
         }
         break;
     case TYPE_SHIP:
@@ -168,17 +168,17 @@ void personCollide(person per, object other, double timedif)
             && abs(per->pos.y - other->pos.y) <=
             (objectSide + per->radius)) {
             per->vel.y *= -1;
-            (per->pos.y >= other->pos.y)? (per->pos.y = other->pos.y + objectSide + per->radius): (per->pos.y = other->pos.y - objectSide - per->radius);
+            (per->pos.y >= other->pos.y)? (per->pos.y = other->pos.y + objectSide + per->radius+1): (per->pos.y = other->pos.y - objectSide - per->radius-1);
         } else if (abs(per->pos.y - other->pos.y) <= objectSide
                    && abs(per->pos.x - other->pos.x) <=
                    (2 * objectSide + per->radius)) {
             per->vel.x *= -1;
-            (per->pos.x >= other->pos.x)? (per->pos.x = other->pos.x + 2*objectSide + per->radius): (per->pos.x = other->pos.x - 2*objectSide - per->radius);
+            (per->pos.x >= other->pos.x)? (per->pos.x = other->pos.x + 2*objectSide + per->radius+1): (per->pos.x = other->pos.x - 2*objectSide - per->radius-1);
         } else if (abs(per->pos.x - other->pos.x) >= 2 * objectSide
                    && abs(per->pos.y - other->pos.y) >= objectSide) {
             per->vel.x *= -1;
             per->vel.y *= -1;
-            per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius), other->pos);
+            per->pos = vectorSum(vectorLengthSet(vectorSub(per->pos, other->pos), per->radius + other-> radius+1), other->pos);
         }
         break;
     case TYPE_BOAT:

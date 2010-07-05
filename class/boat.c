@@ -54,6 +54,8 @@ struct Extra {
     int extraLifeScore;
 };
 
+void graphicStatusReport(int player, int lives, int score, int peopleHeld);
+
 /*Guarda os valores padrao dos botes, ja que podem ser definidos via linha de comando*/
 static struct boatDefaults {
     double turnRate;
@@ -238,6 +240,7 @@ void boatUpdate(boat b, int keepDir, double timedif)
         		b->pos = b->extra->respawnPoint;
         		b->vel = vectorCreate(0,0);
         		b->acc = vectorCreate(0,0);
+        		b->dir = 0;
         		b->tex.color = b->extra->color;     /*Retornando a cor original,
 						  ja que o bote muda de cor quando encalhado */
 	  }
@@ -281,6 +284,8 @@ void boatUpdate(boat b, int keepDir, double timedif)
 	}
     else
         b->extra->unloadTimeLeft = b->extra->unloadTime;
+
+   graphicStatusReport(b->extra->player, b->extra->life, b->extra->points, b->extra->peopleHeld);
 }
 
 void boatRemove(boat b)
@@ -335,7 +340,7 @@ void boatCollide(boat b, object o, double timediff)
             b->extra->prevVel = b->vel;
             b->vel = o->vel;
         }
-        b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius), o->pos);
+        b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius +1), o->pos);
         break;
     case TYPE_CORAL:
     	objectSide = o->radius * SQRT_2/2;
@@ -353,17 +358,17 @@ void boatCollide(boat b, object o, double timediff)
         if (abs(b->pos.x - o->pos.x) <= 2 * objectSide
             && abs(b->pos.y - o->pos.y) <= (objectSide + b->radius)) {
             b->vel.y *= -1;
-            (b->pos.y >= o->pos.y)? (b->pos.y = o->pos.y + objectSide + b->radius): (b->pos.y = o->pos.y - objectSide - b->radius);
+            (b->pos.y >= o->pos.y)? (b->pos.y = o->pos.y + objectSide + b->radius +1): (b->pos.y = o->pos.y - objectSide - b->radius-1);
         } else if (abs(b->pos.y - o->pos.y) <= objectSide
                    && abs(b->pos.x - o->pos.x) <=
                    (2 * objectSide + b->radius)) {
             b->vel.x *= -1;
-            (b->pos.x >= o->pos.x)? (b->pos.x = o->pos.x + objectSide*2 + b->radius): (b->pos.x = o->pos.x - objectSide*2 -b->radius);
+            (b->pos.x >= o->pos.x)? (b->pos.x = o->pos.x + objectSide*2 + b->radius +1): (b->pos.x = o->pos.x - objectSide*2 -b->radius -1);
         } else if (abs(b->pos.x - o->pos.x) >= 2 * objectSide
                    && abs(b->pos.y - o->pos.y) >= objectSide) {
             b->vel.x *= -1;
             b->vel.y *= -1;
-            b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius), o->pos);
+            b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius +1), o->pos);
         }
         break;
     case TYPE_PERSON:
@@ -385,9 +390,9 @@ void boatOB(boat b)
         /*Coloca o bote de volta na borda */
         b->pos.x = (b->pos.x < 0 ? 0 : MAX_X);
     }
-    if (b->pos.y < 0 || b->pos.y > MAX_Y) {
+    if (b->pos.y < 0|| b->pos.y > MAX_Y ) {
         b->vel.y = -b->vel.y;
-        b->pos.y = (b->pos.y < 0 ? 0 : MAX_Y);
+        b->pos.y = (b->pos.y < b->radius ? 0 : MAX_Y );
     }
     objectQuadUpdate    (b);
 }

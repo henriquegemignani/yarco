@@ -26,7 +26,7 @@
 
 #define PERSON_SPEED_DEFAULT        10
 #define MAX_X                       1023
-#define MAX_Y                       767
+#define MAX_Y                       691//767
 #define DURATION_DEFAULT            50.0
 #define STD_DIST                    0.5
 #define NUM_CLASS                   4
