@@ -5,6 +5,7 @@
 %{
 #include "config_bison.h"
 #include "configuration.h"
+#include <string.h>
 extern YYSTYPE yylval;
 %}
 
@@ -55,5 +56,7 @@ void configurationRead(FILE* source) {
 	configInitializeDefaults();
 	yyin = source;
 	yyparse();
+#ifndef WIN32
 	yylex_destroy();
+#endif
 }

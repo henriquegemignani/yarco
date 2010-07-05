@@ -3,9 +3,14 @@ objects = graphics.o common.o object.o person.o objecttable.o class.o ship.o cor
 objectmain = main.o
 CC = gcc
 CFLAGS = -Wall -g # -pedantic -ansi -D_POSIX_C_SOURCE=199309L
+ifeq ($(shell uname), CYGWIN_NT-6.1-WOW64)
+ALLEG = -LC:\MinGW\lib -lliballeg44
+else
+ALLEG = `allegro-config --libs`
+endif
 
 yarco :      $(objects) $(objectmain)
-	$(CC) $(CFLAGS) `allegro-config --libs` $(objects) $(objectmain) -lfl -lm -o $@
+	$(CC) $(CFLAGS) -o $@ $(objects) $(objectmain) -lfl -lm $(ALLEG)
 
 main.o :		common.h logic.h main.c
 common.o :      common.h common.c
@@ -29,7 +34,7 @@ config_bison.o : config_bison.c configuration.h
 	$(CC) -c -o config_bison.o config/config_bison.c
 
 config_flex.c  : config.l
-	flex -o config/config_flex.c config/config.l
+	flex -oconfig/config_flex.c config/config.l
 config_bison.c : config.y
 	bison -o config/config_bison.c -d config/config.y
 
@@ -49,14 +54,15 @@ cake:
 
 .PHONY : clean
 clean : 
-	rm -f $(objects) $(objectmain) $(objecttest) yarco*
+	rm -f $(objects) $(objectmain) $(objecttest)
 
 .PHONY : moreclean
 moreclean : clean
-	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ class/\#*\# class/*~ config/config_*.[ch]
+	rm -f autoTODO.txt \#*\# *~ lib/\#*\# lib/*~ class/\#*\# class/*~  yarco*
 
 .PHONY : realclean
 realclean : moreclean
+	rm -f config/config_*.[ch]
 	rm -rf publish/
 
 .PHONY : TODO
