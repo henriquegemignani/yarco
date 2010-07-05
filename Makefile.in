@@ -13,6 +13,7 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -29,11 +30,13 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+bin_PROGRAMS = Yarco$(EXEEXT)
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(top_srcdir)/config/Makefile.in $(top_srcdir)/configure \
-	AUTHORS COPYING ChangeLog INSTALL NEWS install-sh missing
+	AUTHORS COPYING ChangeLog INSTALL NEWS depcomp install-sh \
+	missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -43,8 +46,27 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = config/Makefile
-SOURCES =
-DIST_SOURCES =
+am__installdirs = "$(DESTDIR)$(bindir)"
+binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
+PROGRAMS = $(bin_PROGRAMS)
+am_Yarco_OBJECTS = main.$(OBJEXT) logic.$(OBJEXT) boat.$(OBJEXT) \
+	coral.$(OBJEXT) person.$(OBJEXT) ship.$(OBJEXT) \
+	command_line.$(OBJEXT) values.$(OBJEXT) class.$(OBJEXT) \
+	common.$(OBJEXT) graphics.$(OBJEXT) object.$(OBJEXT) \
+	objecttable.$(OBJEXT) report.$(OBJEXT) vector.$(OBJEXT)
+Yarco_OBJECTS = $(am_Yarco_OBJECTS)
+Yarco_LDADD = $(LDADD)
+DEFAULT_INCLUDES = -I.@am__isrc@
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+am__depfiles_maybe = depfiles
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+SOURCES = $(Yarco_SOURCES)
+DIST_SOURCES = $(Yarco_SOURCES)
+ETAGS = etags
+CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -145,10 +167,12 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+Yarco_SOURCES = main.c logic.c class/asimov.h class/boat.c class/boat.h class/coral.c class/coral.h class/person.c class/person.h class/ship.c class/ship.h config/command_line.c config/configuration.h config/values.c lib/class.c lib/class.h lib/common.c lib/common.h lib/graphics.c lib/graphics.h lib/object.c lib/object.h objecttable.c lib/objecttable.h lib/report.c lib/report.h lib/vector.c lib/vector.h
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
+.SUFFIXES: .c .o .obj
 am--refresh:
 	@:
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -201,12 +225,283 @@ distclean-hdr:
 	-rm -f config.h stamp-h1
 config/Makefile: $(top_builddir)/config.status $(top_srcdir)/config/Makefile.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
+	  if test -f $$p \
+	  ; then \
+	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
+	   echo " $(INSTALL_PROGRAM_ENV) $(binPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(bindir)/$$f'"; \
+	   $(INSTALL_PROGRAM_ENV) $(binPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(bindir)/$$f" || exit 1; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
+	  echo " rm -f '$(DESTDIR)$(bindir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(bindir)/$$f"; \
+	done
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+Yarco$(EXEEXT): $(Yarco_OBJECTS) $(Yarco_DEPENDENCIES) 
+	@rm -f Yarco$(EXEEXT)
+	$(LINK) $(Yarco_OBJECTS) $(Yarco_LDADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT)
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/boat.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/class.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/command_line.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/coral.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graphics.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/logic.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/object.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/objecttable.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/person.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/report.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ship.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/values.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vector.Po@am__quote@
+
+.c.o:
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c $<
+
+.c.obj:
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+
+boat.o: class/boat.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT boat.o -MD -MP -MF $(DEPDIR)/boat.Tpo -c -o boat.o `test -f 'class/boat.c' || echo '$(srcdir)/'`class/boat.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/boat.Tpo $(DEPDIR)/boat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/boat.c' object='boat.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o boat.o `test -f 'class/boat.c' || echo '$(srcdir)/'`class/boat.c
+
+boat.obj: class/boat.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT boat.obj -MD -MP -MF $(DEPDIR)/boat.Tpo -c -o boat.obj `if test -f 'class/boat.c'; then $(CYGPATH_W) 'class/boat.c'; else $(CYGPATH_W) '$(srcdir)/class/boat.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/boat.Tpo $(DEPDIR)/boat.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/boat.c' object='boat.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o boat.obj `if test -f 'class/boat.c'; then $(CYGPATH_W) 'class/boat.c'; else $(CYGPATH_W) '$(srcdir)/class/boat.c'; fi`
+
+coral.o: class/coral.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT coral.o -MD -MP -MF $(DEPDIR)/coral.Tpo -c -o coral.o `test -f 'class/coral.c' || echo '$(srcdir)/'`class/coral.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/coral.Tpo $(DEPDIR)/coral.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/coral.c' object='coral.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o coral.o `test -f 'class/coral.c' || echo '$(srcdir)/'`class/coral.c
+
+coral.obj: class/coral.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT coral.obj -MD -MP -MF $(DEPDIR)/coral.Tpo -c -o coral.obj `if test -f 'class/coral.c'; then $(CYGPATH_W) 'class/coral.c'; else $(CYGPATH_W) '$(srcdir)/class/coral.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/coral.Tpo $(DEPDIR)/coral.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/coral.c' object='coral.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o coral.obj `if test -f 'class/coral.c'; then $(CYGPATH_W) 'class/coral.c'; else $(CYGPATH_W) '$(srcdir)/class/coral.c'; fi`
+
+person.o: class/person.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT person.o -MD -MP -MF $(DEPDIR)/person.Tpo -c -o person.o `test -f 'class/person.c' || echo '$(srcdir)/'`class/person.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/person.Tpo $(DEPDIR)/person.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/person.c' object='person.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o person.o `test -f 'class/person.c' || echo '$(srcdir)/'`class/person.c
+
+person.obj: class/person.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT person.obj -MD -MP -MF $(DEPDIR)/person.Tpo -c -o person.obj `if test -f 'class/person.c'; then $(CYGPATH_W) 'class/person.c'; else $(CYGPATH_W) '$(srcdir)/class/person.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/person.Tpo $(DEPDIR)/person.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/person.c' object='person.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o person.obj `if test -f 'class/person.c'; then $(CYGPATH_W) 'class/person.c'; else $(CYGPATH_W) '$(srcdir)/class/person.c'; fi`
+
+ship.o: class/ship.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ship.o -MD -MP -MF $(DEPDIR)/ship.Tpo -c -o ship.o `test -f 'class/ship.c' || echo '$(srcdir)/'`class/ship.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/ship.Tpo $(DEPDIR)/ship.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/ship.c' object='ship.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ship.o `test -f 'class/ship.c' || echo '$(srcdir)/'`class/ship.c
+
+ship.obj: class/ship.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT ship.obj -MD -MP -MF $(DEPDIR)/ship.Tpo -c -o ship.obj `if test -f 'class/ship.c'; then $(CYGPATH_W) 'class/ship.c'; else $(CYGPATH_W) '$(srcdir)/class/ship.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/ship.Tpo $(DEPDIR)/ship.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='class/ship.c' object='ship.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o ship.obj `if test -f 'class/ship.c'; then $(CYGPATH_W) 'class/ship.c'; else $(CYGPATH_W) '$(srcdir)/class/ship.c'; fi`
+
+command_line.o: config/command_line.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT command_line.o -MD -MP -MF $(DEPDIR)/command_line.Tpo -c -o command_line.o `test -f 'config/command_line.c' || echo '$(srcdir)/'`config/command_line.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/command_line.Tpo $(DEPDIR)/command_line.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/command_line.c' object='command_line.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o command_line.o `test -f 'config/command_line.c' || echo '$(srcdir)/'`config/command_line.c
+
+command_line.obj: config/command_line.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT command_line.obj -MD -MP -MF $(DEPDIR)/command_line.Tpo -c -o command_line.obj `if test -f 'config/command_line.c'; then $(CYGPATH_W) 'config/command_line.c'; else $(CYGPATH_W) '$(srcdir)/config/command_line.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/command_line.Tpo $(DEPDIR)/command_line.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/command_line.c' object='command_line.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o command_line.obj `if test -f 'config/command_line.c'; then $(CYGPATH_W) 'config/command_line.c'; else $(CYGPATH_W) '$(srcdir)/config/command_line.c'; fi`
+
+values.o: config/values.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT values.o -MD -MP -MF $(DEPDIR)/values.Tpo -c -o values.o `test -f 'config/values.c' || echo '$(srcdir)/'`config/values.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/values.Tpo $(DEPDIR)/values.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/values.c' object='values.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o values.o `test -f 'config/values.c' || echo '$(srcdir)/'`config/values.c
+
+values.obj: config/values.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT values.obj -MD -MP -MF $(DEPDIR)/values.Tpo -c -o values.obj `if test -f 'config/values.c'; then $(CYGPATH_W) 'config/values.c'; else $(CYGPATH_W) '$(srcdir)/config/values.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/values.Tpo $(DEPDIR)/values.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/values.c' object='values.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o values.obj `if test -f 'config/values.c'; then $(CYGPATH_W) 'config/values.c'; else $(CYGPATH_W) '$(srcdir)/config/values.c'; fi`
+
+class.o: lib/class.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT class.o -MD -MP -MF $(DEPDIR)/class.Tpo -c -o class.o `test -f 'lib/class.c' || echo '$(srcdir)/'`lib/class.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/class.Tpo $(DEPDIR)/class.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/class.c' object='class.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o class.o `test -f 'lib/class.c' || echo '$(srcdir)/'`lib/class.c
+
+class.obj: lib/class.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT class.obj -MD -MP -MF $(DEPDIR)/class.Tpo -c -o class.obj `if test -f 'lib/class.c'; then $(CYGPATH_W) 'lib/class.c'; else $(CYGPATH_W) '$(srcdir)/lib/class.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/class.Tpo $(DEPDIR)/class.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/class.c' object='class.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o class.obj `if test -f 'lib/class.c'; then $(CYGPATH_W) 'lib/class.c'; else $(CYGPATH_W) '$(srcdir)/lib/class.c'; fi`
+
+common.o: lib/common.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT common.o -MD -MP -MF $(DEPDIR)/common.Tpo -c -o common.o `test -f 'lib/common.c' || echo '$(srcdir)/'`lib/common.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/common.Tpo $(DEPDIR)/common.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/common.c' object='common.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o common.o `test -f 'lib/common.c' || echo '$(srcdir)/'`lib/common.c
+
+common.obj: lib/common.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT common.obj -MD -MP -MF $(DEPDIR)/common.Tpo -c -o common.obj `if test -f 'lib/common.c'; then $(CYGPATH_W) 'lib/common.c'; else $(CYGPATH_W) '$(srcdir)/lib/common.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/common.Tpo $(DEPDIR)/common.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/common.c' object='common.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o common.obj `if test -f 'lib/common.c'; then $(CYGPATH_W) 'lib/common.c'; else $(CYGPATH_W) '$(srcdir)/lib/common.c'; fi`
+
+graphics.o: lib/graphics.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT graphics.o -MD -MP -MF $(DEPDIR)/graphics.Tpo -c -o graphics.o `test -f 'lib/graphics.c' || echo '$(srcdir)/'`lib/graphics.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/graphics.Tpo $(DEPDIR)/graphics.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/graphics.c' object='graphics.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o graphics.o `test -f 'lib/graphics.c' || echo '$(srcdir)/'`lib/graphics.c
+
+graphics.obj: lib/graphics.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT graphics.obj -MD -MP -MF $(DEPDIR)/graphics.Tpo -c -o graphics.obj `if test -f 'lib/graphics.c'; then $(CYGPATH_W) 'lib/graphics.c'; else $(CYGPATH_W) '$(srcdir)/lib/graphics.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/graphics.Tpo $(DEPDIR)/graphics.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/graphics.c' object='graphics.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o graphics.obj `if test -f 'lib/graphics.c'; then $(CYGPATH_W) 'lib/graphics.c'; else $(CYGPATH_W) '$(srcdir)/lib/graphics.c'; fi`
+
+object.o: lib/object.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT object.o -MD -MP -MF $(DEPDIR)/object.Tpo -c -o object.o `test -f 'lib/object.c' || echo '$(srcdir)/'`lib/object.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/object.Tpo $(DEPDIR)/object.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/object.c' object='object.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o object.o `test -f 'lib/object.c' || echo '$(srcdir)/'`lib/object.c
+
+object.obj: lib/object.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT object.obj -MD -MP -MF $(DEPDIR)/object.Tpo -c -o object.obj `if test -f 'lib/object.c'; then $(CYGPATH_W) 'lib/object.c'; else $(CYGPATH_W) '$(srcdir)/lib/object.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/object.Tpo $(DEPDIR)/object.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/object.c' object='object.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o object.obj `if test -f 'lib/object.c'; then $(CYGPATH_W) 'lib/object.c'; else $(CYGPATH_W) '$(srcdir)/lib/object.c'; fi`
+
+report.o: lib/report.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT report.o -MD -MP -MF $(DEPDIR)/report.Tpo -c -o report.o `test -f 'lib/report.c' || echo '$(srcdir)/'`lib/report.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/report.Tpo $(DEPDIR)/report.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/report.c' object='report.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o report.o `test -f 'lib/report.c' || echo '$(srcdir)/'`lib/report.c
+
+report.obj: lib/report.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT report.obj -MD -MP -MF $(DEPDIR)/report.Tpo -c -o report.obj `if test -f 'lib/report.c'; then $(CYGPATH_W) 'lib/report.c'; else $(CYGPATH_W) '$(srcdir)/lib/report.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/report.Tpo $(DEPDIR)/report.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/report.c' object='report.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o report.obj `if test -f 'lib/report.c'; then $(CYGPATH_W) 'lib/report.c'; else $(CYGPATH_W) '$(srcdir)/lib/report.c'; fi`
+
+vector.o: lib/vector.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT vector.o -MD -MP -MF $(DEPDIR)/vector.Tpo -c -o vector.o `test -f 'lib/vector.c' || echo '$(srcdir)/'`lib/vector.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/vector.Tpo $(DEPDIR)/vector.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/vector.c' object='vector.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o vector.o `test -f 'lib/vector.c' || echo '$(srcdir)/'`lib/vector.c
+
+vector.obj: lib/vector.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT vector.obj -MD -MP -MF $(DEPDIR)/vector.Tpo -c -o vector.obj `if test -f 'lib/vector.c'; then $(CYGPATH_W) 'lib/vector.c'; else $(CYGPATH_W) '$(srcdir)/lib/vector.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/vector.Tpo $(DEPDIR)/vector.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='lib/vector.c' object='vector.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o vector.obj `if test -f 'lib/vector.c'; then $(CYGPATH_W) 'lib/vector.c'; else $(CYGPATH_W) '$(srcdir)/lib/vector.c'; fi`
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '{ files[$$0] = 1; nonemtpy = 1; } \
+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+	mkid -fID $$unique
 tags: TAGS
-TAGS:
 
+TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+	if test -z "$(ETAGS_ARGS)$$tags$$unique"; then :; else \
+	  test -n "$$unique" || unique=$$empty_fix; \
+	  $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+	    $$tags $$unique; \
+	fi
 ctags: CTAGS
-CTAGS:
+CTAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	tags=; \
+	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
+	test -z "$(CTAGS_ARGS)$$tags$$unique" \
+	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
+	     $$tags $$unique
 
+GTAGS:
+	here=`$(am__cd) $(top_builddir) && pwd` \
+	  && cd $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) $$here
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
@@ -341,8 +636,11 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile config.h
+all-am: Makefile $(PROGRAMS) config.h
 installdirs:
+	for dir in "$(DESTDIR)$(bindir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -369,12 +667,14 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
+	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic distclean-hdr
+distclean-am: clean-am distclean-compile distclean-generic \
+	distclean-hdr distclean-tags
 
 dvi: dvi-am
 
@@ -390,7 +690,7 @@ install-data-am:
 
 install-dvi: install-dvi-am
 
-install-exec-am:
+install-exec-am: install-binPROGRAMS
 
 install-html: install-html-am
 
@@ -407,12 +707,13 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
+	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-compile mostlyclean-generic
 
 pdf: pdf-am
 
@@ -422,22 +723,24 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-binPROGRAMS
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am am--refresh check check-am clean clean-generic dist \
-	dist-all dist-bzip2 dist-gzip dist-lzma dist-shar dist-tarZ \
-	dist-zip distcheck distclean distclean-generic distclean-hdr \
-	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am
+.PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
+	clean-binPROGRAMS clean-generic ctags dist dist-all dist-bzip2 \
+	dist-gzip dist-lzma dist-shar dist-tarZ dist-zip distcheck \
+	distclean distclean-compile distclean-generic distclean-hdr \
+	distclean-tags distcleancheck distdir distuninstallcheck dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-binPROGRAMS install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-binPROGRAMS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
