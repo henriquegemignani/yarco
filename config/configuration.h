@@ -60,3 +60,4 @@ char *argVal(int argc, char **argv, char *argLong, char *argShort);
 char *argShortFlags(int argc, char **argv, char *args);
 
 #endif                          /* _CONFIGURATION_H_ */
+

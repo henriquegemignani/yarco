@@ -34,6 +34,7 @@ END_OF_FUNCTION(loginAllegroCloseButtonHandler)
 
 static long timeToOffset = 0;
 void logicSleep() {
+#ifndef WIN32
 	struct timespec sleepTime, sleepErrorRemaining;
 	sleepTime.tv_sec = 0;       /* Tempo entre frames eh sempre menor que 1s */
     sleepTime.tv_nsec = 1.0e9 / configurationGet()->fps;
@@ -55,9 +56,10 @@ void logicSleep() {
 			genError("Erro: nanosleep devolveu nao-zero.\n");
 		}
 	}
+#endif
 }
 
-static double newPersonInterval, discoInterval;
+
 void logicInitialize(int argc, char* argv[]) {
 	configuration defaults;
 	int i, max;
@@ -103,15 +105,15 @@ void logicInitialize(int argc, char* argv[]) {
 		
     LOCK_FUNCTION(loginAllegroCloseButtonHandler);
     set_close_button_callback(loginAllegroCloseButtonHandler);
-
-		
-	discoInterval = defaults->disco;
-	newPersonInterval = randomizeAround(defaults->createPeriod, STD_DIST);
 }
 
-static double timeSinceLastIteration = 0;
-
 double logicLoop(double timeDifference) {
+	static double 
+		timeSinceLastIteration = 0,
+		newPersonInterval = 0, 
+		discoInterval = 0,
+		timeLeftToClose = 0;
+	static int closeButton = -1, closePressed = 0;
 	configuration defaults = configurationGet();
 	long frameTimeStart = timeInMicrosecond();
 	
@@ -122,6 +124,19 @@ double logicLoop(double timeDifference) {
 	
 	objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
 	
+	if(closeButton == -1) closeButton = configGetValue("General", "ButtonExit").num;
+	if(key[closeButton]) {
+		if(!closePressed) {
+			closePressed = 1;
+			if(timeLeftToClose > 0)
+				close_button_pressed = 1;
+			timeLeftToClose = 1.0f;
+		}
+	} else {
+		closePressed = 0;
+		timeLeftToClose -= timeDifference;
+	}
+	
 	if (defaults->disco > 0) {
         discoInterval -= timeDifference;
         if (discoInterval <= 0) {
@@ -131,6 +146,8 @@ double logicLoop(double timeDifference) {
     }
     graphicUpdate();
     graphicDraw();
+	
+	
 	
 	if (defaults->debugMode && timeSinceLastIteration > 1)
         objectTableDump();

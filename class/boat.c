@@ -11,14 +11,12 @@
 #include <math.h>
 #include <allegro.h>
 
-#define MAXSPEED 50
 #define NUM_BUTTONS 5
 #define ACCEL_BUTTON 0
 #define BRAKE_BUTTON 1
 #define TURN_RIGHT_BUTTON 2
 #define TURN_LEFT_BUTTON 3
 #define ANCHOR_BUTTON 4
-#define SCORE_NEW_LIFE 500
 
 typedef struct objectList *listLink;
 
@@ -39,7 +37,6 @@ struct Extra {
     double turnRate;            /*Quanto o bote pode virar em um segundo, em radianos */
     velocity prevVel;           /*Velocidade anterior, para colisoes com outros botes */
     int life;
-    //int defaultLives;           /*Numero padrao de vidas */ /*Nao sera mais necessario, ja que uma vez que o barquinho morre, nunca mais volta*/
     double timeStuckLeft;       /*Quanto tempo falta para o barquinho encalhado dar respawn */
     double defaultTimeStuck;    /*Tempo que ele demora para dar respawn apos encalhar */
     int isAnchored;
@@ -238,8 +235,6 @@ void boatUpdate(boat b, int keepDir, double timedif)
         if (b->extra->timeStuckLeft <= 0) {
         	if(b->extra->life >= 0){
         		b->extra->timeStuckLeft = 0;
-	  //      b->extra->life = b->extra->defaultLives;
-        		//boatGeneratePosAndVelInBorder(MAXSPEED, &b->pos, &b->vel);
         		b->pos = b->extra->respawnPoint;
         		b->vel = vectorCreate(0,0);
         		b->acc = vectorCreate(0,0);
@@ -274,7 +269,6 @@ void boatUpdate(boat b, int keepDir, double timedif)
         b->dir += b->extra->isTurning * b->extra->turnRate * timedif;
     objectQuadUpdate(b);
     if(b->extra->isAnchored && distanceBetweenPoints(b->pos, shipPos) <= b->extra->unloadDistance){
-    	//debugDouble("b->extra->unloadtimeleft", b->extra->unloadTimeLeft);
         if(b->extra->personList != NULL){
             if(b->extra->unloadTimeLeft <= 0.0){
             	debugDouble("b->extra->unloadtimeleft", b->extra->unloadTimeLeft);
@@ -287,7 +281,6 @@ void boatUpdate(boat b, int keepDir, double timedif)
 	}
     else
         b->extra->unloadTimeLeft = b->extra->unloadTime;
-    //debugDouble("dtime", timedif);
 }
 
 void boatRemove(boat b)
@@ -369,9 +362,7 @@ void boatCollide(boat b, object o, double timediff)
         } else if (abs(b->pos.x - o->pos.x) >= 2 * objectSide
                    && abs(b->pos.y - o->pos.y) >= objectSide) {
             b->vel.x *= -1;
-            //(b->pos.x >= o->pos.x)? (b->pos.x = o->pos.x + objectSide*2 + b->radius): (b->pos.x = o->pos.x - objectSide*2 - b->radius);
             b->vel.y *= -1;
-            //(b->pos.y >= o->pos.y)? (b->pos.y = o->pos.y + objectSide + b->radius): (b->pos.y = o->pos.y - objectSide - b->radius);
             b->pos = vectorSum(vectorLengthSet(vectorSub(b->pos, o->pos), b->radius + o-> radius), o->pos);
         }
         break;

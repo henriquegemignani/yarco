@@ -22,13 +22,14 @@ void configInitializeDefaults() {
 	if(initialized != 0) return;
 	initialized = 1;
 	
-	INIT_GROUP("General", 13);
+	INIT_GROUP("General", 14);
 	ADD_CONFIG("MaximumFPS",			  30, TYPE_INT, NULL);
 	ADD_CONFIG("Fullscreen",			   0, TYPE_BOOLEAN, NULL);
 	ADD_CONFIG("ResolutionX",			1024, TYPE_INT, NULL);
 	ADD_CONFIG("ResolutionY",			 768, TYPE_INT, NULL);
 	ADD_CONFIG("NumPlayers",			   2, TYPE_INT, "Hardcoded maximum: 2");
 	ADD_CONFIG("DebugMode",				   0, TYPE_BOOLEAN, NULL);
+	ADD_CONFIG("ButtonExit",		 KEY_ESC, TYPE_INT, "Aperte 2x seguidas para sair");
 	
 	ADD_CONFIG("LimitObject",			 150, TYPE_INT, NULL);
 	ADD_CONFIG("LimitCoral",			  12, TYPE_INT, NULL);
