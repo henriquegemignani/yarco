@@ -101,6 +101,9 @@ void genError(char *msg);
 /*Imprime uma mesngagem de aviso, continua no programa*/
 void genWarning(char *msg);
 
+/* Da malloc numa string de strlen(source) + 1 e depois chama strcpy */
+char* strcpyWithMalloc(char* source);
+
 
 /* WARNING AND ERROR CODES */
 #define ERROR_MALLOC_FAILURE            101

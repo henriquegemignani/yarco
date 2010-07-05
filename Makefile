@@ -2,7 +2,7 @@ VPATH = ./lib/:./class/:./config/
 objects = graphics.o common.o object.o person.o objecttable.o class.o ship.o coral.o boat.o vector.o config_flex.o config_bison.o values.o command_line.o logic.o report.o
 objectmain = main.o
 CC = gcc
-CFLAGS = -Wall -g # -pedantic -ansi -D_POSIX_C_SOURCE=199309L
+CFLAGS = -Wall -g -O0 -pedantic -ansi -D_POSIX_C_SOURCE=199309L -std=c99
 ifeq ($(shell uname), CYGWIN_NT-6.1-WOW64)
 ALLEG = -LC:\MinGW\lib -lliballeg44
 else

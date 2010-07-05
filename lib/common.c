@@ -4,6 +4,7 @@
 /*******************************************************************/
 
 #include "common.h"
+#include <string.h>
 
 texture createTexture(int red, int blue, int green, texType type)
 {
@@ -110,6 +111,13 @@ void genError(char *msg)
 void genWarning(char *msg)
 {
     fprintf(stderr, "%s", msg);
+}
+
+char* strcpyWithMalloc(char* source) {
+	char* str;
+	AUTOMALLOCV(str, (strlen(source) + 1));
+	strcpy(str, source);
+	return str;
 }
 
 void MALLOC_DIE()

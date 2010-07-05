@@ -188,7 +188,8 @@ struct highscore {
 
 void logicFinish()
 {
-	struct highscore* score;
+	struct highscore* scoretable;
+	status player_status;
 	char rankScore[11], rankName[10];
 	int i, player, numplayers = configGetValue("General", "NumPlayers").num;
 	
@@ -198,19 +199,37 @@ void logicFinish()
 	
 	strcpy(rankScore, "RankNScore");
 	strcpy(rankName,  "RankNName");
-	AUTOMALLOCV(score, 5 + numplayers);
+	AUTOMALLOCV(scoretable, 5 + numplayers);
 	for(i = 0; i < 5; ++i) {
-		rankScore[4] = i;
-		rankName[4] = i;
-		score[i].score = configGetValue("Highscore", rankScore).num;
-		score[i].name = configGetValue("Highscore", rankName).str;
+		rankScore[4] = '1' + i;
+		rankName[4] = '1' + i;
+		scoretable[i].score = configGetValue("Highscore", rankScore).num;
+		scoretable[i].name = strcpyWithMalloc(configGetValue("Highscore", rankName).str);
 	}
 	for(player = 0; player < numplayers; ++player) {
-		score[5 + player].score = getStatus(player).score;
-		score[5 + player].name = getStatus(player).name;
+		player_status = getStatus(player);
+		for(i = 5 + player; i >= 0; --i) {
+			if(scoretable[i-1].score > player_status.score) {
+				scoretable[i].score = player_status.score;
+				scoretable[i].name = strcpyWithMalloc(player_status.name);
+				break;
+			} else {
+				scoretable[i].score = scoretable[i-1].score;
+				scoretable[i].name = scoretable[i-1].name;
+			}
+		}
 	}
 	
-	free(score);
+	setCurrentGroup("Highscore");
+	for(i = 0; i < 5; ++i) {
+		rankScore[4] = '1' + i;
+		rankName[4] = '1' + i;
+		configSet(rankScore, createConfigValue(scoretable[i].score, NULL));
+		configSet(rankName, createConfigValue(-1, scoretable[i].name));
+	}
+	for(i = 0; i < 5 + numplayers; ++i)
+		free(scoretable[i].name);
+	free(scoretable);
 		
 	finishReport();
     configurationFinish("config.ini");

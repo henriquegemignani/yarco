@@ -127,10 +127,9 @@ configValue createConfigValue(double real, char *str)
     configValue val;
     val.num = (int) real;
     val.real = (float) real;
-    if (str != NULL) {
-        AUTOMALLOCV(val.str, strlen(str) + 1);
-        strcpy(val.str, str);
-    } else
+    if (str != NULL)
+		val.str = strcpyWithMalloc(str);
+	else
         val.str = NULL;
     return val;
 }
