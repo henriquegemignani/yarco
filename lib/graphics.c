@@ -164,11 +164,11 @@ void graphicDisplayUpdate()
 void graphicDrawHighScore(/*struct HighScore* scoretable,*/ int ammount) {
     int i;
     double yRatio = SCREEN_RATIO_Y;
-    debugMsg("lol i is in drawhighscore");
     rectfill(buffer, 0, 0, screenSizeX, screenSizeY, BLACK);
     textprintf_centre_ex(buffer, font, screenSizeX/2, HIGHSCORE_OFFSET_Y*yRatio, WHITE, BLACK, "HIGHSCORES!");
     for (i=0; i<ammount; i++)
-        textprintf_centre_ex(buffer, font, screenSizeX/2, (HIGHSCORE_OFFSET_Y + HIGHSCORE_DIST_Y * (i+1))*yRatio, WHITE, BLACK, "%s : %d", logicGetPlayerName(/*scoretable,*/ i), logicGetScore(/*scoretable,*/ i));
+        textprintf_centre_ex(buffer, font, screenSizeX/2, (HIGHSCORE_OFFSET_Y + HIGHSCORE_DIST_Y * (i+1))*yRatio, WHITE, BLACK, 
+			"%-32s %12d", logicGetPlayerName(i), logicGetScore(i));
     graphicDraw();
 }
 

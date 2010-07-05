@@ -255,14 +255,16 @@ void logicLoopRunning(double timeDifference)
 void logicLoopHighScore(double timeDifference)
 {
 	static int highscore_size = -1;
-	debugMsg("lol i is in loophighscore")
-	/* TODO: terminar isso lololol */
-
+	clear_keybuf();
+	
 	if(highscore_size == -1)
 		highscore_size = configGetValue("General", "NumPlayers").num + 5;
 	if(scoretable == NULL)
 		logicCreateScoreTable();
-	graphicDrawHighScore(/*scoretable,*/ highscore_size);
+	graphicDrawHighScore(highscore_size);
+	
+	if (keypressed())
+		gameState = GAME_DONE;
 }
 
 void logicFinish()
