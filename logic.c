@@ -217,13 +217,21 @@ void logicLoopRunning(double timeDifference)
     static double
         timeSinceLastIteration = 0,
         newPersonInterval = 0, discoInterval = 0;
+    static int coralPopUp= 0;
     configuration defaults = configurationGet();
 
     if ((newPersonInterval -= timeDifference) < 0
         && defaults->createPeriod > 0) {
+        if(coralPopUp < 75)
+        coralPopUp++;
         newPersonInterval +=
             randomizeAround(defaults->createPeriod, STD_DIST);
-        personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
+        if(randInt(0, 100) > coralPopUp)
+            personAddNewToTable(defaults->defaultSpeed, defaults->verbose);
+        else{
+            coralAddNewToTable(defaults->verbose);
+            debugMsg("brotou um coral!");
+        }
     }
 
     objectTableUpdate(timeDifference, timeSinceLastIteration > 1);
